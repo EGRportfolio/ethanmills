@@ -342,6 +342,11 @@ a.project-card:hover .corner{ opacity: 1; transform: translate(0,0); }
   position: relative; display: flex; align-items: center; justify-content: center;
   color: var(--accent); background: linear-gradient(135deg, rgba(var(--accent-rgb),0.1), var(--bg-alt));
 }
+/* Belt-and-suspenders centering: pin the icon to the exact middle regardless of
+   flex/aspect-ratio quirks in any browser or viewport. */
+.project-card-media--icon svg{
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0;
+}
 .project-card-body{ padding: var(--space-lg); display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .project-card-eyebrow{ font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.04em; }
 .project-card-body h3{ font-size: 26px; text-transform: uppercase; }
@@ -355,23 +360,31 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 
 /* ============ GOALS (full-bleed flow-viz background) ============ */
 .goals-section{ position: relative; overflow: hidden; }
-.goals-bg{ position: absolute; inset: 0; z-index: 0; }
-.goals-bg img{
-  width: 100%; height: 100%; object-fit: cover; object-position: 68% 38%;
+.goals-bg{ position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.goals-bg-img{
+  position: absolute; inset: -60px; /* overshoot so the blur's soft edge never shows a hard boundary */
+  background-image: url('../assets/images/goals-bg-jet.jpg');
+  background-repeat: no-repeat;
+  background-size: 46% auto;
+  background-position: 96% 42%;
+  filter: blur(18px) saturate(1.15);
 }
 .goals-bg-overlay{
   position: absolute; inset: 0;
   background:
-    linear-gradient(100deg, var(--bg) 0%, rgba(10,13,18,0.93) 30%, rgba(10,13,18,0.55) 52%, rgba(10,13,18,0.22) 72%, rgba(10,13,18,0.15) 100%),
+    linear-gradient(100deg, var(--bg) 0%, rgba(10,13,18,0.9) 34%, rgba(10,13,18,0.5) 56%, rgba(10,13,18,0.22) 76%, rgba(10,13,18,0.18) 100%),
     linear-gradient(180deg, var(--bg) 0%, transparent 14%, transparent 86%, var(--bg) 100%);
 }
 .goals-section .section-inner{ position: relative; z-index: 1; }
 .goals-section .section-lede{ max-width: 620px; }
 @media (max-width: 700px){
-  .goals-bg img{ object-position: 78% 30%; }
+  .goals-bg-img{
+    background-size: 130% auto;
+    background-position: 82% 22%;
+  }
   .goals-bg-overlay{
     background:
-      linear-gradient(180deg, var(--bg) 0%, rgba(10,13,18,0.9) 18%, rgba(10,13,18,0.74) 40%, rgba(10,13,18,0.86) 65%, var(--bg) 100%);
+      linear-gradient(180deg, var(--bg) 0%, rgba(10,13,18,0.86) 18%, rgba(10,13,18,0.68) 40%, rgba(10,13,18,0.84) 65%, var(--bg) 100%);
   }
 }
 
