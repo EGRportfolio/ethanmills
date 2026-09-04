@@ -42,7 +42,7 @@
      dominant color (like the jet photo, where blue covers most of the
      airframe) with red and amber appearing as smaller, later accents
      rather than three equal bands. */
-  --jet-blue-vivid:  #65bce9;
+  --jet-blue-vivid:  #2f7fd6;
   --jet-red-vivid:   #e9637b;
   --jet-amber-vivid: #e8af5e;
   --gradient-jet-btn: linear-gradient(135deg, var(--jet-blue-vivid) 0%, var(--jet-blue-vivid) 40%, var(--jet-red-vivid) 72%, var(--jet-amber-vivid) 100%);
