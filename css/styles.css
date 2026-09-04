@@ -467,11 +467,18 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 @media (max-width: 620px){ .contact-grid{ grid-template-columns: 1fr; } }
 
 .contact-card{
+  position: relative; overflow: hidden;
   display: flex; flex-direction: column; gap: 8px; background: var(--surface);
   border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-lg);
   transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), background 0.25s var(--ease);
 }
+.contact-card::before{
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--gradient-jet);
+  transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease);
+}
 a.contact-card:hover{ border-color: var(--accent); transform: translateY(-3px); background: linear-gradient(135deg, rgba(79,195,255,0.08), rgba(255,140,90,0.04) 75%, var(--surface)); }
+a.contact-card:hover::before{ transform: scaleX(1); }
 .contact-icon{
   display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px;
   border-radius: 50%; background: rgba(var(--accent-rgb),0.09); color: var(--accent); margin-bottom: 4px;
