@@ -45,7 +45,9 @@
   --jet-blue-vivid:  #1a6fd1;
   --jet-red-vivid:   #e9637b;
   --jet-amber-vivid: #e8af5e;
-  --gradient-jet-btn: linear-gradient(135deg, var(--jet-blue-vivid) 0%, var(--jet-blue-vivid) 40%, var(--jet-red-vivid) 72%, var(--jet-amber-vivid) 100%);
+  --jet-black-lead:  #05070c;
+  --jet-navy-lead:   #0c2247;
+  --gradient-jet-btn: linear-gradient(135deg, var(--jet-black-lead) 0%, var(--jet-navy-lead) 16%, var(--jet-blue-vivid) 38%, var(--jet-blue-vivid) 50%, var(--jet-red-vivid) 76%, var(--jet-amber-vivid) 100%);
 
   --font-head: 'Big Shoulders Display', 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
