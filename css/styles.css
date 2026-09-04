@@ -38,6 +38,15 @@
   --jet-amber: #d1ab75;
   --gradient-jet: linear-gradient(135deg, var(--jet-blue) 0%, var(--jet-red) 52%, var(--jet-amber) 100%);
 
+  /* More saturated variant, used only on primary buttons: blue holds as the
+     dominant color (like the jet photo, where blue covers most of the
+     airframe) with red and amber appearing as smaller, later accents
+     rather than three equal bands. */
+  --jet-blue-vivid:  #65bce9;
+  --jet-red-vivid:   #e9637b;
+  --jet-amber-vivid: #e8af5e;
+  --gradient-jet-btn: linear-gradient(135deg, var(--jet-blue-vivid) 0%, var(--jet-blue-vivid) 40%, var(--jet-red-vivid) 72%, var(--jet-amber-vivid) 100%);
+
   --font-head: 'Big Shoulders Display', 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -147,7 +156,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   white-space: nowrap; position: relative;
 }
 .btn:hover{ transform: translateY(-2px); }
-.btn-primary{ background: var(--gradient-jet); color: #041018; }
+.btn-primary{ background: var(--gradient-jet-btn); color: #041018; }
 .btn-primary:hover{ filter: brightness(1.08); box-shadow: 0 10px 30px -8px rgba(209,171,117,0.4), 0 8px 30px -10px rgba(var(--accent-rgb),0.4); }
 .btn-ghost{ background: rgba(255,255,255,0.03); border-color: var(--border); color: var(--text); }
 .btn-ghost:hover{ border-color: var(--accent-dim); background: rgba(var(--accent-rgb),0.07); }
