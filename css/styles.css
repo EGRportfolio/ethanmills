@@ -147,7 +147,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   white-space: nowrap; position: relative;
 }
 .btn:hover{ transform: translateY(-2px); }
-.btn-primary{ background: linear-gradient(120deg, var(--jet-blue), var(--jet-amber) 130%); color: #041018; }
+.btn-primary{ background: var(--gradient-jet); color: #041018; }
 .btn-primary:hover{ filter: brightness(1.08); box-shadow: 0 10px 30px -8px rgba(255,140,90,0.4), 0 8px 30px -10px rgba(var(--accent-rgb),0.4); }
 .btn-ghost{ background: rgba(255,255,255,0.03); border-color: var(--border); color: var(--text); }
 .btn-ghost:hover{ border-color: var(--accent-dim); background: rgba(var(--accent-rgb),0.07); }
