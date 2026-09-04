@@ -36,7 +36,7 @@
   --jet-blue:  #4fc3ff;
   --jet-red:   #ff4d6d;
   --jet-amber: #ffb347;
-  --gradient-jet: linear-gradient(135deg, var(--jet-blue) 0%, var(--jet-red) 52%, var(--jet-amber) 100%);
+  --gradient-jet: linear-gradient(120deg, var(--jet-blue) 0%, var(--jet-amber) 100%);
 
   --font-head: 'Big Shoulders Display', 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
