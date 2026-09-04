@@ -305,11 +305,15 @@
     }
 
     function speedColor(sp) {
-      // blue (slow) -> accent -> orange (fast)
+      // Jet gradient: blue (slow) -> red (mid) -> amber (fast) — the same
+      // blue/red/amber progression as the Goals section's flow-viz graphic.
       var t = Math.max(0, Math.min(1, (sp - 0.8) / 1.6));
-      var r = Math.round(79 + t * (255 - 79));
-      var g = Math.round(195 + t * (138 - 195));
-      var b = Math.round(255 + t * (76 - 255));
+      var stops = t < 0.5
+        ? { a: [79, 195, 255], b: [255, 77, 109], u: t / 0.5 }
+        : { a: [255, 77, 109], b: [255, 179, 71], u: (t - 0.5) / 0.5 };
+      var r = Math.round(stops.a[0] + stops.u * (stops.b[0] - stops.a[0]));
+      var g = Math.round(stops.a[1] + stops.u * (stops.b[1] - stops.a[1]));
+      var b = Math.round(stops.a[2] + stops.u * (stops.b[2] - stops.a[2]));
       return 'rgba(' + r + ',' + g + ',' + b + ',';
     }
 
