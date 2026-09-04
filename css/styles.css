@@ -317,6 +317,7 @@ a.project-card:hover .project-card-media img{ transform: scale(1.05); }
   letter-spacing: 0.05em; color: var(--success); background: rgba(10,13,18,0.7);
   border: 1px solid rgba(var(--success-rgb),0.4); padding: 5px 10px; border-radius: 999px;
 }
+.project-card-tag--pending{ color: var(--accent); border-color: rgba(var(--accent-rgb),0.4); }
 /* Targeting corner brackets — reveal on hover, CAD-selection style */
 .corner{ position: absolute; width: 18px; height: 18px; opacity: 0; transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); pointer-events: none; }
 .corner::before, .corner::after{ content: ""; position: absolute; background: var(--accent); }
@@ -337,6 +338,10 @@ a.project-card:hover .corner{ opacity: 1; transform: translate(0,0); }
   border-bottom: 1px dashed var(--border);
 }
 .project-card--ghost{ border-style: dashed; }
+.project-card-media--icon{
+  position: relative; display: flex; align-items: center; justify-content: center;
+  color: var(--accent); background: linear-gradient(135deg, rgba(var(--accent-rgb),0.1), var(--bg-alt));
+}
 .project-card-body{ padding: var(--space-lg); display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .project-card-eyebrow{ font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.04em; }
 .project-card-body h3{ font-size: 26px; text-transform: uppercase; }
