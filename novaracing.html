@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaRacing | Ethan Mills</title>
+<meta name="description" content="Aerodynamic design and composite manufacturing for NovaRacing, Villanova's Formula SAE team, by Ethan Mills.">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="bg-grid" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ============ HEADER / NAV ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="index.html#home" class="brand">
+      <span class="brand-text">
+        <span class="brand-name">Ethan Mills</span>
+        <span class="brand-sub"><i class="brand-tick" aria-hidden="true"></i>Mechanical Engineering</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="index.html#home" class="nav-link">Home</a>
+      <a href="index.html#about" class="nav-link">About</a>
+      <a href="index.html#skills" class="nav-link">Skills</a>
+      <a href="index.html#projects" class="nav-link is-active">Projects</a>
+      <a href="index.html#goals" class="nav-link">Goals</a>
+      <a href="index.html#contact" class="nav-link">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="index.html#contact" class="btn btn-primary btn-sm">Get In Touch</a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ PROJECT HERO ============ -->
+  <section class="project-hero">
+    <div class="hero-flow hero-flow--compact" aria-hidden="true">
+      <canvas id="flowCanvas"></canvas>
+      <div class="hero-flow-overlay"></div>
+    </div>
+    <div class="project-hero-content">
+      <a href="index.html#projects" class="back-link">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        Projects
+      </a>
+      <p class="eyebrow">Project 01 &middot; Formula SAE</p>
+      <h1 class="project-hero-title">NovaRacing</h1>
+      <p class="hero-lede">
+        Villanova's Formula SAE team designs and builds an open-wheel formula race car from
+        scratch every year. I work as a Chassis System / Aerodynamics Subsystem Engineer,
+        moving from composite manufacturing my first year to CAD- and CFD-driven aero design now.
+      </p>
+      <div class="project-meta-row">
+        <span><strong>Role</strong> Chassis System / Aerodynamics Subsystem Engineer</span>
+        <span><strong>Team</strong> NovaRacing Formula SAE, Villanova University</span>
+        <span><strong>Timeline</strong> Dec. 2025 &ndash; Present</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ YEAR TABS ============ -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="year-tabs reveal" role="tablist" aria-label="NovaRacing experience by year">
+        <button class="year-tab is-active" id="tab-freshman" role="tab" aria-selected="true" aria-controls="panel-freshman">
+          <span class="year-tab-num">01</span>
+          <span class="year-tab-text">
+            <span class="year-tab-title">Freshman Year</span>
+            <span class="year-tab-sub">2025 &ndash; 2026</span>
+          </span>
+        </button>
+        <button class="year-tab" id="tab-sophomore" role="tab" aria-selected="false" aria-controls="panel-sophomore" tabindex="-1">
+          <span class="year-tab-num">02</span>
+          <span class="year-tab-text">
+            <span class="year-tab-title">Sophomore Year</span>
+            <span class="year-tab-sub">2026 &ndash; 2027</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- ============ FRESHMAN YEAR ============ -->
+      <div class="year-panel is-active" id="panel-freshman" role="tabpanel" aria-labelledby="tab-freshman">
+
+        <article class="story reveal">
+          <div class="story-copy">
+            <span class="pill">Fall Recruitment</span>
+            <p>
+              NovaRacing's fall recruitment process ran from September through December and
+              consisted of three engineering projects designed to introduce applicants to the
+              team's design process. The final project focused on learning the fundamentals of
+              SolidWorks by designing a suspension rocker from a given set of geometric and
+              loading requirements.
+            </p>
+            <p>
+              After creating the CAD model, I used finite element analysis (FEA) to compare
+              candidate materials, evaluate stress and deformation, and determine the most
+              appropriate material for the component. The project introduced me to parametric
+              modeling, simulation-based material selection, and the connection between component
+              geometry, loading, and manufacturability.
+            </p>
+          </div>
+          <div class="story-collage">
+            <figure class="collage-item big tilt-l lift">
+              <img src="assets/images/vu17-fea-rocker.jpg" alt="FEA stress and deformation study on a suspension rocker" loading="lazy">
+              <figcaption>FEA stress &amp; deformation study on the suspension rocker</figcaption>
+            </figure>
+            <figure class="collage-item tilt-r pull-l drop">
+              <img src="assets/images/vu17-rocker-coilover.jpg" alt="Suspension rocker assembly with coilover, modeled in SolidWorks" loading="lazy">
+              <figcaption>Modeled in SolidWorks</figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <article class="story reveal">
+          <div class="story-collage">
+            <figure class="collage-item wide tilt-l">
+              <img src="assets/images/vu17-windtunnel.jpg" alt="Laser sheet flow visualization over a dimpled sphere in the wind tunnel lab" loading="lazy">
+              <figcaption>Flow visualization in the wind tunnel lab: laser sheet over a dimpled sphere</figcaption>
+            </figure>
+          </div>
+          <div class="story-copy">
+            <span class="pill">Getting Acquainted</span>
+            <p>
+              After the rigorous recruitment process was complete in the winter, only about
+              thirty of the two-hundred initial interest-meeting attendees made the team. At
+              first, I was reluctant to go to the shop because the team and all the machines were
+              admittedly intimidating. My mistake was thinking I was set, and that my background
+              knowledge would carry me through this club. I could not have been more wrong.
+            </p>
+            <p>
+              This is one of the first images from the very beginning of my journey as an
+              engineering student: exposing myself to the wind tunnel lab, modeling my first
+              parts in SolidWorks, and playing around with basic assemblies. I knew very quickly
+              that there were many levels to engineering and much more to learn.
+            </p>
+            <p>
+              That first month passed, and I was already feeling so much more confident in my
+              abilities as an engineer. I had brushed up on just enough aerodynamic theory to keep
+              up with the senior capstone team, who I would soon join in my greatest contribution
+              to NovaRacing Formula SAE.
+            </p>
+          </div>
+        </article>
+
+        <article class="story reveal story--full">
+          <div class="story-copy story-copy--wide">
+            <span class="pill">Aero Sprint</span>
+            <p>
+              As the spring semester began, the push to finish VU17 quickly became an all-out
+              aero sprint. The car had fallen months behind schedule, leaving the team with very
+              little of the time originally set aside for manufacturing and testing before
+              competition at <strong>Michigan International Speedway 2026</strong>. With the
+              deadline approaching, everyone in the garage had a role to play. As a freshman, much
+              of my early work involved sanding, filling, and gluing mold structures. In just
+              three months, our team manufactured and finished a complete aerodynamic package for
+              competition, including the front and rear wings, undertray, nosecone, sidepods, and
+              body panels.
+            </p>
+          </div>
+          <div class="story-collage">
+            <figure class="collage-item big tilt-l">
+              <img src="assets/images/vu17-capstone-team.jpg" alt="The VU17 senior capstone team" loading="lazy">
+              <figcaption><strong>Senior Capstone Team</strong> (left to right): Jase Co, Chassis &amp; Frame; James Breckner, Powertrain; Conner Brett, Aerodynamics; Chris Fleschner, Chief Engineer &amp; VU17 Aerodynamic Package Designer</figcaption>
+            </figure>
+            <figure class="collage-item small tilt-r pull-l drop">
+              <img src="assets/images/vu17-cnc.jpg" alt="CNC router cutting a mold from MDF" loading="lazy">
+            </figure>
+            <figure class="collage-item tilt-l drop">
+              <img src="assets/images/vu17-wing-finished.jpg" alt="First completed carbon-fiber sidepod, untrimmed" loading="lazy">
+              <figcaption>The first completed carbon structure (untrimmed): the aerodynamic sidepod. Sealing its seam with the body panels became a cooling issue that needed some sketchy duct tape at competition.</figcaption>
+            </figure>
+            <figure class="collage-item big tilt-r pull-l lift">
+              <img src="assets/images/vu17-assembly.jpg" alt="Near-finished rear wing and endplate assembly" loading="lazy">
+              <figcaption><strong>Near-finished rear wing</strong>, before mounting to the frame. A laser-cut endplate stencil set mounting holes for an adjustable angle of attack, tuned to <strong>-1&deg;</strong> for the S1223 airfoils to achieve the lowest drag.</figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <article class="story reveal story--full">
+          <div class="story-copy story-copy--wide">
+            <span class="pill">Composite Manufacturing &amp; Aerodynamic Finishing</span>
+            <p>
+              Producing the VU17 aerodynamic package involved much more than laying carbon fiber
+              into a mold. Every component had to move through a complete manufacturing process
+              while meeting tight deadlines, fitting within the Formula SAE dimensional envelope,
+              and remaining stiff, lightweight, accessible, and properly aligned on the car.
+            </p>
+            <p>
+              The process began with preparing molds made from <strong>3D-printed PLA</strong> and
+              <strong>CNC-routed MDF</strong>. Because every imperfection in a mold transfers
+              directly onto the finished part, we gradually sanded surfaces through
+              <strong>1200 grit</strong> before applying release agents. Depending on the
+              component, we used wet layup or vacuum-assisted resin infusion, along with peel ply,
+              breather fabric, flow media, vacuum-bagging materials, and foam core, considering
+              fiber placement, resin distribution, vacuum integrity, part thickness, structural
+              stiffness, and whether the cured component could be removed from the mold without
+              damage.
+            </p>
+            <p>
+              Once a part cured, it still required extensive trimming, fitting, and finishing.
+              Edges had to be cut cleanly, mounting locations had to line up, and adjoining
+              surfaces had to fit together without disturbing the intended geometry. Completed
+              assemblies also had to maintain sufficient ground clearance, accessibility,
+              stability, and mounting rigidity so they wouldn't shift or deflect under load.
+            </p>
+            <p>
+              Surface finish was one of the most time-consuming parts of the process. Mold seams,
+              print lines, pinholes, and uneven resin could leave the surface rough even when the
+              shape was correct. We repeatedly sanded the parts, applied epoxy clear coats to fill
+              and level the surface, then sanded and polished again for a smoother finish. This
+              wasn't only for appearance. On an aerodynamic component, the exterior surface is the
+              surface the air actually encounters, so waviness or exposed delaminated fiber takes
+              away from the geometry meant to maximize aerodynamic efficiency. The goal was to
+              preserve that geometry as closely as possible while giving the package a clean,
+              competition-ready finish.
+            </p>
+          </div>
+          <div class="story-collage">
+            <figure class="collage-item tilt-l">
+              <img src="assets/images/vu17-carbon-macro.jpg" alt="Finished 2x2 twill carbon-fiber weave, clear-coated" loading="lazy">
+            </figure>
+            <figure class="collage-item small tilt-r drop pull-l">
+              <img src="assets/images/vu17-layup.jpg" alt="Wet layup of a carbon-fiber panel" loading="lazy">
+            </figure>
+            <figure class="collage-item big tilt-l lift">
+              <img src="assets/images/vu17-layup2.jpg" alt="Trimming a cured carbon-fiber panel edge" loading="lazy">
+            </figure>
+            <figure class="collage-item tilt-r drop pull-l">
+              <img src="assets/images/vu17-vacuum-bag.jpg" alt="Vacuum-bag preparation for resin infusion" loading="lazy">
+            </figure>
+            <figure class="collage-item big tilt-l">
+              <img src="assets/images/vu17-undertray.jpg" alt="Finished carbon-fiber undertray" loading="lazy">
+              <figcaption>Finished undertray, fresh from the mold</figcaption>
+            </figure>
+            <figure class="collage-item small tilt-r pull-l lift">
+              <img src="assets/images/vu17-mold.jpg" alt="CNC-routed MDF mold, sanded and prepped" loading="lazy">
+            </figure>
+          </div>
+        </article>
+
+        <article class="story reveal story--full">
+          <div class="story-copy story-copy--wide">
+            <span class="pill">Final Assembly &amp; Competition</span>
+            <p>
+              As competition approached, the individual aerodynamic components finally became a
+              complete package. The front and rear wings, undertray, nosecone, sidepods, and body
+              panels had to be fitted and aligned around the finished car. This stage exposed
+              issues that couldn't always be seen while working on each part separately.
+              Mounting points, panel gaps, ground clearance, accessibility, rigidity, and the
+              relationship between neighboring surfaces all had to be checked before VU17 could
+              leave for Michigan International Speedway.
+            </p>
+            <p>
+              I was selected as one of only a few freshmen to travel with the team to
+              <strong>Formula SAE Michigan IC 2026</strong>. The weekend gave me my first look at
+              the intensity of an actual Formula SAE competition: technical inspection, design
+              judging, last-minute repairs, and the constant pressure to keep the car running. Our
+              first engine failed, forcing an overnight engine swap; the replacement then failed
+              too. It was a difficult end to months of work, but that's part of racing.
+            </p>
+            <p>
+              During competition, I went into aerodynamic design judging with Connor Brett from
+              the senior capstone team. Much of our discussion with the judges centered on
+              simulation, physical validation, and whether our design decisions were supported by
+              enough data from testing. We had some simulation results, but not enough to guide a
+              complete cycle of testing and iteration, because the car had fallen behind schedule
+              and most of our available time had gone toward manufacturing the package and
+              improving its finish rather than validating how the full system performed together.
+            </p>
+            <p>
+              The experience made it clear that a well-manufactured part is not the same as a
+              fully validated design. Our aerodynamic goals need to be defined more explicitly
+              from the beginning, with measurable targets for downforce, drag, aerodynamic
+              balance, and cooling, that then guide simulation, design changes, manufacturing, and
+              physical testing instead of treating each stage as a separate effort.
+            </p>
+            <div class="result-card">
+              <span class="result-tag">Result</span>
+              <p>Our aerodynamic package received <strong>8 out of 15 points</strong> in design judging: the second-highest score in our entire design bay, behind Georgia Tech (10). The result reflected the work behind a complete, well-finished package in only three months, and the judges' feedback gave us a clear direction for the next car.</p>
+            </div>
+            <p class="footnote">
+              This entire FSAE aerodynamics / composites manufacturing project was all made
+              possible by the generous support and guidance of the senior capstone team as listed
+              before, but also the company and assistance of Luke Gustafson '27, Matthew Parker
+              '27, Luke VanEmburgh '27, and Randall Preson '29.
+            </p>
+          </div>
+          <div class="story-collage">
+            <figure class="collage-item big tall tilt-l lift">
+              <img src="assets/images/vu17-pit.jpg" alt="Mounting the undertray to the frame" loading="lazy">
+              <figcaption>Mounting the undertray to the frame with Jase and Chris, using metal zip ties and brackets I made on the manual mill</figcaption>
+            </figure>
+            <figure class="collage-item big tilt-r pull-l">
+              <img src="assets/images/vu17-tilt-test.webp" alt="Tilt test, a static event that pushes the limits of the suspension assembly's structural integrity when fully loaded" loading="lazy">
+              <figcaption>Tilt test: a static event that pushes the limits of the suspension assembly's structural integrity when fully loaded</figcaption>
+            </figure>
+            <figure class="collage-item tilt-l drop pull-l">
+              <img src="assets/images/vu17-team.jpg" alt="Some of the VU17 seniors in graduation gowns with the car outside a campus church" loading="lazy">
+            </figure>
+            <figure class="collage-item small tilt-r drop">
+              <img src="assets/images/vu17-autocross.jpg" alt="VU17 on track during a testing day after the build" loading="lazy">
+            </figure>
+          </div>
+        </article>
+      </div>
+
+      <!-- ============ SOPHOMORE YEAR ============ -->
+      <div class="year-panel" id="panel-sophomore" role="tabpanel" aria-labelledby="tab-sophomore" hidden>
+
+        <article class="story reveal story--full">
+          <div class="story-copy story-copy--wide">
+            <span class="pill">First Aerodynamic Design Exposure: SolidWorks</span>
+            <p>
+              When I was first recruited, I had missed the design phase that NovaRacing typically
+              cycles through each school year: fall semester is for design and iteration, spring
+              is for building and testing. By the time Chris exposed me to aerodynamic wing
+              design, I had already modeled a few basic parts in SolidWorks. There was a lot of
+              room for improvement: my first wing iteration (itself an iteration off of Chris'
+              front wing) barely resembled a wing at all, but with many more iterations I found my
+              stride.
+            </p>
+            <p>
+              Below is an extremely basic early form of what was to become the VU17 aerodynamic
+              package, along with the evolution of my front wing and some of its iterations.
+            </p>
+          </div>
+          <div class="story-collage">
+            <figure class="collage-item big tilt-l lift">
+              <img src="assets/images/vu17-full-car.jpg" alt="Early, basic CAD form of the VU17 aerodynamic package" loading="lazy">
+              <figcaption>An early, extremely basic form of what was to become the VU17 aerodynamic package</figcaption>
+            </figure>
+            <figure class="collage-item tilt-r pull-l drop">
+              <img src="assets/images/vu18-sidepod-cad1.jpg" alt="Messy lofted guide curves on an early front wing iteration" loading="lazy">
+              <figcaption>Messy lofted guide curves: random, unplanned geometry that didn't yet consider my design goals</figcaption>
+            </figure>
+            <figure class="collage-item big tilt-l drop">
+              <img src="assets/images/vu18-sidepod-cad2.jpg" alt="Side, isometric and front views of a later front wing iteration" loading="lazy">
+              <figcaption>Side, isometric &amp; front views of the front wing evolving through iteration</figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <div class="in-progress-note reveal">
+          <div class="result-card result-card--muted">
+            <span class="result-tag">In Progress</span>
+            <p>Design work is ongoing. More of the VU18 aero package will be added here as it develops.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>&copy; <span id="year"></span> Ethan Mills.</span>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="index.html#home">Home</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#skills">Skills</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#goals">Goals</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close image">&times;</button>
+  <img src="" alt="" id="lightboxImg">
+  <p class="lightbox-caption" id="lightboxCaption"></p>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

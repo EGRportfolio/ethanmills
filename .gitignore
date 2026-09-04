@@ -1,0 +1,9 @@
+# Raw/original photos — not needed for the live site (already processed into assets/images)
+Media/
+
+# Local tooling config
+.claude/
+
+# OS cruft
+.DS_Store
+Thumbs.db
