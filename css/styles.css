@@ -361,30 +361,51 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 /* ============ GOALS (full-bleed flow-viz background) ============ */
 .goals-section{ position: relative; overflow: hidden; }
 .goals-bg{ position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+
+/* Soft blue glow sitting behind the jet — this is what the edges blend into,
+   instead of blending straight into flat black. */
+.goals-bg-glow{
+  position: absolute; inset: -120px;
+  background: radial-gradient(ellipse 50% 50% at 92% 40%, rgba(79,195,255,0.22), rgba(79,195,255,0.06) 55%, transparent 75%);
+  filter: blur(50px);
+}
+
+/* The jet image itself: a light blur (motion-blur feel, keeps the structure
+   readable) plus a radial mask so the image's own hard rectangular edge
+   fades to transparent well before it's reached — no visible photo outline
+   at any blur amount. */
 .goals-bg-img{
-  position: absolute; inset: -60px; /* overshoot so the blur's soft edge never shows a hard boundary */
+  position: absolute; inset: -60px;
   background-image: url('../assets/images/goals-bg-jet.jpg');
   background-repeat: no-repeat;
   background-size: 46% auto;
   background-position: 96% 42%;
-  filter: blur(18px) saturate(1.15);
+  filter: blur(6px) saturate(1.15) brightness(1.05);
+  -webkit-mask-image: radial-gradient(ellipse 58% 60% at 96% 42%, black 30%, transparent 76%);
+  mask-image: radial-gradient(ellipse 58% 60% at 96% 42%, black 30%, transparent 76%);
 }
+
 .goals-bg-overlay{
   position: absolute; inset: 0;
   background:
-    linear-gradient(100deg, var(--bg) 0%, rgba(10,13,18,0.9) 34%, rgba(10,13,18,0.5) 56%, rgba(10,13,18,0.22) 76%, rgba(10,13,18,0.18) 100%),
+    linear-gradient(100deg, var(--bg) 0%, rgba(10,13,18,0.88) 32%, rgba(10,13,18,0.45) 55%, rgba(10,13,18,0.15) 76%, rgba(10,13,18,0.1) 100%),
     linear-gradient(180deg, var(--bg) 0%, transparent 14%, transparent 86%, var(--bg) 100%);
 }
 .goals-section .section-inner{ position: relative; z-index: 1; }
 .goals-section .section-lede{ max-width: 620px; }
 @media (max-width: 700px){
+  .goals-bg-glow{
+    background: radial-gradient(ellipse 55% 45% at 82% 22%, rgba(79,195,255,0.2), rgba(79,195,255,0.05) 55%, transparent 75%);
+  }
   .goals-bg-img{
     background-size: 130% auto;
     background-position: 82% 22%;
+    -webkit-mask-image: radial-gradient(ellipse 65% 55% at 82% 22%, black 25%, transparent 72%);
+    mask-image: radial-gradient(ellipse 65% 55% at 82% 22%, black 25%, transparent 72%);
   }
   .goals-bg-overlay{
     background:
-      linear-gradient(180deg, var(--bg) 0%, rgba(10,13,18,0.86) 18%, rgba(10,13,18,0.68) 40%, rgba(10,13,18,0.84) 65%, var(--bg) 100%);
+      linear-gradient(180deg, var(--bg) 0%, rgba(10,13,18,0.8) 18%, rgba(10,13,18,0.6) 40%, rgba(10,13,18,0.8) 65%, var(--bg) 100%);
   }
 }
 
