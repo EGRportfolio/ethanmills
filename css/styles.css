@@ -305,22 +305,17 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .skills-groups{ display: flex; flex-direction: column; gap: var(--space-xl); }
 
 .skills-group-title{
-  font-family: var(--font-head); font-weight: 700; font-size: 15px; text-transform: uppercase;
-  letter-spacing: 0.04em; color: var(--text); margin: 0 0 var(--space-md);
-  padding-bottom: 10px; border-bottom: 1px solid var(--border); position: relative;
-}
-.skills-group-title::after{
-  content: ""; position: absolute; left: 0; bottom: -1px; width: 48px; height: 2px;
-  background: var(--gradient-jet);
+  display: inline-block; font-family: var(--font-mono); font-size: 12px; color: var(--accent);
+  border: 1px solid var(--accent-dim); padding: 5px 12px; border-radius: 999px; margin: 0 0 var(--space-md);
 }
 
-.skills-mini-grid{ display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-sm); }
+.skills-mini-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
 @media (max-width: 960px){ .skills-mini-grid{ grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px){ .skills-mini-grid{ grid-template-columns: 1fr; } }
 
 .skill-mini{
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: var(--space-sm) var(--space-md); transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: var(--space-lg); transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
   position: relative; overflow: hidden;
 }
 .skill-mini::before{
@@ -332,9 +327,9 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .skill-mini:hover::before{ transform: scaleX(1); }
 .skill-mini h4{
   font-family: var(--font-head); font-weight: 700; font-size: 14.5px; color: var(--text);
-  margin: 0 0 6px; letter-spacing: 0.01em;
+  margin: 0 0 8px; letter-spacing: 0.01em;
 }
-.skill-mini p{ font-size: 12.5px; line-height: 1.5; color: var(--text-faint); margin: 0; }
+.skill-mini p{ font-size: 13.5px; line-height: 1.6; color: var(--text-faint); margin: 0; }
 
 /* ============ PROJECTS ============ */
 .projects-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
