@@ -263,6 +263,9 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .scroll-cue span{ width: 4px; height: 8px; border-radius: 2px; background: var(--accent); animation: scrollcue 1.8s ease-in-out infinite; }
 @keyframes scrollcue{ 0%{ opacity: 0; transform: translateY(0);} 30%{ opacity:1; } 100%{ opacity: 0; transform: translateY(14px); } }
 @media (prefers-reduced-motion: reduce){ .scroll-cue span{ animation: none; opacity: 0.6; } }
+/* On short viewports the hero's content can run tall enough that this
+   overlaps the hero buttons; it's purely decorative, so just hide it. */
+@media (max-height: 720px){ .scroll-cue{ display: none; } }
 
 /* ============ ABOUT ============ */
 .about-grid{ display: grid; grid-template-columns: 260px 1fr; gap: var(--space-2xl); }
@@ -323,10 +326,10 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .skill-mini:hover{ border-color: var(--accent-dim); transform: translateY(-2px); }
 .skill-mini:hover::before{ transform: scaleX(1); }
 .skill-mini h4{
-  font-family: var(--font-head); font-weight: 700; font-size: 14.5px; color: var(--text);
+  font-family: var(--font-head); font-weight: 700; font-size: 17px; color: var(--text);
   margin: 0 0 8px; letter-spacing: 0.01em;
 }
-.skill-mini p{ font-size: 13.5px; line-height: 1.6; color: var(--text-faint); margin: 0; }
+.skill-mini p{ font-size: 14.5px; line-height: 1.6; color: var(--text-faint); margin: 0; }
 
 /* ============ PROJECTS ============ */
 .projects-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
@@ -399,10 +402,11 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
   filter: blur(50px);
 }
 
-/* The jet image itself: a light blur (motion-blur feel, keeps the structure
-   readable) plus a radial mask so the image's own hard rectangular edge
-   fades to transparent well before it's reached — no visible photo outline
-   at any blur amount. */
+/* The jet image itself: the source photo is already near-black everywhere
+   except the glowing jet streak, so "screen" blending drops its black
+   background straight into the page background with no edge at all —
+   what's left is just the glow, not a cropped photo. The mask is only
+   there to taper the far tail softly rather than end abruptly. */
 .goals-bg-img{
   position: absolute; inset: -60px;
   background-image: url('../assets/images/goals-bg-jet.jpg');
@@ -410,8 +414,9 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
   background-size: 46% auto;
   background-position: 96% 42%;
   filter: blur(6px) saturate(1.15) brightness(1.05);
-  -webkit-mask-image: radial-gradient(ellipse 58% 60% at 96% 42%, black 30%, transparent 76%);
-  mask-image: radial-gradient(ellipse 58% 60% at 96% 42%, black 30%, transparent 76%);
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse 68% 70% at 96% 42%, black 45%, transparent 92%);
+  mask-image: radial-gradient(ellipse 68% 70% at 96% 42%, black 45%, transparent 92%);
 }
 
 .goals-bg-overlay{
@@ -429,8 +434,8 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
   .goals-bg-img{
     background-size: 130% auto;
     background-position: 82% 22%;
-    -webkit-mask-image: radial-gradient(ellipse 65% 55% at 82% 22%, black 25%, transparent 72%);
-    mask-image: radial-gradient(ellipse 65% 55% at 82% 22%, black 25%, transparent 72%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 82% 22%, black 40%, transparent 88%);
+    mask-image: radial-gradient(ellipse 75% 65% at 82% 22%, black 40%, transparent 88%);
   }
   .goals-bg-overlay{
     background:
@@ -551,7 +556,7 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   border: 1px solid var(--accent-dim); padding: 5px 12px; border-radius: 999px; margin-bottom: var(--space-md);
 }
 .story-copy{ display: flex; flex-direction: column; }
-.story-copy p{ color: var(--text-dim); font-size: 15.5px; line-height: 1.65; margin-bottom: var(--space-md); }
+.story-copy p{ color: var(--text-dim); font-size: 16.5px; line-height: 1.65; margin-bottom: var(--space-md); }
 .story-copy p:last-child{ margin-bottom: 0; }
 .story-copy strong{ color: var(--accent-soft); font-weight: 600; }
 .story-copy--wide{ max-width: 820px; }
@@ -615,6 +620,16 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .collage-item.wide img{ aspect-ratio: 16 / 8; }
 .collage-item.tall img{ aspect-ratio: 3 / 4; }
 .collage-item.square img{ aspect-ratio: 1 / 1; }
+
+/* Grid variant: a clean, even mosaic of square photos with no rotation,
+   offset, or overlap — used where a plain interlocking collage read as
+   messy. Hover still "pops" the tile via the shared .collage-item rule. */
+.story-collage--grid{
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-sm);
+}
+.story-collage--grid .collage-item{ margin: 0; }
+@media (max-width: 700px){ .story-collage--grid{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px){ .story-collage--grid{ grid-template-columns: 1fr; } }
 @media (max-width: 640px){
   .collage-item{ --rot: 0deg !important; margin: 10px 6px !important; flex-basis: 44% !important; z-index: 1 !important; }
   .collage-item.wide{ flex-basis: 100% !important; }
