@@ -268,10 +268,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .about-grid{ display: grid; grid-template-columns: 260px 1fr; gap: var(--space-2xl); }
 @media (max-width: 860px){ .about-grid{ grid-template-columns: 1fr; gap: var(--space-lg); } }
 
-.about-photo-wrap{ position: sticky; top: calc(var(--header-h) + 24px); align-self: start; }
-@media (max-width: 860px){
-  .about-photo-wrap{ position: static; top: auto; }
-}
+.about-photo-wrap{ align-self: start; }
 .about-photo-frame{
   position: relative; border-radius: var(--radius); overflow: hidden;
   border: 1px solid var(--border); aspect-ratio: 4 / 5; background: var(--surface);
