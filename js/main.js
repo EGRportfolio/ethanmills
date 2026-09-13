@@ -179,15 +179,6 @@
     if (e.key === 'Escape' && lightbox && lightbox.classList.contains('is-open')) closeLightbox();
   });
 
-  /* ---------- Scroll cue ---------- */
-  var scrollCue = document.getElementById('scrollCue');
-  if (scrollCue) {
-    scrollCue.addEventListener('click', function () {
-      var about = document.getElementById('about');
-      if (about) about.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    });
-  }
-
   /* ---------- Magnetic buttons (subtle, desktop only, reactive to cursor) ---------- */
   if (!prefersReducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     document.querySelectorAll('.btn').forEach(function (btn) {
@@ -219,7 +210,7 @@
   if (!ctx) return;
   const CONFIG = {
     COLOR: '79,195,255',   // site accent blue (--accent-rgb)
-    RADIUS: 18,            // Cursor obstacle radius in CSS pixels — tight, close-in deflection
+    RADIUS: 9,             // Cursor obstacle radius in CSS pixels — tight, close-in deflection
     SPEED: 150,            // Undisturbed flow speed, pixels/second
     SPACING: 18,           // Vertical streamline spacing (denser than before)
     LINE_ALPHA: 0.13,
@@ -263,7 +254,7 @@
     listeners.push(() => target.removeEventListener(event, fn));
   }
   function boundaryEl() {
-    return document.getElementById('projects') || document.querySelector('.project-meta-row');
+    return document.querySelector('.hero-actions') || document.querySelector('.project-meta-row');
   }
   function resize() {
     w = innerWidth;
@@ -295,7 +286,22 @@
       const psi = mid * (1 - a * a / Math.max(dx * dx + mid * mid, 0.001));
       if (psi < target) lo = mid; else hi = mid;
     }
-    return cursor.y + sign * (lo + hi) / 2;
+    return cursor.y + sign * (lo + hi) / 2 + wake(dx, b, a);
+  }
+  // A trailing wake behind the obstacle: rows near the cursor's height
+  // ripple as they pass it, and neighboring rows above/below feel a
+  // weaker version of the same ripple (a continuous falloff, not a
+  // hard cutoff). It decays with downstream distance too, so it reads
+  // as losing energy rather than oscillating forever like real wake
+  // turbulence settling back into uniform flow.
+  function wake(dx, vertDist, a) {
+    if (dx <= a) return 0;
+    const downstream = dx - a;
+    const vertFalloff = Math.exp(-(vertDist * vertDist) / (2 * (a * 3.5) * (a * 3.5)));
+    const decay = Math.exp(-downstream / (a * 5));
+    if (decay < 0.02) return 0;
+    const wavelength = a * 3.2;
+    return a * 0.55 * decay * vertFalloff * Math.sin((downstream / wavelength) * Math.PI);
   }
   function speedAt(x, y, a) {
     if (a < 0.1) return CONFIG.SPEED;
@@ -324,11 +330,14 @@
 
     for (const row of rows) {
       const points = [];
-      // Extra resolution near the obstacle preserves clean curvature
-      // and gives the speed-mapped segments below room to render.
+      // Extra resolution near the obstacle preserves clean curvature,
+      // and stays fine enough through the trailing wake for its ripple
+      // to render smoothly rather than looking jagged.
       for (let x = -80; x <= w + 84;) {
         points.push({ x, y: ordinate(x, row.y, a) });
-        x += a > 0.1 && Math.abs(x - cursor.x) < a * 4 ? 3 : 12;
+        const nearObstacle = Math.abs(x - cursor.x) < a * 4;
+        const inWake = x > cursor.x && x < cursor.x + a * 20;
+        x += a > 0.1 && (nearObstacle || inWake) ? 3 : 12;
       }
 
       // Static speed cue instead of moving marks: each segment's
@@ -406,7 +415,7 @@
   function tick(now) {
     const dt = previous ? Math.min((now - previous) / 1000, 0.035) : 0;
     previous = now;
-    const blend = 1 - Math.exp(-14 * dt);
+    const blend = 1 - Math.exp(-26 * dt);
     cursor.x += (cursor.tx - cursor.x) * blend;
     cursor.y += (cursor.ty - cursor.y) * blend;
     cursor.strength += ((cursor.active ? 1 : 0) - cursor.strength) * blend;

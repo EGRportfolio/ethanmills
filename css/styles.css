@@ -263,18 +263,6 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .hero-lede{ font-size: 18px; color: var(--text-dim); max-width: 540px; margin-bottom: var(--space-lg); }
 .hero-actions{ display: flex; gap: var(--space-sm); flex-wrap: wrap; }
 
-.scroll-cue{
-  position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%);
-  z-index: 1; width: 30px; height: 46px; border: 1.5px solid var(--border);
-  border-radius: 999px; display: flex; justify-content: center; padding-top: 8px;
-}
-.scroll-cue span{ width: 4px; height: 8px; border-radius: 2px; background: var(--accent); animation: scrollcue 1.8s ease-in-out infinite; }
-@keyframes scrollcue{ 0%{ opacity: 0; transform: translateY(0);} 30%{ opacity:1; } 100%{ opacity: 0; transform: translateY(14px); } }
-@media (prefers-reduced-motion: reduce){ .scroll-cue span{ animation: none; opacity: 0.6; } }
-/* On short viewports the hero's content can run tall enough that this
-   overlaps the hero buttons; it's purely decorative, so just hide it. */
-@media (max-height: 720px){ .scroll-cue{ display: none; } }
-
 /* ============ ABOUT ============ */
 .about-grid{ display: grid; grid-template-columns: 260px 1fr; gap: var(--space-2xl); }
 @media (max-width: 860px){ .about-grid{ grid-template-columns: 1fr; gap: var(--space-lg); } }
