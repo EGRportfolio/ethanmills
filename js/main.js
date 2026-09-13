@@ -223,7 +223,6 @@
     SPEED: 150,            // Undisturbed flow speed, pixels/second
     SPACING: 18,           // Vertical streamline spacing (denser than before)
     LINE_ALPHA: 0.13,
-    HIGHLIGHT_ALPHA: 0.45, // traveling dot brightness
     HILITE_WIDTH: 90,      // px window (around cursor.x) that gets the jet-color highlight — small
     HILITE_ALPHA: 0.55,
     SIDE_FADE: 140,        // px — pronounced fade at the left/right edges
@@ -257,11 +256,8 @@
     canvas.style.height = h + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     rows = [];
-    for (let y = CONFIG.SPACING / 2; y < h; y += CONFIG.SPACING) {
-      const phase = ((rows.length * 0.61803398875) % 1) * 180;
-      rows.push({ y, markers: Array.from({length: Math.ceil(w / 180) + 3}, (_, i) => i * 180 + phase) });
-    }
-    if (reduced.matches) render(0);
+    for (let y = CONFIG.SPACING / 2; y < h; y += CONFIG.SPACING) rows.push({ y });
+    render();
   }
   // Streamfunction for uniform flow around a cylinder:
   // psi/U = y * (1 - a^2 / (x^2 + y^2)).
@@ -289,7 +285,7 @@
     const v = -2 * a * a * dx * dy / (r2 * r2);
     return CONFIG.SPEED * Math.hypot(u, v);
   }
-  function render(dt) {
+  function render() {
     ctx.clearRect(0, 0, w, h);
     const a = reduced.matches ? 0 : CONFIG.RADIUS * cursor.strength;
     const hiliteOn = a > 0.1 && cursor.strength > 0.05;
@@ -307,20 +303,45 @@
 
     for (const row of rows) {
       const points = [];
-      let distance = 0;
-      // Extra resolution near the obstacle preserves clean curvature.
+      // Extra resolution near the obstacle preserves clean curvature
+      // and gives the speed-mapped segments below room to render.
       for (let x = -80; x <= w + 84;) {
-        const y = ordinate(x, row.y, a);
-        const last = points[points.length - 1];
-        if (last) distance += Math.hypot(x - last.x, y - last.y);
-        points.push({ x, y, distance });
+        points.push({ x, y: ordinate(x, row.y, a) });
         x += a > 0.1 && Math.abs(x - cursor.x) < a * 4 ? 3 : 12;
       }
-      ctx.beginPath();
-      points.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
-      ctx.strokeStyle = rgba(CONFIG.LINE_ALPHA);
-      ctx.lineWidth = 0.8;
-      ctx.stroke();
+
+      // Static speed cue instead of moving marks: each segment's
+      // thickness and brightness track the local flow speed, so the
+      // line itself reads thicker/brighter accelerating past the
+      // cursor's sides and thinner/dimmer at the stagnation points
+      // front and back — no animation needed to show it.
+      let runStart = 0;
+      const flushRun = end => {
+        if (end <= runStart) return;
+        ctx.beginPath();
+        ctx.moveTo(points[runStart].x, points[runStart].y);
+        for (let k = runStart + 1; k <= end; k++) ctx.lineTo(points[k].x, points[k].y);
+        ctx.strokeStyle = rgba(CONFIG.LINE_ALPHA);
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      };
+      for (let i = 1; i < points.length; i++) {
+        const p0 = points[i - 1], p1 = points[i];
+        const midX = (p0.x + p1.x) / 2, midY = (p0.y + p1.y) / 2;
+        if (a > 0.1 && Math.abs(midX - cursor.x) < a * 4) {
+          flushRun(i - 1);
+          const ratio = speedAt(midX, midY, a) / CONFIG.SPEED;
+          const clamped = Math.min(2.3, Math.max(0.35, ratio));
+          ctx.beginPath();
+          ctx.moveTo(p0.x, p0.y);
+          ctx.lineTo(p1.x, p1.y);
+          ctx.strokeStyle = rgba(Math.min(0.32, CONFIG.LINE_ALPHA * clamped));
+          ctx.lineWidth = 0.8 * clamped;
+          ctx.stroke();
+          runStart = i;
+        }
+      }
+      flushRun(points.length - 1);
 
       // Only the streamline immediately above and the one immediately
       // below the cursor shift into the skill-card trim colors, in a
@@ -342,28 +363,6 @@
           ctx.lineWidth = 1;
           ctx.stroke();
         }
-      }
-
-      // Highlights advect along each curve; local speed rises at the
-      // sides and falls near the front/rear stagnation regions.
-      for (let i = 0; i < row.markers.length; i++) {
-        let arc = row.markers[i] % distance;
-        let low = 1, high = points.length - 1;
-        while (low < high) {
-          const mid = (low + high) >> 1;
-          if (points[mid].distance < arc) low = mid + 1; else high = mid;
-        }
-        const p = points[low - 1], q = points[low];
-        const t = (arc - p.distance) / (q.distance - p.distance);
-        const x = p.x + (q.x - p.x) * t, y = p.y + (q.y - p.y) * t;
-        row.markers[i] = (arc + speedAt(x, y, a) * dt) % distance;
-        const norm = Math.hypot(q.x - p.x, q.y - p.y);
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + (q.x - p.x) / norm * 8, y + (q.y - p.y) / norm * 8);
-        ctx.strokeStyle = rgba(CONFIG.HIGHLIGHT_ALPHA);
-        ctx.lineWidth = 1.15;
-        ctx.stroke();
       }
     }
 
@@ -388,12 +387,12 @@
     cursor.x += (cursor.tx - cursor.x) * blend;
     cursor.y += (cursor.ty - cursor.y) * blend;
     cursor.strength += ((cursor.active ? 1 : 0) - cursor.strength) * blend;
-    render(dt);
+    render();
     frame = requestAnimationFrame(tick);
   }
   function restart() {
     cancelAnimationFrame(frame); previous = 0;
-    if (reduced.matches) render(0);
+    if (reduced.matches) render();
     else frame = requestAnimationFrame(tick);
   }
   listen(window, 'pointermove', e => {
