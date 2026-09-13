@@ -124,6 +124,14 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
 }
 
+/* Aero flow background — cursor-reactive streamline field, fixed behind
+   all page content (sits at the same layer as .bg-grid above). See
+   js/main.js for the potential-flow simulation that draws into it. */
+#aero-flow-background{
+  position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0;
+  pointer-events: none; background: transparent;
+}
+
 /* ============ LAYOUT ============ */
 .section{ position: relative; z-index: 1; padding: var(--space-2xl) var(--space-md); }
 .section--alt{ background: linear-gradient(180deg, transparent, var(--bg-alt) 12%, var(--bg-alt) 88%, transparent); }
@@ -228,7 +236,6 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   position: absolute; inset: 0; z-index: 0;
   background: radial-gradient(ellipse 70% 60% at 78% 45%, #0d1420 0%, var(--bg) 62%);
 }
-.hero-flow canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
 .hero-flow-overlay{
   position: absolute; inset: 0;
   background: linear-gradient(100deg, var(--bg) 0%, rgba(10,13,18,0.85) 30%, rgba(10,13,18,0.25) 55%, transparent 78%);

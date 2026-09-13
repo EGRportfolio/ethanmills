@@ -1,6 +1,6 @@
 /* ===================================================================
    Ethan Mills — Engineering Portfolio
-   Nav, scroll-spy, reveal, tabs, lightbox, magnetic buttons, flow-field canvas
+   Nav, scroll-spy, reveal, tabs, lightbox, magnetic buttons, aero flow background
 =================================================================== */
 (function () {
   'use strict';
@@ -201,237 +201,172 @@
     });
   }
 
-  /* ---------- Flow-field canvas (hero background) ---------- */
-  var canvas = document.getElementById('flowCanvas');
-  if (canvas && canvas.getContext) {
-    initFlowField(canvas);
+})();
+
+/* ===================================================================
+   Aero flow background — a site-wide streamline field (potential flow
+   around a circular "cursor obstacle"), replacing the old hero-only
+   airfoil/particle canvas. Fixed behind all page content; the cursor
+   acts as the obstacle, so the flow splits and accelerates around it.
+=================================================================== */
+(() => {
+  'use strict';
+  window.destroyAeroFlow?.();
+  const canvas = document.getElementById('aero-flow-background');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const CONFIG = {
+    COLOR: '79,195,255',  // site accent blue (--accent-rgb)
+    RADIUS: 32,           // Cursor obstacle radius in CSS pixels
+    SPEED: 95,            // Undisturbed flow speed, pixels/second
+    SPACING: 30,          // Vertical streamline spacing
+    WAKE_LENGTH: 330,
+    LINE_ALPHA: 0.13,
+    HIGHLIGHT_ALPHA: 0.45
+  };
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const fine = matchMedia('(pointer: fine)');
+  const listeners = [];
+  let w = 0, h = 0, rows = [], frame = 0, previous = 0;
+  const cursor = { x: 0, y: 0, tx: 0, ty: 0, active: false, strength: 0 };
+  const rgba = a => `rgba(${CONFIG.COLOR},${a})`;
+  function listen(target, event, fn) {
+    target.addEventListener(event, fn);
+    listeners.push(() => target.removeEventListener(event, fn));
   }
-
-  function initFlowField(canvas) {
-    var ctx = canvas.getContext('2d');
-    var container = canvas.parentElement;
-    var W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
-    var particles = [];
-    var PARTICLE_COUNT = 0;
-    var mouse = { x: -9999, y: -9999, active: false };
-    var running = false;
-    var rafId = null;
-
-    // Airfoil obstacle — a simple teardrop shape positioned in the flow.
-    var obstacle = { cx: 0, cy: 0, w: 0, h: 0 };
-
-    function resize() {
-      var rect = container.getBoundingClientRect();
-      W = rect.width; H = rect.height;
-      canvas.width = W * DPR;
-      canvas.height = H * DPR;
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-
-      obstacle.w = Math.min(W * 0.34, 420);
-      obstacle.h = obstacle.w * 0.22;
-      obstacle.cx = W * 0.66;
-      obstacle.cy = H * 0.5;
-
-      var area = W * H;
-      PARTICLE_COUNT = Math.max(40, Math.min(160, Math.round(area / 9000)));
-      seedParticles();
+  function resize() {
+    w = innerWidth; h = innerHeight;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    rows = [];
+    const gap = Math.max(CONFIG.SPACING, h / 44);
+    for (let y = gap / 2; y < h; y += gap) {
+      const phase = ((rows.length * 0.61803398875) % 1) * 180;
+      rows.push({ y, markers: Array.from({length: Math.ceil(w / 180) + 3}, (_, i) => i * 180 + phase) });
     }
-
-    function inAirfoil(x, y) {
-      // approximate teardrop: wide rounded front, tapered tail
-      var dx = (x - obstacle.cx) / (obstacle.w / 2);
-      var dy = (y - obstacle.cy) / (obstacle.h / 2);
-      if (dx < -1 || dx > 1) return false;
-      var t = (dx + 1) / 2; // 0..1 front to back
-      var thickness = Math.sin(Math.PI * Math.pow(t, 0.6)) * (1 - t * 0.15);
-      return Math.abs(dy) < thickness;
+    if (reduced.matches) render(0);
+  }
+  // Streamfunction for uniform flow around a cylinder:
+  // psi/U = y * (1 - a^2 / (x^2 + y^2)).
+  // Solve for the exterior branch; no swirls or procedural noise.
+  function ordinate(x, baseline, a) {
+    if (a < 0.1) return baseline;
+    const dx = x - cursor.x;
+    const b = baseline - cursor.y;
+    const sign = b < 0 ? -1 : 1;
+    const target = Math.max(Math.abs(b), 0.04);
+    let lo = Math.sqrt(Math.max(0, a * a - dx * dx));
+    let hi = target + a + 1;
+    for (let i = 0; i < 15; i++) {
+      const mid = (lo + hi) / 2;
+      const psi = mid * (1 - a * a / Math.max(dx * dx + mid * mid, 0.001));
+      if (psi < target) lo = mid; else hi = mid;
     }
-
-    function seedParticles() {
-      particles = [];
-      for (var i = 0; i < PARTICLE_COUNT; i++) {
-        particles.push(makeParticle(Math.random() * W));
+    return cursor.y + sign * (lo + hi) / 2;
+  }
+  function speedAt(x, y, a) {
+    if (a < 0.1) return CONFIG.SPEED;
+    const dx = x - cursor.x, dy = y - cursor.y;
+    const r2 = Math.max(dx * dx + dy * dy, a * a, 0.001);
+    const u = 1 - a * a * (dx * dx - dy * dy) / (r2 * r2);
+    const v = -2 * a * a * dx * dy / (r2 * r2);
+    return CONFIG.SPEED * Math.hypot(u, v);
+  }
+  function wake(a) {
+    if (a < 0.1) return;
+    // An elongated Gaussian wake, exclusively downstream (right).
+    // No cursor halo and no glow extending upstream.
+    const start = cursor.x + a;
+    const length = CONFIG.WAKE_LENGTH;
+    for (let s = 0; s < length; s += 4) {
+      const fade = Math.sin(Math.PI * s / length) * Math.exp(-s / length * 2);
+      const halfWidth = a * 0.7 + s * 0.09;
+      const g = ctx.createLinearGradient(0, cursor.y - halfWidth, 0, cursor.y + halfWidth);
+      g.addColorStop(0, rgba(0));
+      g.addColorStop(0.5, rgba(0.14 * fade * cursor.strength));
+      g.addColorStop(1, rgba(0));
+      ctx.fillStyle = g;
+      ctx.fillRect(start + s, cursor.y - halfWidth, 4, halfWidth * 2);
+    }
+  }
+  function render(dt) {
+    ctx.clearRect(0, 0, w, h);
+    const a = reduced.matches ? 0 : CONFIG.RADIUS * cursor.strength;
+    wake(a);
+    for (const row of rows) {
+      const points = [];
+      let distance = 0;
+      // Extra resolution near the obstacle preserves clean curvature.
+      for (let x = -80; x <= w + 84;) {
+        const y = ordinate(x, row.y, a);
+        const last = points[points.length - 1];
+        if (last) distance += Math.hypot(x - last.x, y - last.y);
+        points.push({x, y, distance});
+        x += a > 0.1 && Math.abs(x - cursor.x) < a * 4 ? 3 : 12;
       }
-    }
-
-    function makeParticle(xStart) {
-      var y;
-      var tries = 0;
-      do {
-        y = Math.random() * H;
-        tries++;
-      } while (inAirfoil(xStart, y) && tries < 6);
-      return {
-        x: xStart,
-        y: y,
-        baseY: y,
-        speed: 0.55 + Math.random() * 0.9,
-        life: Math.random() * 200,
-        trail: []
-      };
-    }
-
-    function fieldAt(x, y) {
-      // Base rightward flow, deflected around the obstacle (simple potential-flow-ish push).
-      var vx = 1, vy = 0;
-      var dx = x - obstacle.cx;
-      var dy = y - obstacle.cy;
-      var halfW = obstacle.w / 2 + 26;
-      var halfH = obstacle.h / 2 + 26;
-      var nx = dx / halfW;
-      var ny = dy / halfH;
-      var dist2 = nx * nx + ny * ny;
-      if (dist2 < 2.4) {
-        var influence = Math.max(0, 1 - dist2 / 2.4);
-        var dirY = ny === 0 ? (Math.random() < 0.5 ? -1 : 1) : Math.sign(ny);
-        vy += dirY * influence * 1.9;
-        vx += influence * 0.35; // slight acceleration over the top/bottom, CFD-style speedup
-      }
-      // Mouse repulsion for a reactive feel.
-      if (mouse.active) {
-        var mdx = x - mouse.x, mdy = y - mouse.y;
-        var mdist2 = mdx * mdx + mdy * mdy;
-        var radius = 140;
-        if (mdist2 < radius * radius) {
-          var f = (1 - mdist2 / (radius * radius)) * 1.4;
-          var mdist = Math.sqrt(mdist2) || 1;
-          vx += (mdx / mdist) * f;
-          vy += (mdy / mdist) * f;
-        }
-      }
-      return { vx: vx, vy: vy };
-    }
-
-    function speedColor(sp) {
-      // Jet gradient: blue (slow) -> red (mid) -> amber (fast) — the same
-      // blue/red/amber progression as the Goals section's flow-viz graphic.
-      var t = Math.max(0, Math.min(1, (sp - 0.8) / 1.6));
-      var stops = t < 0.5
-        ? { a: [79, 195, 255], b: [255, 77, 109], u: t / 0.5 }
-        : { a: [255, 77, 109], b: [255, 179, 71], u: (t - 0.5) / 0.5 };
-      var r = Math.round(stops.a[0] + stops.u * (stops.b[0] - stops.a[0]));
-      var g = Math.round(stops.a[1] + stops.u * (stops.b[1] - stops.a[1]));
-      var b = Math.round(stops.a[2] + stops.u * (stops.b[2] - stops.a[2]));
-      return 'rgba(' + r + ',' + g + ',' + b + ',';
-    }
-
-    function step() {
-      ctx.clearRect(0, 0, W, H);
-
-      // faint obstacle silhouette
-      ctx.save();
       ctx.beginPath();
-      var steps = 40;
-      for (var s = 0; s <= steps; s++) {
-        var t = s / steps;
-        var px = obstacle.cx - obstacle.w / 2 + t * obstacle.w;
-        var thickness = Math.sin(Math.PI * Math.pow(t, 0.6)) * (1 - t * 0.15) * (obstacle.h / 2);
-        if (s === 0) ctx.moveTo(px, obstacle.cy - thickness); else ctx.lineTo(px, obstacle.cy - thickness);
-      }
-      for (var s2 = steps; s2 >= 0; s2--) {
-        var t2 = s2 / steps;
-        var px2 = obstacle.cx - obstacle.w / 2 + t2 * obstacle.w;
-        var thickness2 = Math.sin(Math.PI * Math.pow(t2, 0.6)) * (1 - t2 * 0.15) * (obstacle.h / 2);
-        ctx.lineTo(px2, obstacle.cy + thickness2);
-      }
-      ctx.closePath();
-      ctx.fillStyle = 'rgba(255,138,76,0.07)';
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(255,138,76,0.35)';
-      ctx.lineWidth = 1;
+      points.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
+      ctx.strokeStyle = rgba(CONFIG.LINE_ALPHA);
+      ctx.lineWidth = 0.8;
       ctx.stroke();
-      ctx.restore();
-
-      for (var i = 0; i < particles.length; i++) {
-        var p = particles[i];
-        var f = fieldAt(p.x, p.y);
-        var sp = Math.hypot(f.vx, f.vy);
-        p.x += f.vx * p.speed;
-        p.y += f.vy * p.speed;
-        p.life++;
-
-        p.trail.push({ x: p.x, y: p.y });
-        if (p.trail.length > 16) p.trail.shift();
-
-        if (p.x > W + 20 || p.life > 900 || p.y < -40 || p.y > H + 40) {
-          var np = makeParticle(-20 - Math.random() * 60);
-          particles[i] = np;
-          continue;
+      if (reduced.matches) continue;
+      // Highlights advect along each curve; local speed rises at the sides
+      // and falls near the front/rear stagnation regions.
+      for (let i = 0; i < row.markers.length; i++) {
+        let arc = row.markers[i] % distance;
+        let low = 1, high = points.length - 1;
+        while (low < high) {
+          const mid = (low + high) >> 1;
+          if (points[mid].distance < arc) low = mid + 1; else high = mid;
         }
-
-        // draw trail
-        var col = speedColor(sp);
-        for (var j = 1; j < p.trail.length; j++) {
-          var a = (j / p.trail.length) * 0.5;
-          ctx.beginPath();
-          ctx.moveTo(p.trail[j - 1].x, p.trail[j - 1].y);
-          ctx.lineTo(p.trail[j].x, p.trail[j].y);
-          ctx.strokeStyle = col + a.toFixed(2) + ')';
-          ctx.lineWidth = 1.2;
-          ctx.stroke();
-        }
+        const p = points[low - 1], q = points[low];
+        const t = (arc - p.distance) / (q.distance - p.distance);
+        const x = p.x + (q.x - p.x) * t, y = p.y + (q.y - p.y) * t;
+        row.markers[i] = (arc + speedAt(x, y, a) * dt) % distance;
+        const norm = Math.hypot(q.x - p.x, q.y - p.y);
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.4, 0, Math.PI * 2);
-        ctx.fillStyle = col + '0.9)';
-        ctx.fill();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + (q.x - p.x) / norm * 8, y + (q.y - p.y) / norm * 8);
+        ctx.strokeStyle = rgba(CONFIG.HIGHLIGHT_ALPHA);
+        ctx.lineWidth = 1.15;
+        ctx.stroke();
       }
-
-      rafId = requestAnimationFrame(step);
-    }
-
-    function start() {
-      if (running) return;
-      running = true;
-      rafId = requestAnimationFrame(step);
-    }
-    function stop() {
-      running = false;
-      if (rafId) cancelAnimationFrame(rafId);
-    }
-
-    resize();
-    window.addEventListener('resize', debounce(resize, 150));
-
-    container.addEventListener('mousemove', function (e) {
-      var r = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - r.left;
-      mouse.y = e.clientY - r.top;
-      mouse.active = true;
-    });
-    container.addEventListener('mouseleave', function () { mouse.active = false; });
-
-    if (prefersReducedMotion) {
-      // Render a single static frame — no continuous animation.
-      step();
-      stop();
-    } else {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) start(); else stop();
-        });
-      }, { threshold: 0.05 });
-      io.observe(canvas);
-
-      document.addEventListener('visibilitychange', function () {
-        if (document.hidden) stop(); else if (isInViewport(canvas)) start();
-      });
     }
   }
-
-  function isInViewport(el) {
-    var r = el.getBoundingClientRect();
-    return r.bottom > 0 && r.top < window.innerHeight;
+  function tick(now) {
+    const dt = previous ? Math.min((now - previous) / 1000, 0.035) : 0;
+    previous = now;
+    const blend = 1 - Math.exp(-14 * dt);
+    cursor.x += (cursor.tx - cursor.x) * blend;
+    cursor.y += (cursor.ty - cursor.y) * blend;
+    cursor.strength += ((cursor.active ? 1 : 0) - cursor.strength) * blend;
+    render(dt);
+    frame = requestAnimationFrame(tick);
   }
-
-  function debounce(fn, wait) {
-    var t;
-    return function () {
-      clearTimeout(t);
-      var args = arguments, ctx = this;
-      t = setTimeout(function () { fn.apply(ctx, args); }, wait);
-    };
+  function restart() {
+    cancelAnimationFrame(frame); previous = 0;
+    if (document.hidden) return;
+    if (reduced.matches) render(0);
+    else frame = requestAnimationFrame(tick);
   }
-
+  listen(window, 'pointermove', e => {
+    if (!fine.matches || e.pointerType === 'touch') return;
+    if (!cursor.active) { cursor.x = e.clientX; cursor.y = e.clientY; }
+    cursor.tx = e.clientX; cursor.ty = e.clientY; cursor.active = true;
+  });
+  listen(document.documentElement, 'pointerleave', () => { cursor.active = false; });
+  listen(window, 'blur', () => { cursor.active = false; });
+  listen(window, 'resize', resize);
+  listen(document, 'visibilitychange', restart);
+  listen(reduced, 'change', restart);
+  window.destroyAeroFlow = () => {
+    cancelAnimationFrame(frame);
+    listeners.forEach(remove => remove());
+    ctx.clearRect(0, 0, w, h);
+    delete window.destroyAeroFlow;
+  };
+  resize(); restart();
 })();
