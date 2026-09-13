@@ -204,10 +204,11 @@
 })();
 
 /* ===================================================================
-   Aero flow background — a site-wide streamline field (potential flow
-   around a circular "cursor obstacle"), replacing the old hero-only
-   airfoil/particle canvas. Fixed behind all page content; the cursor
-   acts as the obstacle, so the flow splits and accelerates around it.
+   Aero flow background — a streamline field (potential flow around a
+   circular "cursor obstacle") spanning from the top of the page down
+   to a per-page boundary element, so it scrolls away with the page
+   instead of persisting behind every section. The cursor acts as the
+   obstacle: the flow splits and accelerates around it, left to right.
 =================================================================== */
 (() => {
   'use strict';
@@ -217,14 +218,21 @@
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const CONFIG = {
-    COLOR: '79,195,255',  // site accent blue (--accent-rgb)
-    RADIUS: 32,           // Cursor obstacle radius in CSS pixels
-    SPEED: 95,            // Undisturbed flow speed, pixels/second
-    SPACING: 30,          // Vertical streamline spacing
-    WAKE_LENGTH: 330,
+    COLOR: '79,195,255',   // site accent blue (--accent-rgb)
+    RADIUS: 32,            // Cursor obstacle radius in CSS pixels
+    SPEED: 150,            // Undisturbed flow speed, pixels/second
+    SPACING: 18,           // Vertical streamline spacing (denser than before)
     LINE_ALPHA: 0.13,
-    HIGHLIGHT_ALPHA: 0.45
+    HILITE_WIDTH: 170,     // px window (around cursor.x) that gets the jet-color highlight
+    HILITE_RANGE: 230,     // px (above + below cursor.y) of rows eligible for the highlight
+    HILITE_ALPHA: 0.55,
+    SIDE_FADE: 140,        // px — pronounced fade at the left/right edges
+    BOTTOM_FADE: 340,      // px — more gradual fade at the bottom
+    BOTTOM_FADE_MAX: 0.55  // less pronounced than the side fade (never fully erases)
   };
+  // Same muted blue -> red -> amber trim used on the skill-card top bar
+  // (--jet-blue / --jet-red / --jet-amber), at the same 0% / 52% / 100% stops.
+  const JET = { blue: '123,181,211', red: '211,122,138', amber: '209,171,117' };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const fine = matchMedia('(pointer: fine)');
   const listeners = [];
@@ -235,19 +243,22 @@
     target.addEventListener(event, fn);
     listeners.push(() => target.removeEventListener(event, fn));
   }
+  function boundaryEl() {
+    return document.getElementById('projects') || document.querySelector('.project-meta-row');
+  }
   function resize() {
-    w = innerWidth; h = innerHeight;
+    w = innerWidth;
+    const el = boundaryEl();
+    const rect = el ? el.getBoundingClientRect() : null;
+    h = rect ? Math.max(200, Math.round(rect.bottom + window.scrollY)) : innerHeight;
     const dpr = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
+    canvas.style.height = h + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     rows = [];
-    const gap = Math.max(CONFIG.SPACING, h / 44);
-    for (let y = gap / 2; y < h; y += gap) {
-      const phase = ((rows.length * 0.61803398875) % 1) * 180;
-      rows.push({ y, markers: Array.from({length: Math.ceil(w / 180) + 3}, (_, i) => i * 180 + phase) });
-    }
-    if (reduced.matches) render(0);
+    for (let y = CONFIG.SPACING / 2; y < h; y += CONFIG.SPACING) rows.push({ y });
+    if (reduced.matches) render();
   }
   // Streamfunction for uniform flow around a cylinder:
   // psi/U = y * (1 - a^2 / (x^2 + y^2)).
@@ -267,44 +278,16 @@
     }
     return cursor.y + sign * (lo + hi) / 2;
   }
-  function speedAt(x, y, a) {
-    if (a < 0.1) return CONFIG.SPEED;
-    const dx = x - cursor.x, dy = y - cursor.y;
-    const r2 = Math.max(dx * dx + dy * dy, a * a, 0.001);
-    const u = 1 - a * a * (dx * dx - dy * dy) / (r2 * r2);
-    const v = -2 * a * a * dx * dy / (r2 * r2);
-    return CONFIG.SPEED * Math.hypot(u, v);
-  }
-  function wake(a) {
-    if (a < 0.1) return;
-    // An elongated Gaussian wake, exclusively downstream (right).
-    // No cursor halo and no glow extending upstream.
-    const start = cursor.x + a;
-    const length = CONFIG.WAKE_LENGTH;
-    for (let s = 0; s < length; s += 4) {
-      const fade = Math.sin(Math.PI * s / length) * Math.exp(-s / length * 2);
-      const halfWidth = a * 0.7 + s * 0.09;
-      const g = ctx.createLinearGradient(0, cursor.y - halfWidth, 0, cursor.y + halfWidth);
-      g.addColorStop(0, rgba(0));
-      g.addColorStop(0.5, rgba(0.14 * fade * cursor.strength));
-      g.addColorStop(1, rgba(0));
-      ctx.fillStyle = g;
-      ctx.fillRect(start + s, cursor.y - halfWidth, 4, halfWidth * 2);
-    }
-  }
-  function render(dt) {
+  function render() {
     ctx.clearRect(0, 0, w, h);
     const a = reduced.matches ? 0 : CONFIG.RADIUS * cursor.strength;
-    wake(a);
+    const hiliteOn = a > 0.1 && cursor.strength > 0.05;
+    const halfW = CONFIG.HILITE_WIDTH / 2;
     for (const row of rows) {
       const points = [];
-      let distance = 0;
       // Extra resolution near the obstacle preserves clean curvature.
       for (let x = -80; x <= w + 84;) {
-        const y = ordinate(x, row.y, a);
-        const last = points[points.length - 1];
-        if (last) distance += Math.hypot(x - last.x, y - last.y);
-        points.push({x, y, distance});
+        points.push({ x, y: ordinate(x, row.y, a) });
         x += a > 0.1 && Math.abs(x - cursor.x) < a * 4 ? 3 : 12;
       }
       ctx.beginPath();
@@ -312,29 +295,39 @@
       ctx.strokeStyle = rgba(CONFIG.LINE_ALPHA);
       ctx.lineWidth = 0.8;
       ctx.stroke();
-      if (reduced.matches) continue;
-      // Highlights advect along each curve; local speed rises at the sides
-      // and falls near the front/rear stagnation regions.
-      for (let i = 0; i < row.markers.length; i++) {
-        let arc = row.markers[i] % distance;
-        let low = 1, high = points.length - 1;
-        while (low < high) {
-          const mid = (low + high) >> 1;
-          if (points[mid].distance < arc) low = mid + 1; else high = mid;
+
+      // A short band of each nearby streamline (above and below the
+      // cursor) shifts into the skill-card trim colors as it passes by.
+      if (hiliteOn && Math.abs(row.y - cursor.y) < CONFIG.HILITE_RANGE) {
+        const seg = points.filter(p => p.x > cursor.x - halfW && p.x < cursor.x + halfW);
+        if (seg.length > 1) {
+          const alpha = CONFIG.HILITE_ALPHA * cursor.strength;
+          const g = ctx.createLinearGradient(cursor.x - halfW, 0, cursor.x + halfW, 0);
+          g.addColorStop(0, `rgba(${JET.blue},${alpha})`);
+          g.addColorStop(0.52, `rgba(${JET.red},${alpha})`);
+          g.addColorStop(1, `rgba(${JET.amber},${alpha})`);
+          ctx.beginPath();
+          seg.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
+          ctx.strokeStyle = g;
+          ctx.lineWidth = 1;
+          ctx.stroke();
         }
-        const p = points[low - 1], q = points[low];
-        const t = (arc - p.distance) / (q.distance - p.distance);
-        const x = p.x + (q.x - p.x) * t, y = p.y + (q.y - p.y) * t;
-        row.markers[i] = (arc + speedAt(x, y, a) * dt) % distance;
-        const norm = Math.hypot(q.x - p.x, q.y - p.y);
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + (q.x - p.x) / norm * 8, y + (q.y - p.y) / norm * 8);
-        ctx.strokeStyle = rgba(CONFIG.HIGHLIGHT_ALPHA);
-        ctx.lineWidth = 1.15;
-        ctx.stroke();
       }
     }
+
+    // Edge fades: pronounced at the sides, softer and more gradual at
+    // the bottom (where the field ends rather than being cut off).
+    ctx.globalCompositeOperation = 'destination-out';
+    let g = ctx.createLinearGradient(0, 0, CONFIG.SIDE_FADE, 0);
+    g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, CONFIG.SIDE_FADE, h);
+    g = ctx.createLinearGradient(w, 0, w - CONFIG.SIDE_FADE, 0);
+    g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(w - CONFIG.SIDE_FADE, 0, CONFIG.SIDE_FADE, h);
+    g = ctx.createLinearGradient(0, h, 0, h - CONFIG.BOTTOM_FADE);
+    g.addColorStop(0, `rgba(0,0,0,${CONFIG.BOTTOM_FADE_MAX})`); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, h - CONFIG.BOTTOM_FADE, w, CONFIG.BOTTOM_FADE);
+    ctx.globalCompositeOperation = 'source-over';
   }
   function tick(now) {
     const dt = previous ? Math.min((now - previous) / 1000, 0.035) : 0;
@@ -343,23 +336,24 @@
     cursor.x += (cursor.tx - cursor.x) * blend;
     cursor.y += (cursor.ty - cursor.y) * blend;
     cursor.strength += ((cursor.active ? 1 : 0) - cursor.strength) * blend;
-    render(dt);
+    render();
     frame = requestAnimationFrame(tick);
   }
   function restart() {
     cancelAnimationFrame(frame); previous = 0;
-    if (document.hidden) return;
-    if (reduced.matches) render(0);
+    if (reduced.matches) render();
     else frame = requestAnimationFrame(tick);
   }
   listen(window, 'pointermove', e => {
     if (!fine.matches || e.pointerType === 'touch') return;
-    if (!cursor.active) { cursor.x = e.clientX; cursor.y = e.clientY; }
-    cursor.tx = e.clientX; cursor.ty = e.clientY; cursor.active = true;
+    const x = e.clientX + window.scrollX, y = e.clientY + window.scrollY;
+    if (!cursor.active) { cursor.x = x; cursor.y = y; }
+    cursor.tx = x; cursor.ty = y; cursor.active = true;
   });
   listen(document.documentElement, 'pointerleave', () => { cursor.active = false; });
   listen(window, 'blur', () => { cursor.active = false; });
   listen(window, 'resize', resize);
+  listen(window, 'load', resize);
   listen(document, 'visibilitychange', restart);
   listen(reduced, 'change', restart);
   window.destroyAeroFlow = () => {

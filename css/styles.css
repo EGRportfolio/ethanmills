@@ -124,11 +124,12 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
 }
 
-/* Aero flow background — cursor-reactive streamline field, fixed behind
-   all page content (sits at the same layer as .bg-grid above). See
-   js/main.js for the potential-flow simulation that draws into it. */
+/* Aero flow background — cursor-reactive streamline field, absolutely
+   positioned behind page content from the very top of the document
+   down to a per-page boundary (see js/main.js), so it scrolls away
+   with the page instead of persisting behind every section. */
 #aero-flow-background{
-  position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0;
+  position: absolute; top: 0; left: 0; width: 100%; z-index: 0;
   pointer-events: none; background: transparent;
 }
 
