@@ -623,16 +623,20 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 
 /* Grid variant: a clean, even mosaic of square photos with no rotation,
    offset, or overlap — used where a plain interlocking collage read as
-   messy. Hover still "pops" the tile via the shared .collage-item rule. */
+   messy. Hover still "pops" the tile via the shared .collage-item rule.
+   Flexbox (not CSS grid) so a leftover partial row centers itself
+   automatically instead of hugging the left edge. */
 .story-collage--grid{
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-sm);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-sm);
 }
-.story-collage--grid .collage-item{ margin: 0; }
-@media (max-width: 700px){ .story-collage--grid{ grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 420px){ .story-collage--grid{ grid-template-columns: 1fr; } }
+.story-collage--grid .collage-item{ margin: 0; flex: 0 1 calc(33.333% - 11px); }
+.story-collage--grid.cols-4 .collage-item{ flex-basis: calc(25% - 12px); }
+.story-collage--grid .collage-item.wide{ flex-basis: 100%; }
+@media (max-width: 700px){ .story-collage--grid .collage-item{ flex-basis: calc(50% - 8px); } }
+@media (max-width: 420px){ .story-collage--grid .collage-item{ flex-basis: 100%; } }
 @media (max-width: 640px){
-  .collage-item{ --rot: 0deg !important; margin: 10px 6px !important; flex-basis: 44% !important; z-index: 1 !important; }
-  .collage-item.wide{ flex-basis: 100% !important; }
+  .story-collage:not(.story-collage--grid) .collage-item{ --rot: 0deg !important; margin: 10px 6px !important; flex-basis: 44% !important; z-index: 1 !important; }
+  .story-collage:not(.story-collage--grid) .collage-item.wide{ flex-basis: 100% !important; }
 }
 
 /* ============ FOOTER ============ */
