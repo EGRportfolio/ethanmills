@@ -217,7 +217,7 @@
     HILITE_WIDTH: 90,      // px window (around cursor.x) that gets the jet-color highlight — small
     HILITE_ALPHA: 0.55,
     SIDE_FADE: 140,        // px — pronounced fade at the left/right edges
-    BOTTOM_FADE: 340,      // px — more gradual fade at the bottom
+    BOTTOM_FADE: 480,      // px — more gradual fade at the bottom
     BOTTOM_FADE_MAX: 0.55, // less pronounced than the side fade (never fully erases)
     PIPE_TILE_W: 56,       // px wavelength of one "pulse" of fluid moving through the pipe
     PIPE_TILE_H: 8,
@@ -253,14 +253,28 @@
     target.addEventListener(event, fn);
     listeners.push(() => target.removeEventListener(event, fn));
   }
-  function boundaryEl() {
-    return document.querySelector('.hero-actions') || document.querySelector('.project-meta-row');
+  // On the home page, end partway into the gap after the hero buttons
+  // (midway to the About section) rather than snapping right to the
+  // buttons' bottom edge — gives the fade more room to be gradual.
+  function boundaryY() {
+    const heroActions = document.querySelector('.hero-actions');
+    if (heroActions) {
+      const bottom = heroActions.getBoundingClientRect().bottom + window.scrollY;
+      const about = document.getElementById('about');
+      if (about) {
+        const aboutTop = about.getBoundingClientRect().top + window.scrollY;
+        return bottom + (aboutTop - bottom) / 2;
+      }
+      return bottom;
+    }
+    const meta = document.querySelector('.project-meta-row');
+    if (meta) return meta.getBoundingClientRect().bottom + window.scrollY;
+    return null;
   }
   function resize() {
     w = innerWidth;
-    const el = boundaryEl();
-    const rect = el ? el.getBoundingClientRect() : null;
-    h = rect ? Math.max(200, Math.round(rect.bottom + window.scrollY)) : innerHeight;
+    const y = boundaryY();
+    h = y ? Math.max(200, Math.round(y)) : innerHeight;
     const dpr = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
@@ -415,7 +429,7 @@
   function tick(now) {
     const dt = previous ? Math.min((now - previous) / 1000, 0.035) : 0;
     previous = now;
-    const blend = 1 - Math.exp(-26 * dt);
+    const blend = 1 - Math.exp(-42 * dt);
     cursor.x += (cursor.tx - cursor.x) * blend;
     cursor.y += (cursor.ty - cursor.y) * blend;
     cursor.strength += ((cursor.active ? 1 : 0) - cursor.strength) * blend;
