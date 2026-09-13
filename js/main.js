@@ -210,12 +210,13 @@
   if (!ctx) return;
   const CONFIG = {
     COLOR: '79,195,255',   // site accent blue (--accent-rgb)
-    RADIUS: 9,             // Cursor obstacle radius in CSS pixels — tight, close-in deflection
+    RADIUS: 28,            // Cursor obstacle radius in CSS pixels — larger, more pronounced deflection
     SPEED: 150,            // Undisturbed flow speed, pixels/second
     SPACING: 18,           // Vertical streamline spacing (denser than before)
-    LINE_ALPHA: 0.13,
+    LINE_ALPHA: 0.16,
     HILITE_WIDTH: 90,      // px window (around cursor.x) that gets the jet-color highlight — small
     HILITE_ALPHA: 0.55,
+    HOP_THRESHOLD: 34,     // px the cursor must move before the highlighted pair "hops" to the next streamline
     SIDE_FADE: 140,        // px — pronounced fade at the left/right edges
     BOTTOM_FADE: 480,      // px — more gradual fade at the bottom
     BOTTOM_FADE_MAX: 0.55, // less pronounced than the side fade (never fully erases)
@@ -231,6 +232,7 @@
   const listeners = [];
   let w = 0, h = 0, rows = [], frame = 0, previous = 0;
   const cursor = { x: 0, y: 0, tx: 0, ty: 0, active: false, strength: 0 };
+  let selectedY = null; // sticky y used to pick the highlighted row pair — see render()
   const rgba = a => `rgba(${CONFIG.COLOR},${a})`;
   let flowPhase = 0;
 
@@ -311,11 +313,11 @@
   function wake(dx, vertDist, a) {
     if (dx <= a) return 0;
     const downstream = dx - a;
-    const vertFalloff = Math.exp(-(vertDist * vertDist) / (2 * (a * 3.5) * (a * 3.5)));
-    const decay = Math.exp(-downstream / (a * 5));
+    const vertFalloff = Math.exp(-(vertDist * vertDist) / (2 * (a * 5.5) * (a * 5.5)));
+    const decay = Math.exp(-downstream / (a * 6));
     if (decay < 0.02) return 0;
     const wavelength = a * 3.2;
-    return a * 0.55 * decay * vertFalloff * Math.sin((downstream / wavelength) * Math.PI);
+    return a * 0.85 * decay * vertFalloff * Math.sin((downstream / wavelength) * Math.PI);
   }
   function speedAt(x, y, a) {
     if (a < 0.1) return CONFIG.SPEED;
@@ -332,13 +334,19 @@
     const halfW = CONFIG.HILITE_WIDTH / 2;
     flowPattern.setTransform(new DOMMatrix().translate(flowPhase, 0));
 
-    // The exact two streamlines straddling the cursor right now —
-    // rows are evenly spaced and sorted, so this is just the nearest
-    // one above and the nearest one below.
+    // The two streamlines straddling the cursor — but sticky: the
+    // cursor has to move CONFIG.HOP_THRESHOLD px past where it last
+    // locked before the highlighted pair hops to the next streamline,
+    // instead of swapping the instant it crosses a row's exact line.
+    if (!hiliteOn) {
+      selectedY = null;
+    } else if (selectedY === null || Math.abs(cursor.y - selectedY) > CONFIG.HOP_THRESHOLD) {
+      selectedY = cursor.y;
+    }
     let aboveRow = null, belowRow = null;
     if (hiliteOn) {
       for (const row of rows) {
-        if (row.y <= cursor.y) aboveRow = row; else { belowRow = belowRow || row; break; }
+        if (row.y <= selectedY) aboveRow = row; else { belowRow = belowRow || row; break; }
       }
     }
 
