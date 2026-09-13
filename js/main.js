@@ -219,7 +219,7 @@
   if (!ctx) return;
   const CONFIG = {
     COLOR: '79,195,255',   // site accent blue (--accent-rgb)
-    RADIUS: 32,            // Cursor obstacle radius in CSS pixels
+    RADIUS: 18,            // Cursor obstacle radius in CSS pixels — tight, close-in deflection
     SPEED: 150,            // Undisturbed flow speed, pixels/second
     SPACING: 18,           // Vertical streamline spacing (denser than before)
     LINE_ALPHA: 0.13,
@@ -227,7 +227,10 @@
     HILITE_ALPHA: 0.55,
     SIDE_FADE: 140,        // px — pronounced fade at the left/right edges
     BOTTOM_FADE: 340,      // px — more gradual fade at the bottom
-    BOTTOM_FADE_MAX: 0.55  // less pronounced than the side fade (never fully erases)
+    BOTTOM_FADE_MAX: 0.55, // less pronounced than the side fade (never fully erases)
+    PIPE_TILE_W: 56,       // px wavelength of one "pulse" of fluid moving through the pipe
+    PIPE_TILE_H: 8,
+    PIPE_SPEED: 22         // px/second the pulse pattern travels — slow, like water in a pipe
   };
   // Same muted blue -> red -> amber trim used on the skill-card top bar
   // (--jet-blue / --jet-red / --jet-amber), at the same 0% / 52% / 100% stops.
@@ -238,6 +241,23 @@
   let w = 0, h = 0, rows = [], frame = 0, previous = 0;
   const cursor = { x: 0, y: 0, tx: 0, ty: 0, active: false, strength: 0 };
   const rgba = a => `rgba(${CONFIG.COLOR},${a})`;
+  let flowPhase = 0;
+
+  // A small repeating tile — one "pulse" of brighter fluid — tiled and
+  // slid horizontally each frame to read as water moving through a
+  // pipe, without the cost of a per-row animated gradient.
+  const pipeTile = document.createElement('canvas');
+  pipeTile.width = CONFIG.PIPE_TILE_W;
+  pipeTile.height = CONFIG.PIPE_TILE_H;
+  const pctx = pipeTile.getContext('2d');
+  const tileGrad = pctx.createLinearGradient(0, 0, CONFIG.PIPE_TILE_W, 0);
+  tileGrad.addColorStop(0, rgba(CONFIG.LINE_ALPHA * 0.55));
+  tileGrad.addColorStop(0.5, rgba(CONFIG.LINE_ALPHA * 2.1));
+  tileGrad.addColorStop(1, rgba(CONFIG.LINE_ALPHA * 0.55));
+  pctx.fillStyle = tileGrad;
+  pctx.fillRect(0, 0, CONFIG.PIPE_TILE_W, CONFIG.PIPE_TILE_H);
+  const flowPattern = ctx.createPattern(pipeTile, 'repeat');
+
   function listen(target, event, fn) {
     target.addEventListener(event, fn);
     listeners.push(() => target.removeEventListener(event, fn));
@@ -290,6 +310,7 @@
     const a = reduced.matches ? 0 : CONFIG.RADIUS * cursor.strength;
     const hiliteOn = a > 0.1 && cursor.strength > 0.05;
     const halfW = CONFIG.HILITE_WIDTH / 2;
+    flowPattern.setTransform(new DOMMatrix().translate(flowPhase, 0));
 
     // The exact two streamlines straddling the cursor right now —
     // rows are evenly spaced and sorted, so this is just the nearest
@@ -321,7 +342,7 @@
         ctx.beginPath();
         ctx.moveTo(points[runStart].x, points[runStart].y);
         for (let k = runStart + 1; k <= end; k++) ctx.lineTo(points[k].x, points[k].y);
-        ctx.strokeStyle = rgba(CONFIG.LINE_ALPHA);
+        ctx.strokeStyle = flowPattern;
         ctx.lineWidth = 0.8;
         ctx.stroke();
       };
@@ -335,9 +356,11 @@
           ctx.beginPath();
           ctx.moveTo(p0.x, p0.y);
           ctx.lineTo(p1.x, p1.y);
-          ctx.strokeStyle = rgba(Math.min(0.32, CONFIG.LINE_ALPHA * clamped));
+          ctx.strokeStyle = flowPattern;
+          ctx.globalAlpha = Math.min(1, clamped);
           ctx.lineWidth = 0.8 * clamped;
           ctx.stroke();
+          ctx.globalAlpha = 1;
           runStart = i;
         }
       }
@@ -387,6 +410,7 @@
     cursor.x += (cursor.tx - cursor.x) * blend;
     cursor.y += (cursor.ty - cursor.y) * blend;
     cursor.strength += ((cursor.active ? 1 : 0) - cursor.strength) * blend;
+    if (!reduced.matches) flowPhase = (flowPhase + CONFIG.PIPE_SPEED * dt) % CONFIG.PIPE_TILE_W;
     render();
     frame = requestAnimationFrame(tick);
   }
