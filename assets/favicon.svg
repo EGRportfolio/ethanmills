@@ -1,4 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <defs>
+    <linearGradient id="g" x1="2" y1="2" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7bb5d3"/>
+      <stop offset="18%" stop-color="#d37a8a"/>
+      <stop offset="36%" stop-color="#d1ab75"/>
+      <stop offset="58%" stop-color="#4fc3ff"/>
+      <stop offset="100%" stop-color="#05070c"/>
+    </linearGradient>
+  </defs>
   <rect width="40" height="40" rx="8" fill="#0a0d12"/>
-  <text x="20" y="27" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="17" fill="#edf1f7">EM</text>
+  <g stroke="url(#g)" stroke-linecap="round" fill="none">
+    <path d="M4 6 L32 18" stroke-width="3.6"/>
+    <path d="M3 14 L34 26" stroke-width="4.4"/>
+    <path d="M4 22 L35 34" stroke-width="3.6"/>
+    <path d="M8 30 L30 38" stroke-width="2.6"/>
+  </g>
 </svg>
