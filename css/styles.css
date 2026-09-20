@@ -196,25 +196,12 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); white-space: nowrap;
   display: inline-flex; align-items: center; gap: 6px;
 }
-.brand-tick{
-  width: 6px; height: 6px; border-radius: 50%; background: var(--gradient-jet); flex-shrink: 0;
-  box-shadow: 0 0 6px 1px rgba(var(--accent-rgb),0.6);
-  animation: tickpulse 2.4s ease-in-out infinite;
-}
-@keyframes tickpulse{ 0%,100%{ opacity: 0.5; } 50%{ opacity: 1; } }
-
 .main-nav{ display: flex; align-items: center; gap: clamp(14px, 2.4vw, 40px); flex-wrap: nowrap; }
 .nav-link{
   font-family: var(--font-mono); font-size: 13.5px; color: var(--text-dim);
   position: relative; padding: 10px 2px 14px; transition: color 0.2s var(--ease);
 }
-.nav-link::after{
-  content: ""; position: absolute; left: 50%; bottom: 2px; width: 4px; height: 4px;
-  background: var(--accent); border-radius: 1px; transform: translateX(-50%) rotate(45deg) scale(0);
-  transition: transform 0.25s var(--ease);
-}
 .nav-link:hover{ color: var(--text); }
-.nav-link:hover::after, .nav-link.is-active::after{ transform: translateX(-50%) rotate(45deg) scale(1); }
 .nav-link.is-active{ color: var(--accent); }
 
 .header-actions{ display: flex; align-items: center; gap: var(--space-sm); }
@@ -328,8 +315,9 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .skill-mini p{ font-size: 14.5px; line-height: 1.6; color: var(--text-faint); margin: 0; }
 
 /* ============ PROJECTS ============ */
-.projects-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
-@media (max-width: 780px){ .projects-grid{ grid-template-columns: 1fr; } }
+.projects-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+@media (max-width: 1000px){ .projects-grid{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px){ .projects-grid{ grid-template-columns: 1fr; } }
 
 .project-card{
   display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border);
@@ -386,58 +374,10 @@ a.project-card:hover .corner{ opacity: 1; transform: translate(0,0); }
 .project-card-link svg{ transition: transform 0.25s var(--ease); }
 a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 
-/* ============ GOALS (full-bleed flow-viz background) ============ */
-.goals-section{ position: relative; overflow: hidden; }
-.goals-bg{ position: absolute; inset: 0; z-index: 0; overflow: hidden; }
-
-/* Soft blue glow sitting behind the jet — this is what the edges blend into,
-   instead of blending straight into flat black. */
-.goals-bg-glow{
-  position: absolute; inset: -120px;
-  background: radial-gradient(ellipse 50% 50% at 92% 40%, rgba(79,195,255,0.22), rgba(79,195,255,0.06) 55%, transparent 75%);
-  filter: blur(50px);
-}
-
-/* The jet image itself: the source photo is already near-black everywhere
-   except the glowing jet streak, so "screen" blending drops its black
-   background straight into the page background with no edge at all —
-   what's left is just the glow, not a cropped photo. The mask is only
-   there to taper the far tail softly rather than end abruptly. */
-.goals-bg-img{
-  position: absolute; inset: -60px;
-  background-image: url('../assets/images/goals-bg-jet.jpg');
-  background-repeat: no-repeat;
-  background-size: 46% auto;
-  background-position: 96% 42%;
-  filter: blur(6px) saturate(1.15) brightness(1.05);
-  mix-blend-mode: screen;
-  -webkit-mask-image: radial-gradient(ellipse 68% 70% at 96% 42%, black 45%, transparent 92%);
-  mask-image: radial-gradient(ellipse 68% 70% at 96% 42%, black 45%, transparent 92%);
-}
-
-.goals-bg-overlay{
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(100deg, var(--bg) 0%, rgba(10,13,18,0.88) 32%, rgba(10,13,18,0.45) 55%, rgba(10,13,18,0.15) 76%, rgba(10,13,18,0.1) 100%),
-    linear-gradient(180deg, var(--bg) 0%, transparent 14%, transparent 86%, var(--bg) 100%);
-}
+/* ============ GOALS ============ */
+.goals-section{ position: relative; }
 .goals-section .section-inner{ position: relative; z-index: 1; }
 .goals-section .section-lede{ max-width: 620px; }
-@media (max-width: 700px){
-  .goals-bg-glow{
-    background: radial-gradient(ellipse 55% 45% at 82% 22%, rgba(79,195,255,0.2), rgba(79,195,255,0.05) 55%, transparent 75%);
-  }
-  .goals-bg-img{
-    background-size: 130% auto;
-    background-position: 82% 22%;
-    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 82% 22%, black 40%, transparent 88%);
-    mask-image: radial-gradient(ellipse 75% 65% at 82% 22%, black 40%, transparent 88%);
-  }
-  .goals-bg-overlay{
-    background:
-      linear-gradient(180deg, var(--bg) 0%, rgba(10,13,18,0.8) 18%, rgba(10,13,18,0.6) 40%, rgba(10,13,18,0.8) 65%, var(--bg) 100%);
-  }
-}
 
 /* Interest index — a numbered, expandable spec-sheet list (replaces icon cards) */
 .interest-index{ border-top: 1px solid var(--border-soft); }
@@ -597,11 +537,22 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   transition: filter 0.4s var(--ease); filter: saturate(0.88);
 }
 .collage-item:hover img{ filter: saturate(1); }
-.collage-item figcaption{
-  padding: 9px 11px; font-size: 11.5px; line-height: 1.45; color: var(--text-faint);
-  border-top: 1px solid var(--border-soft); background: var(--surface);
+/* Captions stay hidden in the grid — the lightbox shows them once you
+   click through to the full image, so the grid itself reads cleaner. */
+.collage-item figcaption{ display: none; }
+
+/* A small, discreet hint shown only on the very first collage photo,
+   so first-time visitors know images are clickable before they've
+   discovered it themselves. */
+.collage-hint{
+  position: absolute; left: 8px; bottom: 8px; z-index: 2;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.02em;
+  color: var(--text-dim); background: rgba(10,13,18,0.72);
+  border: 1px solid var(--border-soft); border-radius: 999px;
+  padding: 4px 9px; pointer-events: none;
+  opacity: 0.85; transition: opacity 0.25s var(--ease);
 }
-.collage-item figcaption strong{ color: var(--text-dim); font-weight: 600; }
+.collage-item:hover .collage-hint{ opacity: 0; }
 
 /* Utility modifiers for hand-placed rhythm — rotation, offset, size, crop */
 .collage-item.tilt-l{ --rot: -2.2deg; }
@@ -674,8 +625,6 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   }
   .main-nav.is-open{ opacity: 1; transform: none; pointer-events: auto; }
   .main-nav .nav-link{ width: 100%; padding: 14px 4px; border-bottom: 1px solid var(--border-soft); font-size: 15px; }
-  .main-nav .nav-link::after{ left: 0; bottom: 14px; transform: rotate(45deg) scale(0); }
-  .main-nav .nav-link:hover::after, .main-nav .nav-link.is-active::after{ transform: rotate(45deg) scale(1); }
   .header-actions .btn-sm{ display: none; }
 }
 @media (min-width: 901px){ .main-nav{ display: flex !important; } }

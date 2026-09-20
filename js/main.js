@@ -210,7 +210,7 @@
   if (!ctx) return;
   const CONFIG = {
     COLOR: '79,195,255',   // site accent blue (--accent-rgb)
-    RADIUS: 28,            // Cursor obstacle radius in CSS pixels — larger, more pronounced deflection
+    RADIUS: 16,            // Cursor obstacle radius in CSS pixels — tighter around the cursor
     SPEED: 150,            // Undisturbed flow speed, pixels/second
     SPACING: 18,           // Vertical streamline spacing (denser than before)
     LINE_ALPHA: 0.16,
@@ -437,7 +437,7 @@
   function tick(now) {
     const dt = previous ? Math.min((now - previous) / 1000, 0.035) : 0;
     previous = now;
-    const blend = 1 - Math.exp(-42 * dt);
+    const blend = 1 - Math.exp(-60 * dt);
     cursor.x += (cursor.tx - cursor.x) * blend;
     cursor.y += (cursor.ty - cursor.y) * blend;
     cursor.strength += ((cursor.active ? 1 : 0) - cursor.strength) * blend;
