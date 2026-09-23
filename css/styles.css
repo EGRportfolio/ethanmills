@@ -192,22 +192,30 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .btn-sm{ padding: 9px 18px; font-size: 13.5px; }
 
 /* ============ HEADER ============ */
+/* The blur/background live on ::before rather than directly on
+   .site-header — backdrop-filter on the header itself would create a
+   new containing block for its position:fixed descendants (namely
+   #mainNav's mobile off-canvas panel), breaking its full-height slide. */
 .site-header{
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   height: var(--header-h); display: flex; align-items: center;
-  background: rgba(10,13,18,0.72);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-soft);
-  transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+  transition: border-color 0.3s var(--ease);
+}
+.site-header::before{
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--header-bg, rgba(10,13,18,0.72));
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  transition: background 0.3s var(--ease);
 }
 .header-inner{
   width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 var(--space-md);
   display: flex; align-items: center; justify-content: space-between; gap: var(--space-md);
 }
 
-/* Hamburger toggle — always visible, opens the left-side nav panel */
+/* Hamburger toggle — mobile only; desktop shows the nav inline instead */
 .nav-toggle{
-  display: flex; flex-direction: column; justify-content: center; gap: 5px;
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
   width: 40px; height: 40px; border: 1px solid var(--border); border-radius: var(--radius-sm);
   position: relative; z-index: 210; flex-shrink: 0;
 }
@@ -216,23 +224,29 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
 .nav-toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
 
-/* Left-side sliding nav panel, same on every breakpoint */
-.main-nav{
-  position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
-  width: min(300px, 82vw); display: flex; flex-direction: column; gap: 0;
-  padding: calc(var(--header-h) + var(--space-lg)) var(--space-lg) var(--space-lg);
-  background: #0d1015; border-right: 1px solid var(--border-soft);
-  transform: translateX(-100%); transition: transform 0.3s var(--ease);
-  overflow-y: auto;
-}
-.main-nav.is-open{ transform: translateX(0); }
+/* Desktop: plain inline nav, always visible in the header */
+.main-nav{ display: flex; align-items: center; gap: clamp(14px, 2.4vw, 40px); flex-wrap: nowrap; }
 .nav-link{
-  font-family: var(--font-mono); font-size: 15px; color: var(--text-dim);
-  padding: 14px 2px; border-bottom: 1px solid var(--border-soft);
-  transition: color 0.2s var(--ease);
+  font-family: var(--font-mono); font-size: 13.5px; color: var(--text-dim);
+  position: relative; padding: 10px 2px 14px; transition: color 0.2s var(--ease);
 }
 .nav-link:hover{ color: var(--text); }
 .nav-link.is-active{ color: var(--accent); }
+
+/* Mobile: nav becomes a left-side sliding panel behind the hamburger */
+@media (max-width: 900px){
+  .nav-toggle{ display: flex; }
+  .main-nav{
+    position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
+    width: min(300px, 82vw); flex-direction: column; align-items: flex-start; gap: 0;
+    padding: calc(var(--header-h) + var(--space-lg)) var(--space-lg) var(--space-lg);
+    background: #0d1015; border-right: 1px solid var(--border-soft);
+    transform: translateX(-100%); transition: transform 0.3s var(--ease);
+    overflow-y: auto;
+  }
+  .main-nav.is-open{ transform: translateX(0); }
+  .nav-link{ width: 100%; padding: 14px 2px; border-bottom: 1px solid var(--border-soft); font-size: 15px; }
+}
 
 /* Dims the page behind the open nav panel; click it to close */
 .nav-overlay{

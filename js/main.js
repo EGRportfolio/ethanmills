@@ -44,10 +44,10 @@
   function onScrollHeader() {
     if (!header) return;
     if (window.scrollY > 20) {
-      header.style.background = 'rgba(10,13,18,0.92)';
+      header.style.setProperty('--header-bg', 'rgba(10,13,18,0.92)');
       header.style.borderBottomColor = 'var(--border)';
     } else {
-      header.style.background = 'rgba(10,13,18,0.72)';
+      header.style.setProperty('--header-bg', 'rgba(10,13,18,0.72)');
       header.style.borderBottomColor = 'var(--border-soft)';
     }
   }
