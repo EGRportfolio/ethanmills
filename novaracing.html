@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=26">
+<link rel="stylesheet" href="css/styles.css?v=27">
 </head>
 <body>
 
@@ -22,30 +22,22 @@
 <!-- ============ HEADER / NAV ============ -->
 <header class="site-header" id="siteHeader">
   <div class="header-inner">
-    <a href="index.html#home" class="brand">
-      <span class="brand-text">
-        <span class="brand-name">Ethan Mills</span>
-        <span class="brand-sub">Mechanical Engineering</span>
-      </span>
-    </a>
-
-    <nav class="main-nav" id="mainNav" aria-label="Primary">
-      <a href="index.html#home" class="nav-link">Home</a>
-      <a href="index.html#about" class="nav-link">About</a>
-      <a href="index.html#skills" class="nav-link">Skills</a>
-      <a href="index.html#projects" class="nav-link is-active">Projects</a>
-      <a href="index.html#goals" class="nav-link">Goals</a>
-      <a href="index.html#contact" class="nav-link">Contact</a>
-    </nav>
-
-    <div class="header-actions">
-      <a href="index.html#contact" class="btn btn-primary btn-sm">Get In Touch</a>
-      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle navigation menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html#contact" class="btn btn-primary btn-sm">Get In Touch</a>
   </div>
 </header>
+
+<div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+<nav class="main-nav" id="mainNav" aria-label="Primary">
+  <a href="index.html#home" class="nav-link">Home</a>
+  <a href="index.html#about" class="nav-link">About</a>
+  <a href="index.html#skills" class="nav-link">Skills</a>
+  <a href="index.html#projects" class="nav-link is-active">Projects</a>
+  <a href="index.html#goals" class="nav-link">Goals</a>
+  <a href="index.html#contact" class="nav-link">Contact</a>
+</nav>
 
 <main id="main">
 
@@ -306,6 +298,6 @@
 
 <canvas id="aero-flow-background" aria-hidden="true"></canvas>
 
-<script src="js/main.js?v=18"></script>
+<script src="js/main.js?v=19"></script>
 </body>
 </html>

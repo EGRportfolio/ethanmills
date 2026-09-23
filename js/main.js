@@ -11,14 +11,16 @@
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---------- Mobile nav toggle ---------- */
+  /* ---------- Nav toggle (left-side sliding panel) ---------- */
   var navToggle = document.getElementById('navToggle');
   var mainNav = document.getElementById('mainNav');
+  var navOverlay = document.getElementById('navOverlay');
 
   function closeNav() {
     if (!navToggle || !mainNav) return;
     navToggle.setAttribute('aria-expanded', 'false');
     mainNav.classList.remove('is-open');
+    if (navOverlay) navOverlay.classList.remove('is-open');
   }
 
   if (navToggle && mainNav) {
@@ -26,10 +28,12 @@
       var open = navToggle.getAttribute('aria-expanded') === 'true';
       navToggle.setAttribute('aria-expanded', String(!open));
       mainNav.classList.toggle('is-open', !open);
+      if (navOverlay) navOverlay.classList.toggle('is-open', !open);
     });
     mainNav.querySelectorAll('.nav-link').forEach(function (link) {
       link.addEventListener('click', closeNav);
     });
+    if (navOverlay) navOverlay.addEventListener('click', closeNav);
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeNav();
     });
