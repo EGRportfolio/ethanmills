@@ -493,7 +493,7 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .project-hero-title{ font-size: clamp(46px, 7vw, 84px); margin-bottom: var(--space-md); text-transform: uppercase; }
 .project-meta-row{
   display: flex; flex-wrap: wrap; gap: var(--space-lg); margin-top: var(--space-lg);
-  padding-top: var(--space-lg); border-top: 1px solid var(--border-soft);
+  padding-top: var(--space-lg);
   font-size: 13.5px; color: var(--text-dim);
 }
 .project-meta-row strong{ display: block; font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; font-weight: 500; }
