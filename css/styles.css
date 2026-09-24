@@ -627,6 +627,33 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   .story-collage:not(.story-collage--grid) .collage-item.wide{ flex-basis: 100% !important; }
 }
 
+/* Auto-rotating photo gallery: a horizontally scrollable, scroll-snapped
+   strip that advances itself on a timer and pauses whenever the visitor
+   touches, hovers, scrolls, or focuses it, resuming shortly after. */
+.photo-gallery{ position: relative; margin: var(--space-md) 0 0; min-width: 0; }
+.photo-gallery-track{
+  display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 10px 4px 16px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.photo-gallery-track::-webkit-scrollbar{ height: 6px; }
+.photo-gallery-track::-webkit-scrollbar-track{ background: transparent; }
+.photo-gallery-track::-webkit-scrollbar-thumb{ background: var(--border); border-radius: 999px; }
+.photo-gallery-track .collage-item{
+  flex: 0 0 clamp(180px, 24vw, 250px); margin: 6px 0; scroll-snap-align: start;
+}
+.gallery-nav{
+  position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center; border-radius: 50%;
+  background: rgba(10,13,18,0.75); border: 1px solid var(--border-soft); color: var(--text);
+  font-size: 14px; cursor: pointer; z-index: 5;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.gallery-nav:hover{ background: rgba(10,13,18,0.92); border-color: var(--accent-dim); color: var(--accent); }
+.gallery-nav--prev{ left: -4px; }
+.gallery-nav--next{ right: -4px; }
+@media (max-width: 640px){ .gallery-nav{ display: none; } }
+
 /* ============ FOOTER ============ */
 .site-footer{ position: relative; z-index: 1; border-top: 1px solid var(--border-soft); padding: var(--space-lg) var(--space-md); }
 .footer-inner{

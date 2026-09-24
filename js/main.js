@@ -183,6 +183,54 @@
     if (e.key === 'Escape' && lightbox && lightbox.classList.contains('is-open')) closeLightbox();
   });
 
+  /* ---------- Auto-rotating photo gallery ---------- */
+  document.querySelectorAll('[data-gallery]').forEach(function (gallery) {
+    var track = gallery.querySelector('.photo-gallery-track');
+    var prevBtn = gallery.querySelector('.gallery-nav--prev');
+    var nextBtn = gallery.querySelector('.gallery-nav--next');
+    if (!track) return;
+
+    var timer = null;
+    var resumeTimer = null;
+
+    function step(dir) {
+      var item = track.querySelector('.collage-item');
+      var amount = item ? item.getBoundingClientRect().width + 14 : 240;
+      track.scrollBy({ left: dir * amount, behavior: 'smooth' });
+    }
+    function atEnd() {
+      return track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    }
+    function advance() {
+      if (atEnd()) track.scrollTo({ left: 0, behavior: 'smooth' });
+      else step(1);
+    }
+    function start() {
+      if (prefersReducedMotion) return;
+      stop();
+      timer = window.setInterval(advance, 3200);
+    }
+    function stop() {
+      if (timer) { window.clearInterval(timer); timer = null; }
+    }
+    function pauseThenResume() {
+      stop();
+      if (resumeTimer) window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(start, 5000);
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', function () { step(-1); pauseThenResume(); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { step(1); pauseThenResume(); });
+    track.addEventListener('mouseenter', stop);
+    track.addEventListener('mouseleave', start);
+    track.addEventListener('touchstart', pauseThenResume, { passive: true });
+    track.addEventListener('wheel', pauseThenResume, { passive: true });
+    gallery.addEventListener('focusin', stop);
+    gallery.addEventListener('focusout', start);
+
+    start();
+  });
+
   /* ---------- Magnetic buttons (subtle, desktop only, reactive to cursor) ---------- */
   if (!prefersReducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     document.querySelectorAll('.btn').forEach(function (btn) {
