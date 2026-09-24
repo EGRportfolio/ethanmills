@@ -203,8 +203,6 @@
   /* ---------- Auto-rotating photo gallery ---------- */
   document.querySelectorAll('[data-gallery]').forEach(function (gallery) {
     var track = gallery.querySelector('.photo-gallery-track');
-    var prevBtn = gallery.querySelector('.gallery-nav--prev');
-    var nextBtn = gallery.querySelector('.gallery-nav--next');
     if (!track) return;
 
     var timer = null;
@@ -236,8 +234,6 @@
       resumeTimer = window.setTimeout(start, 5000);
     }
 
-    if (prevBtn) prevBtn.addEventListener('click', function () { step(-1); pauseThenResume(); });
-    if (nextBtn) nextBtn.addEventListener('click', function () { step(1); pauseThenResume(); });
     track.addEventListener('mouseenter', stop);
     track.addEventListener('mouseleave', start);
     track.addEventListener('touchstart', pauseThenResume, { passive: true });
