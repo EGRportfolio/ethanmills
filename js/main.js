@@ -518,6 +518,11 @@
   listen(window, 'pointermove', e => {
     if (!fine.matches || e.pointerType === 'touch') return;
     const x = e.clientX + window.scrollX, y = e.clientY + window.scrollY;
+    // Only "active" while the pointer is actually over the flow field's
+    // own area (from the page top down to its boundary) — otherwise the
+    // deflection would keep tracking the cursor anywhere on the page,
+    // staying visible long after the cursor has left the effect.
+    if (x < 0 || x > w || y < 0 || y > h) { cursor.active = false; return; }
     if (!cursor.active) { cursor.x = x; cursor.y = y; }
     cursor.tx = x; cursor.ty = y; cursor.active = true;
   });
