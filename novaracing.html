@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=30">
+<link rel="stylesheet" href="css/styles.css?v=31">
 </head>
 <body>
 
@@ -227,12 +227,14 @@
 <!-- ============ LIGHTBOX ============ -->
 <div class="lightbox" id="lightbox" aria-hidden="true">
   <button class="lightbox-close" id="lightboxClose" aria-label="Close image">&times;</button>
+  <button class="lightbox-nav lightbox-nav--prev" id="lightboxPrev" aria-label="Previous image">&#10094;</button>
   <img src="" alt="" id="lightboxImg">
+  <button class="lightbox-nav lightbox-nav--next" id="lightboxNext" aria-label="Next image">&#10095;</button>
   <p class="lightbox-caption" id="lightboxCaption"></p>
 </div>
 
 <canvas id="aero-flow-background" aria-hidden="true"></canvas>
 
-<script src="js/main.js?v=21"></script>
+<script src="js/main.js?v=22"></script>
 </body>
 </html>

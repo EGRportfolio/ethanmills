@@ -137,17 +137,33 @@
   var lightboxImg = document.getElementById('lightboxImg');
   var lightboxCaption = document.getElementById('lightboxCaption');
   var lightboxClose = document.getElementById('lightboxClose');
+  var lightboxPrev = document.getElementById('lightboxPrev');
+  var lightboxNext = document.getElementById('lightboxNext');
   var lastFocused = null;
+  var lightboxFigures = Array.prototype.slice.call(document.querySelectorAll('.collage-item'));
+  var lightboxIndex = -1;
 
-  function openLightbox(src, alt, caption) {
+  function showAt(index) {
+    if (!lightboxFigures.length) return;
+    lightboxIndex = (index + lightboxFigures.length) % lightboxFigures.length;
+    var fig = lightboxFigures[lightboxIndex];
+    var img = fig.querySelector('img');
+    var caption = fig.querySelector('figcaption');
+    if (!img) return;
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt || '';
+    lightboxCaption.textContent = caption ? caption.textContent : '';
+  }
+  function openLightbox(index) {
     if (!lightbox || !lightboxImg) return;
     lastFocused = document.activeElement;
-    lightboxImg.src = src;
-    lightboxImg.alt = alt || '';
-    lightboxCaption.textContent = caption || '';
+    showAt(index);
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    var showNav = lightboxFigures.length > 1;
+    if (lightboxPrev) lightboxPrev.style.display = showNav ? '' : 'none';
+    if (lightboxNext) lightboxNext.style.display = showNav ? '' : 'none';
     lightboxClose.focus();
   }
   function closeLightbox() {
@@ -159,16 +175,12 @@
     if (lastFocused) lastFocused.focus();
   }
 
-  document.querySelectorAll('.collage-item').forEach(function (fig) {
-    var img = fig.querySelector('img');
-    var caption = fig.querySelector('figcaption');
+  lightboxFigures.forEach(function (fig, i) {
     fig.setAttribute('tabindex', '0');
     fig.setAttribute('role', 'button');
     fig.setAttribute('aria-label', 'View larger image');
 
-    function trigger() {
-      if (img) openLightbox(img.src, img.alt, caption ? caption.textContent : '');
-    }
+    function trigger() { openLightbox(i); }
     fig.addEventListener('click', trigger);
     fig.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger(); }
@@ -176,11 +188,16 @@
   });
 
   if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+  if (lightboxPrev) lightboxPrev.addEventListener('click', function (e) { e.stopPropagation(); showAt(lightboxIndex - 1); });
+  if (lightboxNext) lightboxNext.addEventListener('click', function (e) { e.stopPropagation(); showAt(lightboxIndex + 1); });
   if (lightbox) {
     lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLightbox(); });
   }
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && lightbox && lightbox.classList.contains('is-open')) closeLightbox();
+    if (!lightbox || !lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft') showAt(lightboxIndex - 1);
+    else if (e.key === 'ArrowRight') showAt(lightboxIndex + 1);
   });
 
   /* ---------- Auto-rotating photo gallery ---------- */
