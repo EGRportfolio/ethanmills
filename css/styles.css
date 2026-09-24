@@ -652,7 +652,9 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .gallery-nav:hover{ background: rgba(10,13,18,0.92); border-color: var(--accent-dim); color: var(--accent); }
 .gallery-nav--prev{ left: -4px; }
 .gallery-nav--next{ right: -4px; }
-@media (max-width: 640px){ .gallery-nav{ display: none; } }
+@media (max-width: 640px){
+  .gallery-nav{ width: 30px; height: 30px; font-size: 12px; }
+}
 
 /* ============ FOOTER ============ */
 .site-footer{ position: relative; z-index: 1; border-top: 1px solid var(--border-soft); padding: var(--space-lg) var(--space-md); }
