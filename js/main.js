@@ -283,8 +283,8 @@
     HILITE_ALPHA: 0.55,
     HOP_THRESHOLD: 34,     // px the cursor must move before the highlighted pair "hops" to the next streamline
     SIDE_FADE: 140,        // px — pronounced fade at the left/right edges
-    BOTTOM_FADE: 480,      // px — more gradual fade at the bottom
-    BOTTOM_FADE_MAX: 0.55, // less pronounced than the side fade (never fully erases)
+    BOTTOM_FADE: 650,      // px — starts higher up, so the effect reads as strongest near the top
+    BOTTOM_FADE_MAX: 0.92, // nearly fully erased by the bottom edge
     PIPE_TILE_W: 56,       // px wavelength of one "pulse" of fluid moving through the pipe
     PIPE_TILE_H: 8,
     PIPE_SPEED: 22         // px/second the pulse pattern travels — slow, like water in a pipe
