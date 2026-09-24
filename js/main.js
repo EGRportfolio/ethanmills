@@ -330,7 +330,8 @@
       const about = document.getElementById('about');
       if (about) {
         const aboutTop = about.getBoundingClientRect().top + window.scrollY;
-        return bottom + (aboutTop - bottom) / 2;
+        const mid = bottom + (aboutTop - bottom) / 2;
+        return mid + (aboutTop - mid) / 2;
       }
       return bottom;
     }
