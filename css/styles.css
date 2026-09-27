@@ -454,10 +454,12 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 .interest-row:hover .interest-desc, .interest-row:focus-visible .interest-desc{
   max-height: 60px; opacity: 1; margin-top: 8px;
 }
-/* Touch/no-hover: never hide the description behind a hover-only interaction */
+/* Touch/no-hover: there's no hover state, so the gradient trim and
+   description stay hidden until the row is tapped (JS toggles .is-open). */
 @media (hover: none), (pointer: coarse){
-  .interest-row::before{ transform: scaleY(1); }
-  .interest-desc{ max-height: none; opacity: 1; margin-top: 6px; }
+  .interest-row.is-open{ padding-left: 18px; background: linear-gradient(90deg, rgba(var(--accent-rgb),0.06), transparent); }
+  .interest-row.is-open::before{ transform: scaleY(1); }
+  .interest-row.is-open .interest-desc{ max-height: none; opacity: 1; margin-top: 6px; }
 }
 
 /* ============ CONTACT ============ */
@@ -651,8 +653,14 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 }
 
 /* Cover photo that sits beside the story copy, ahead of the gallery. */
+.story-side{ display: flex; flex-direction: column; gap: var(--space-sm); }
 .story-cover{ margin: 0; }
 .story-cover img{ aspect-ratio: 4 / 3; }
+.story-skills{ display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.story-skills li{
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim);
+  border: 1px solid var(--border-soft); border-radius: 999px; padding: 5px 11px;
+}
 
 /* ============ FOOTER ============ */
 .site-footer{ position: relative; z-index: 1; border-top: 1px solid var(--border-soft); padding: var(--space-lg) var(--space-md); }

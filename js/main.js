@@ -200,6 +200,13 @@
     else if (e.key === 'ArrowRight') showAt(lightboxIndex + 1);
   });
 
+  /* ---------- Interest rows: tap-to-reveal on touch/no-hover devices ---------- */
+  document.querySelectorAll('.interest-row').forEach(function (row) {
+    row.addEventListener('click', function () {
+      row.classList.toggle('is-open');
+    });
+  });
+
   /* ---------- Auto-rotating photo gallery ---------- */
   document.querySelectorAll('[data-gallery]').forEach(function (gallery) {
     var track = gallery.querySelector('.photo-gallery-track');
