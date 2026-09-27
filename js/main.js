@@ -44,10 +44,10 @@
   function onScrollHeader() {
     if (!header) return;
     if (window.scrollY > 20) {
-      header.style.setProperty('--header-bg', 'rgba(10,13,18,0.92)');
+      header.style.setProperty('--header-bg', 'rgba(255,255,255,0.92)');
       header.style.borderBottomColor = 'var(--border)';
     } else {
-      header.style.setProperty('--header-bg', 'rgba(10,13,18,0.72)');
+      header.style.setProperty('--header-bg', 'rgba(255,255,255,0.72)');
       header.style.borderBottomColor = 'var(--border-soft)';
     }
   }
@@ -281,7 +281,7 @@
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const CONFIG = {
-    COLOR: '79,195,255',   // site accent blue (--accent-rgb)
+    COLOR: '30,63,107',    // site accent dark blue (--accent-rgb)
     RADIUS: 16,            // Cursor obstacle radius in CSS pixels — tighter around the cursor
     SPEED: 150,            // Undisturbed flow speed, pixels/second
     SPACING: 18,           // Vertical streamline spacing (denser than before)
@@ -298,7 +298,7 @@
   };
   // Same muted blue -> red -> amber trim used on the skill-card top bar
   // (--jet-blue / --jet-red / --jet-amber), at the same 0% / 52% / 100% stops.
-  const JET = { blue: '123,181,211', red: '211,122,138', amber: '209,171,117' };
+  const JET = { blue: '111,137,171', red: '53,87,126', amber: '22,40,63' };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const fine = matchMedia('(pointer: fine)');
   const listeners = [];

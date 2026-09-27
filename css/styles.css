@@ -1,47 +1,45 @@
 /* ===================================================================
    Ethan Mills — Engineering Portfolio
-   Dark aerospace / technical design system — signal blue on graphite.
+   Professional light design system — dark blue on white and gray.
 =================================================================== */
 
 :root{
-  /* Dark aerospace base — cool graphite with a blue accent */
-  --bg:            #0a0d12;
-  --bg-alt:        #0d1117;
-  --surface:       #12161d;
-  --surface-2:     #171c25;
-  --border:        #232a35;
-  --border-soft:   #1a202a;
+  /* Professional light base — white, dominant; cool gray, secondary */
+  --bg:            #ffffff;
+  --bg-rgb:        255,255,255;
+  --bg-alt:        #f4f6f9;
+  --surface:       #f7f8fa;
+  --surface-2:     #eef1f5;
+  --border:        #dde2e9;
+  --border-soft:   #eaedf2;
 
-  --text:          #edf1f7;
-  --text-dim:      #a9b2c3;
-  --text-faint:    #6b7484;
+  --text:          #1c2733;
+  --text-dim:      #55606f;
+  --text-faint:    #8b95a3;
 
-  /* Primary accent: signal blue */
-  --accent:        #4fc3ff;
-  --accent-rgb:    79,195,255;
-  --accent-dim:    #2f7fa8;
-  --accent-soft:   #6ecfff;
+  /* Primary accent: dark blue — tertiary color, used for interactive
+     elements and emphasis */
+  --accent:        #1e3f6b;
+  --accent-rgb:    30,63,107;
+  --accent-dim:    #a4b4c8;
+  --accent-soft:   #2f5c94;
 
-  /* Secondary accent: warm ember — used for flow-viz + contrast, not dominant */
-  --accent-2:      #ff8a4c;
-  --accent-2-rgb:  255,138,76;
+  /* Secondary accent: kept for structural compatibility, muted gray-blue */
+  --accent-2:      #5b6b80;
+  --accent-2-rgb:  91,107,128;
 
-  --success:       #4fd692;
-  --success-rgb:   79,214,146;
+  --success:       #2f8f5b;
+  --success-rgb:   47,143,91;
 
-  /* Jet gradient — the exact blue -> red -> amber progression from the Goals
-     section's flow-viz graphic. Reused sparingly as a site-wide signature
-     accent (buttons, hover glows, ambient background) so every section
-     shares the same visual thread as that image. */
-  --jet-blue:  #7bb5d3;
-  --jet-red:   #d37a8a;
-  --jet-amber: #d1ab75;
+  /* Jet gradient — a light-to-dark navy progression (previously a
+     blue/red/amber rainbow) so trim accents read as solid and
+     professional rather than multicolored. */
+  --jet-blue:  #6f89ab;
+  --jet-red:   #35577e;
+  --jet-amber: #16283f;
   --gradient-jet: linear-gradient(135deg, var(--jet-blue) 0%, var(--jet-red) 52%, var(--jet-amber) 100%);
 
-  /* More saturated variant, used only on primary buttons: blue holds as the
-     dominant color (like the jet photo, where blue covers most of the
-     airframe) with red and amber appearing as smaller, later accents
-     rather than three equal bands. */
+  /* Unused legacy variant, left as-is (no active consumers). */
   --jet-blue-vivid:  #1a6fd1;
   --jet-red-vivid:   #e9637b;
   --jet-amber-vivid: #e8af5e;
@@ -98,7 +96,7 @@ button{ font-family: inherit; cursor: pointer; background: none; border: none; c
 
 .skip-link{
   position: absolute; left: -9999px; top: 0;
-  background: var(--accent); color: #041018;
+  background: var(--accent); color: #ffffff;
   padding: 12px 18px; z-index: 999; font-weight: 600;
   border-radius: 0 0 8px 0;
 }
@@ -114,13 +112,12 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .bg-grid{
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background-image:
-    radial-gradient(ellipse 46% 30% at 8% 6%, rgba(79,195,255,0.05), transparent 68%),
-    radial-gradient(ellipse 40% 26% at 96% 38%, rgba(211,122,138,0.04), transparent 68%),
-    radial-gradient(ellipse 42% 28% at 12% 92%, rgba(209,171,117,0.035), transparent 68%),
+    radial-gradient(ellipse 46% 30% at 8% 6%, rgba(var(--accent-rgb),0.045), transparent 68%),
+    radial-gradient(ellipse 42% 28% at 92% 90%, rgba(var(--accent-rgb),0.035), transparent 68%),
     linear-gradient(rgba(var(--accent-rgb),0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(var(--accent-rgb),0.05) 1px, transparent 1px);
-  background-size: auto, auto, auto, 56px 56px, 56px 56px;
-  background-repeat: no-repeat, no-repeat, no-repeat, repeat, repeat;
+  background-size: auto, auto, 56px 56px, 56px 56px;
+  background-repeat: no-repeat, no-repeat, repeat, repeat;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
 }
 
@@ -172,22 +169,22 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
    blue glow, rather than a solid filled box. Primary carries a
    brighter glow and accent-colored text; ghost is the quieter twin. */
 .btn-primary{
-  background: rgba(10,13,18,0.55); color: var(--accent);
+  background: rgba(var(--bg-rgb),0.55); color: var(--accent);
   border-color: rgba(var(--accent-rgb),0.45);
   box-shadow: 0 0 18px -2px rgba(var(--accent-rgb),0.35), inset 0 0 14px -6px rgba(var(--accent-rgb),0.25);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .btn-primary:hover{
-  border-color: var(--accent); background: rgba(10,13,18,0.7);
+  border-color: var(--accent); background: rgba(var(--bg-rgb),0.7);
   box-shadow: 0 0 26px -2px rgba(var(--accent-rgb),0.55), inset 0 0 18px -6px rgba(var(--accent-rgb),0.35);
 }
 .btn-ghost{
-  background: rgba(10,13,18,0.35); border-color: rgba(var(--accent-rgb),0.2); color: var(--text);
+  background: rgba(var(--bg-rgb),0.35); border-color: rgba(var(--accent-rgb),0.2); color: var(--text);
   box-shadow: 0 0 12px -4px rgba(var(--accent-rgb),0.16);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .btn-ghost:hover{
-  border-color: rgba(var(--accent-rgb),0.5); background: rgba(10,13,18,0.5);
+  border-color: rgba(var(--accent-rgb),0.5); background: rgba(var(--bg-rgb),0.5);
   box-shadow: 0 0 18px -4px rgba(var(--accent-rgb),0.3);
 }
 .btn-sm{ padding: 9px 18px; font-size: 13.5px; }
@@ -205,7 +202,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 .site-header::before{
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: var(--header-bg, rgba(10,13,18,0.72));
+  background: var(--header-bg, rgba(var(--bg-rgb),0.72));
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   transition: background 0.3s var(--ease);
 }
@@ -241,7 +238,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
     position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
     width: min(300px, 82vw); flex-direction: column; align-items: flex-start; gap: 0;
     padding: calc(var(--header-h) + var(--space-lg)) var(--space-lg) var(--space-lg);
-    background: #0d1015; border-right: 1px solid var(--border-soft);
+    background: var(--bg); border-right: 1px solid var(--border-soft);
     transform: translateX(-100%); transition: transform 0.3s var(--ease);
     overflow-y: auto;
   }
@@ -264,18 +261,18 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 .hero-flow{
   position: absolute; inset: 0; z-index: 0;
-  background: radial-gradient(ellipse 70% 60% at 78% 45%, #0d1420 0%, var(--bg) 62%);
+  background: radial-gradient(ellipse 70% 60% at 78% 45%, var(--bg-alt) 0%, var(--bg) 62%);
 }
 .hero-flow-overlay{
   position: absolute; inset: 0;
-  background: linear-gradient(100deg, var(--bg) 0%, rgba(10,13,18,0.85) 30%, rgba(10,13,18,0.25) 55%, transparent 78%);
+  background: linear-gradient(100deg, var(--bg) 0%, rgba(var(--bg-rgb),0.85) 30%, rgba(var(--bg-rgb),0.25) 55%, transparent 78%);
 }
 .hero-flow--compact{ position: absolute; }
 
 .hud-badge{
   position: absolute; z-index: 1; display: flex; align-items: center; gap: 8px;
   font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em; color: var(--text-dim);
-  background: rgba(10,13,18,0.55); border: 1px solid var(--border-soft);
+  background: rgba(var(--bg-rgb),0.55); border: 1px solid var(--border-soft);
   padding: 8px 12px; border-radius: 999px; backdrop-filter: blur(6px);
 }
 .hud-dot{ width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px 1px var(--accent); flex-shrink: 0; }
@@ -366,13 +363,13 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   border-radius: var(--radius); overflow: hidden;
   transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
-a.project-card:hover{ border-color: var(--accent-dim); transform: translateY(-4px); box-shadow: 0 20px 50px -24px rgba(var(--accent-rgb),0.4), 0 30px 60px -34px rgba(209,171,117,0.3); }
+a.project-card:hover{ border-color: var(--accent-dim); transform: translateY(-4px); box-shadow: 0 20px 50px -24px rgba(var(--accent-rgb),0.28), 0 30px 60px -34px rgba(var(--accent-rgb),0.14); }
 .project-card-media{ position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-alt); }
 .project-card-media img{ width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); filter: saturate(0.85); }
 a.project-card:hover .project-card-media img{ transform: scale(1.05); }
 .project-card-tag{
   position: absolute; top: 14px; left: 14px; font-family: var(--font-mono); font-size: 11px;
-  letter-spacing: 0.05em; color: var(--success); background: rgba(10,13,18,0.7);
+  letter-spacing: 0.05em; color: var(--success); background: rgba(var(--bg-rgb),0.7);
   border: 1px solid rgba(var(--success-rgb),0.4); padding: 5px 10px; border-radius: 999px;
 }
 .project-card-tag--pending{ color: var(--accent); border-color: rgba(var(--accent-rgb),0.4); }
@@ -477,7 +474,7 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
   background: var(--gradient-jet);
   transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease);
 }
-a.contact-card:hover{ border-color: var(--accent); transform: translateY(-3px); background: linear-gradient(135deg, rgba(79,195,255,0.08), rgba(209,171,117,0.04) 75%, var(--surface)); }
+a.contact-card:hover{ border-color: var(--accent); transform: translateY(-3px); background: linear-gradient(135deg, rgba(var(--accent-rgb),0.08), rgba(var(--accent-rgb),0.03) 75%, var(--surface)); }
 a.contact-card:hover::before{ transform: scaleX(1); }
 .contact-icon{
   display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px;
@@ -515,7 +512,7 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   padding: var(--space-md) var(--space-lg); transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
 }
 .year-tab:hover{ border-color: var(--accent-dim); }
-.year-tab.is-active{ border-color: var(--accent); background: linear-gradient(135deg, rgba(79,195,255,0.1), rgba(209,171,117,0.05) 80%, transparent); }
+.year-tab.is-active{ border-color: var(--accent); background: linear-gradient(135deg, rgba(var(--accent-rgb),0.08), rgba(var(--accent-rgb),0.03) 80%, transparent); }
 .year-tab-num{ font-family: var(--font-mono); font-size: 26px; font-weight: 500; color: var(--text-faint); transition: color 0.25s var(--ease); }
 .year-tab.is-active .year-tab-num{ color: var(--accent); }
 .year-tab-text{ display: flex; flex-direction: column; gap: 3px; }
@@ -595,7 +592,7 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .collage-hint{
   position: absolute; left: 8px; bottom: 8px; z-index: 2;
   font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.02em;
-  color: var(--text-dim); background: rgba(10,13,18,0.72);
+  color: var(--text-dim); background: rgba(var(--bg-rgb),0.72);
   border: 1px solid var(--border-soft); border-radius: 999px;
   padding: 4px 9px; pointer-events: none;
   opacity: 0.85; transition: opacity 0.25s var(--ease);
