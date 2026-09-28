@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=51">
+<link rel="stylesheet" href="css/styles.css?v=52">
 </head>
 <body>
 
@@ -50,6 +50,10 @@
 
   <!-- ============ PROJECT HERO ============ -->
   <section class="project-hero">
+    <div class="hero-bg" aria-hidden="true">
+      <img src="assets/images/novaracing-team-dock.jpg" alt="" width="1206" height="889">
+      <div class="hero-bg-scrim"></div>
+    </div>
     <div class="project-hero-content">
       <a href="index.html#projects" class="back-link">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
@@ -250,44 +254,10 @@
       <!-- ============ SOPHOMORE YEAR ============ -->
       <div class="year-panel" id="panel-sophomore" role="tabpanel" aria-labelledby="tab-sophomore" hidden>
 
-        <article class="story reveal">
-          <div class="story-copy">
-            <div class="story-head">
-              <span class="pill">VU18 Aerodynamics Package Design</span>
-              <span class="status-chip status-chip--design">Design &middot; in progress</span>
-            </div>
-            <ul class="story-points">
-              <li>
-                <strong>Front wing.</strong> Iterated on the front wing for a 33% greater
-                main-element chord, and on the endplates to increase usable aerodynamic surface
-                while directing flow toward the sidepod inlet.
-              </li>
-              <li>
-                <strong>Rear wing.</strong> Designed a multi-element rear wing with increasing
-                angle of attack and reduced centerline loading behind the driver's wake, targeting
-                flow attachment, more outboard downforce, and lower aerodynamic losses in turbulent
-                flow.
-              </li>
-              <li>
-                <strong>Sidepod.</strong> Modeled a preliminary sidepod with an inlet intended to
-                capture flow redirected by the front wing and maximize radiator cooling capacity.
-              </li>
-            </ul>
-            <p class="footnote">
-              Design work is ongoing. More of the VU18 aero package will be added here as it develops.
-            </p>
-          </div>
-          <div class="story-figures">
-            <figure class="collage-item is-wide fit-contain">
-              <img src="assets/images/vu18-sidepod-cad1.jpg" alt="Preliminary VU18 sidepod CAD model with inlet and turning vanes" width="1206" height="888" loading="lazy">
-              <figcaption>Preliminary VU18 sidepod in SolidWorks</figcaption>
-            </figure>
-            <figure class="collage-item is-wide is-tall fit-contain">
-              <img src="assets/images/vu18-sidepod-cad2.jpg" alt="Three views of the preliminary VU18 sidepod CAD model" width="1164" height="1700" loading="lazy">
-              <figcaption>The preliminary VU18 sidepod from three views</figcaption>
-            </figure>
-          </div>
-        </article>
+        <div class="coming-soon reveal">
+          <span class="status-chip status-chip--design">Coming soon</span>
+          <p class="coming-soon-title">VU18 aero package design underway.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -318,6 +288,6 @@
   <p class="lightbox-caption" id="lightboxCaption"></p>
 </div>
 
-<script src="js/main.js?v=34"></script>
+<script src="js/main.js?v=36"></script>
 </body>
 </html>

@@ -45,11 +45,13 @@
   function onScrollHeader() {
     if (!header) return;
     var y = window.scrollY;
+    // A solid baseline of blue at the top too, so the glass never washes
+    // out to white over a bright photo or the light page background.
     if (y > 20) {
-      header.style.setProperty('--header-bg', 'rgba(15,47,102,0.55)');
+      header.style.setProperty('--header-bg', 'rgba(15,47,102,0.78)');
       header.style.borderBottomColor = 'rgba(255,255,255,0.16)';
     } else {
-      header.style.setProperty('--header-bg', 'rgba(15,47,102,0.3)');
+      header.style.setProperty('--header-bg', 'rgba(15,47,102,0.62)');
       header.style.borderBottomColor = 'rgba(255,255,255,0.1)';
     }
     var navOpen = mainNav && mainNav.classList.contains('is-open');
@@ -106,6 +108,24 @@
       { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
     );
     revealEls.forEach(function (el) { revealObserver.observe(el); });
+  }
+
+  /* ---------- Project images: full opacity once a card is well in view ---------- */
+  var projectCards = Array.prototype.slice.call(document.querySelectorAll('.project-card'));
+  if (!('IntersectionObserver' in window)) {
+    projectCards.forEach(function (card) { card.classList.add('is-inview'); });
+  } else {
+    var cardObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        // Also count cards already scrolled above the viewport, so a fast
+        // fling past a card still leaves it revealed on the way back up.
+        if (entry.isIntersecting || entry.boundingClientRect.bottom < 0) {
+          entry.target.classList.add('is-inview');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4, rootMargin: '0px 0px -10% 0px' });
+    projectCards.forEach(function (card) { cardObserver.observe(card); });
   }
 
   /* ---------- Year tabs ---------- */

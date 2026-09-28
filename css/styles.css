@@ -203,7 +203,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
    content further down) shows through blurred and tinted, not hidden. */
 .site-header::before{
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: var(--header-bg, rgba(var(--accent-rgb),0.34));
+  background: var(--header-bg, rgba(var(--accent-rgb),0.62));
   backdrop-filter: blur(20px) saturate(1.6); -webkit-backdrop-filter: blur(20px) saturate(1.6);
   transition: background 0.3s var(--ease);
 }
@@ -475,12 +475,12 @@ a.project-card:hover{ border-color: var(--accent-dim); transform: translateY(-4p
 .project-card-media{ position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-alt); }
 .project-card-media img{ width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease), opacity 0.4s var(--ease); filter: saturate(0.85); }
 a.project-card:hover .project-card-media img{ transform: scale(1.05); }
-/* Desktop only: images rest semi-transparent and come fully forward on
-   hover. Touch devices have no hover, so they always show full images. */
-@media (hover: hover) and (min-width: 901px){
-  .project-card-media img{ opacity: 0.45; }
-  .project-card:hover .project-card-media img{ opacity: 1; }
-}
+/* Images rest semi-transparent and come fully forward once the card
+   scrolls into view (JS adds .is-inview) or on hover — on every device. */
+.project-card-media img{ opacity: 0.45; }
+.project-card.is-inview .project-card-media img,
+.project-card:hover .project-card-media img{ opacity: 1; }
+@media (prefers-reduced-motion: reduce){ .project-card-media img{ opacity: 1; } }
 .project-card-tag{
   position: absolute; top: 14px; left: 14px; font-family: var(--font-mono); font-size: 11px;
   letter-spacing: 0.05em; color: var(--success); background: rgba(var(--bg-rgb),0.7);
@@ -601,6 +601,23 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   font-size: 13.5px; color: var(--text-dim);
 }
 .project-meta-row strong{ display: block; font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; font-weight: 500; }
+
+/* Photo header: same full-bleed treatment as the homepage hero (shared
+   .hero-bg / .hero-bg-scrim), ending in a hard edge above the year tabs.
+   The scrim is heavier here because this header carries a paragraph and
+   the meta row, not just a title. */
+.project-hero{ border-bottom: 1px solid rgba(0,0,0,0.15); }
+.project-hero .hero-bg img{ object-position: center 58%; }
+.project-hero .hero-bg-scrim{
+  background: linear-gradient(100deg, rgba(6,9,14,0.84) 0%, rgba(6,9,14,0.66) 42%, rgba(6,9,14,0.34) 75%, rgba(6,9,14,0.46) 100%);
+}
+.project-hero .back-link{ color: rgba(255,255,255,0.75); }
+.project-hero .back-link:hover{ color: #ffffff; }
+.project-hero .eyebrow{ color: rgba(255,255,255,0.85); }
+.project-hero-title{ color: #ffffff; }
+.project-hero .hero-lede{ color: rgba(255,255,255,0.84); }
+.project-hero .project-meta-row{ color: rgba(255,255,255,0.88); }
+.project-hero .project-meta-row strong{ color: rgba(255,255,255,0.6); }
 
 /* ============ YEAR TABS ============ */
 .year-tabs{ display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin-bottom: var(--space-2xl); }
@@ -732,6 +749,13 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   border: 1px solid var(--border-soft); border-radius: 999px; padding: 5px 11px;
 }
 
+/* Placeholder for a year that doesn't have published content yet */
+.coming-soon{ display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: var(--space-lg) 0; }
+.coming-soon-title{
+  font-family: var(--font-head); font-size: clamp(24px, 3vw, 34px); font-weight: 500;
+  letter-spacing: -0.01em; color: var(--text);
+}
+
 /* ============ FOOTER ============ */
 /* Dark, to bookend the dark photo hero at the top of the page. */
 .site-footer{ position: relative; z-index: 1; background: #0b1320; padding: var(--space-lg) var(--space-md); }
@@ -744,28 +768,36 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .footer-nav a:hover{ color: #ffffff; }
 
 /* ============ LIGHTBOX ============ */
+/* The page's own off-white, slightly translucent and blurred, so the
+   viewer feels like part of the site rather than a separate dark mode. */
 .lightbox{
   position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center;
-  flex-direction: column; gap: var(--space-sm); background: rgba(6,8,11,0.94);
-  backdrop-filter: blur(6px); padding: var(--space-lg);
+  flex-direction: column; gap: var(--space-sm); background: rgba(var(--bg-rgb),0.86);
+  backdrop-filter: blur(16px) saturate(1.2); -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  padding: var(--space-lg);
 }
 .lightbox.is-open{ display: flex; }
-.lightbox img{ max-width: min(92vw, 1100px); max-height: 78vh; object-fit: contain; border-radius: var(--radius); border: 1px solid var(--border); }
+.lightbox img{
+  max-width: min(92vw, 1100px); max-height: 78vh; object-fit: contain;
+  border-radius: var(--radius); border: 1px solid var(--border);
+  box-shadow: 0 30px 70px -30px rgba(0,0,0,0.45);
+}
 .lightbox-caption{ font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); text-align: center; max-width: 700px; }
 .lightbox-close{
   position: absolute; top: var(--space-md); right: var(--space-md); width: 44px; height: 44px;
-  border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--text);
+  border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.75); color: var(--text);
   font-size: 26px; line-height: 1; display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
 }
 .lightbox-close:hover{ border-color: var(--accent); color: var(--accent); }
 
 .lightbox-nav{
   position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px;
-  border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--text);
+  border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.75); color: var(--text);
   font-size: 16px; display: flex; align-items: center; justify-content: center; z-index: 2;
   transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
 }
-.lightbox-nav:hover{ border-color: var(--accent); color: var(--accent); background: rgba(255,255,255,0.08); }
+.lightbox-nav:hover{ border-color: var(--accent); color: var(--accent); background: #ffffff; }
 .lightbox-nav--prev{ left: var(--space-md); }
 .lightbox-nav--next{ right: var(--space-md); }
 @media (max-width: 640px){
