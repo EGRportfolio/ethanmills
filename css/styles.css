@@ -394,20 +394,11 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   background: linear-gradient(100deg, rgba(6,9,14,0.8) 0%, rgba(6,9,14,0.6) 32%, rgba(6,9,14,0.28) 62%, rgba(6,9,14,0.48) 100%);
 }
 /* Home hero: the photo is shown whole. On desktop the section takes the
-   photo's own 3:2 shape so nothing is cropped, and the intro sits at the
-   bottom-left over the asphalt, clear of the car. A bottom-weighted scrim
-   keeps it legible. Phones can't fit a 3:2 frame at full height, so
-   there the photo covers and stays centered on the car. */
-.hero--home{ align-items: flex-end; }
+   photo's own 3:2 shape so nothing is cropped; phones can't fit a 3:2
+   frame at full height, so there the photo covers, centered on the car. */
 .hero--home .hero-bg img{ object-position: 42% 50%; }
-.hero--home .hero-bg-scrim{
-  background:
-    linear-gradient(0deg, rgba(6,9,14,0.82) 0%, rgba(6,9,14,0.5) 30%, rgba(6,9,14,0.08) 58%, rgba(6,9,14,0.18) 100%),
-    linear-gradient(90deg, rgba(6,9,14,0.35) 0%, transparent 55%);
-}
 @media (min-width: 901px){
   .hero--home{ min-height: 0; aspect-ratio: 3 / 2; }
-  .hero--home .hero-content{ padding-bottom: var(--space-lg); }
 }
 .hero .eyebrow{ color: rgba(255,255,255,0.85); }
 .hero-title{ color: #ffffff; }
