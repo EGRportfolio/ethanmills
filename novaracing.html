@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=48">
+<link rel="stylesheet" href="css/styles.css?v=51">
 </head>
 <body>
 
@@ -27,16 +27,16 @@
     </button>
     <nav class="main-nav" id="mainNav" aria-label="Primary">
       <a href="index.html#home" class="nav-link">Home</a>
-      <a href="index.html#about" class="nav-link">About</a>
-      <a href="index.html#skills" class="nav-link">Skills</a>
       <div class="nav-dropdown">
         <a href="index.html#projects" class="nav-link nav-dropdown-trigger is-active">Projects</a>
         <div class="nav-dropdown-menu">
-          <a href="index.html#projects">NovaRacing</a>
+          <a href="novaracing.html" aria-current="page">NovaRacing</a>
           <a href="index.html#projects">Beetlebot Competition</a>
           <a href="index.html#projects">Wind Tunnel &amp; Fluids Research</a>
         </div>
       </div>
+      <a href="index.html#about" class="nav-link">About</a>
+      <a href="index.html#skills" class="nav-link">Skills</a>
       <a href="index.html#goals" class="nav-link">Interests</a>
       <a href="index.html#contact" class="nav-link">Contact</a>
     </nav>
@@ -63,7 +63,7 @@
         moving from composite manufacturing my first year to CAD- and CFD-driven aero design now.
       </p>
       <div class="project-meta-row">
-        <span><strong>Role</strong> Chassis System / Aerodynamics Subsystem Engineer</span>
+        <span><strong>Role</strong> Aerodynamics Subsystem Engineer, Chassis System</span>
         <span><strong>Team</strong> NovaRacing Formula SAE, Villanova University</span>
         <span><strong>Timeline</strong> Dec. 2025 &ndash; Present</span>
       </div>
@@ -95,7 +95,15 @@
 
         <article class="story reveal">
           <div class="story-copy">
-            <span class="pill">Fiber Composite Manufacturing</span>
+            <div class="story-head">
+              <span class="pill">Fiber Composite Manufacturing</span>
+              <span class="status-chip status-chip--built">Built</span>
+            </div>
+            <dl class="story-spec">
+              <div><dt>Car</dt><dd>VU17</dd></div>
+              <div><dt>Output</dt><dd>20+ carbon-fiber parts</dd></div>
+              <div><dt>Tooling</dt><dd>10+ PLA &amp; CNC-routed MDF molds, 60&ndash;4000 grit</dd></div>
+            </dl>
             <p>
               During my freshman spring with NovaRacing, I manufactured 20+ carbon-fiber parts for
               VU17's aerodynamic package, including the front and rear wings, undertray, nosecone,
@@ -142,6 +150,7 @@
             </ul>
           </div>
           <div class="photo-gallery" data-gallery>
+            <button type="button" class="gallery-toggle" aria-pressed="false">Pause slideshow</button>
             <div class="photo-gallery-track">
               <figure class="collage-item square">
                 <img src="assets/images/vu17-capstone-team.jpg" alt="The VU17 senior capstone team" loading="lazy">
@@ -202,17 +211,83 @@
             </div>
           </div>
         </article>
+
+        <article class="story reveal">
+          <div class="story-copy">
+            <div class="story-head">
+              <span class="pill">Pushrod Suspension Rocker</span>
+              <span class="status-chip status-chip--sim">Simulated &middot; FEA</span>
+            </div>
+            <dl class="story-spec">
+              <div><dt>Tools</dt><dd>SolidWorks, SolidWorks FEA</dd></div>
+              <div><dt>Material</dt><dd>7075-T6 aluminum, chosen from three candidates</dd></div>
+              <div><dt>Result</dt><dd>0.388 mm predicted max deformation vs. a 1.0 mm limit</dd></div>
+            </dl>
+            <p>
+              I designed a pushrod suspension rocker in SolidWorks and compared three materials
+              using finite element analysis. I selected <strong>7075-T6 aluminum</strong>, which had a
+              predicted maximum deformation of <strong>0.388&nbsp;mm</strong> under the prescribed
+              loads, meeting the 1.0&nbsp;mm deformation limit.
+            </p>
+          </div>
+          <div class="story-figures">
+            <figure class="collage-item is-wide">
+              <img src="assets/images/vu17-fea-rocker.jpg" alt="SolidWorks static displacement plot of the two-plate suspension rocker assembly" width="1350" height="1800" loading="lazy">
+              <figcaption>SolidWorks static displacement study of the rocker assembly</figcaption>
+            </figure>
+            <figure class="collage-item">
+              <img src="assets/images/vu17-rocker-coilover.jpg" alt="Rocker assembly in CAD, mounted with the pushrod and coilover" width="1012" height="1800" loading="lazy">
+              <figcaption>Rocker mounted with the pushrod and coilover in the suspension assembly</figcaption>
+            </figure>
+            <figure class="collage-item">
+              <img src="assets/images/vu17-rocker-plates.jpg" alt="CAD model of the two triangular rocker plates" width="1350" height="1800" loading="lazy">
+              <figcaption>The two rocker plates in SolidWorks</figcaption>
+            </figure>
+          </div>
+        </article>
       </div>
 
       <!-- ============ SOPHOMORE YEAR ============ -->
       <div class="year-panel" id="panel-sophomore" role="tabpanel" aria-labelledby="tab-sophomore" hidden>
 
-        <div class="in-progress-note reveal">
-          <div class="result-card result-card--muted">
-            <span class="result-tag">In Progress</span>
-            <p>Design work is ongoing. More of the VU18 aero package will be added here as it develops.</p>
+        <article class="story reveal">
+          <div class="story-copy">
+            <div class="story-head">
+              <span class="pill">VU18 Aerodynamics Package Design</span>
+              <span class="status-chip status-chip--design">Design &middot; in progress</span>
+            </div>
+            <ul class="story-points">
+              <li>
+                <strong>Front wing.</strong> Iterated on the front wing for a 33% greater
+                main-element chord, and on the endplates to increase usable aerodynamic surface
+                while directing flow toward the sidepod inlet.
+              </li>
+              <li>
+                <strong>Rear wing.</strong> Designed a multi-element rear wing with increasing
+                angle of attack and reduced centerline loading behind the driver's wake, targeting
+                flow attachment, more outboard downforce, and lower aerodynamic losses in turbulent
+                flow.
+              </li>
+              <li>
+                <strong>Sidepod.</strong> Modeled a preliminary sidepod with an inlet intended to
+                capture flow redirected by the front wing and maximize radiator cooling capacity.
+              </li>
+            </ul>
+            <p class="footnote">
+              Design work is ongoing. More of the VU18 aero package will be added here as it develops.
+            </p>
           </div>
-        </div>
+          <div class="story-figures">
+            <figure class="collage-item is-wide fit-contain">
+              <img src="assets/images/vu18-sidepod-cad1.jpg" alt="Preliminary VU18 sidepod CAD model with inlet and turning vanes" width="1206" height="888" loading="lazy">
+              <figcaption>Preliminary VU18 sidepod in SolidWorks</figcaption>
+            </figure>
+            <figure class="collage-item is-wide is-tall fit-contain">
+              <img src="assets/images/vu18-sidepod-cad2.jpg" alt="Three views of the preliminary VU18 sidepod CAD model" width="1164" height="1700" loading="lazy">
+              <figcaption>The preliminary VU18 sidepod from three views</figcaption>
+            </figure>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -225,9 +300,9 @@
     <span>&copy; <span id="year"></span> Ethan Mills.</span>
     <nav class="footer-nav" aria-label="Footer">
       <a href="index.html#home">Home</a>
+      <a href="index.html#projects">Projects</a>
       <a href="index.html#about">About</a>
       <a href="index.html#skills">Skills</a>
-      <a href="index.html#projects">Projects</a>
       <a href="index.html#goals">Interests</a>
       <a href="index.html#contact">Contact</a>
     </nav>
@@ -243,6 +318,6 @@
   <p class="lightbox-caption" id="lightboxCaption"></p>
 </div>
 
-<script src="js/main.js?v=33"></script>
+<script src="js/main.js?v=34"></script>
 </body>
 </html>

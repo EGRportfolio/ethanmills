@@ -1,6 +1,6 @@
 /* ===================================================================
    Ethan Mills — Engineering Portfolio
-   Nav, scroll-spy, reveal, tabs, lightbox, magnetic buttons
+   Nav, scroll-spy, reveal, tabs, lightbox, gallery
 =================================================================== */
 (function () {
   'use strict';
@@ -223,6 +223,8 @@
 
     var timer = null;
     var resumeTimer = null;
+    var userPaused = false;
+    var toggle = gallery.querySelector('.gallery-toggle');
 
     function step(dir) {
       var item = track.querySelector('.collage-item');
@@ -237,7 +239,7 @@
       else step(1);
     }
     function start() {
-      if (prefersReducedMotion) return;
+      if (prefersReducedMotion || userPaused) return;
       stop();
       timer = window.setInterval(advance, 3200);
     }
@@ -250,27 +252,25 @@
       resumeTimer = window.setTimeout(start, 5000);
     }
 
+    if (toggle) {
+      // Nothing auto-advances under reduced motion, so there's nothing to pause.
+      if (prefersReducedMotion) toggle.hidden = true;
+      toggle.addEventListener('click', function () {
+        userPaused = !userPaused;
+        toggle.setAttribute('aria-pressed', String(userPaused));
+        toggle.textContent = userPaused ? 'Play slideshow' : 'Pause slideshow';
+        if (userPaused) stop(); else start();
+      });
+    }
+
     track.addEventListener('mouseenter', stop);
     track.addEventListener('mouseleave', start);
     track.addEventListener('touchstart', pauseThenResume, { passive: true });
     track.addEventListener('wheel', pauseThenResume, { passive: true });
-    gallery.addEventListener('focusin', stop);
-    gallery.addEventListener('focusout', start);
+    track.addEventListener('focusin', stop);
+    track.addEventListener('focusout', start);
 
     start();
   });
-
-  /* ---------- Magnetic buttons (subtle, desktop only, reactive to cursor) ---------- */
-  if (!prefersReducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    document.querySelectorAll('.btn').forEach(function (btn) {
-      btn.addEventListener('mousemove', function (e) {
-        var r = btn.getBoundingClientRect();
-        var x = e.clientX - r.left - r.width / 2;
-        var y = e.clientY - r.top - r.height / 2;
-        btn.style.transform = 'translate(' + (x * 0.12).toFixed(1) + 'px,' + (y * 0.28 - 2).toFixed(1) + 'px)';
-      });
-      btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
-    });
-  }
 
 })();
