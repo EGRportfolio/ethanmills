@@ -11,33 +11,47 @@
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---------- Nav toggle (left-side sliding panel) ---------- */
+  /* ---------- Nav ----------
+     Mobile: the hamburger opens a left-side sliding panel.
+     Desktop: the bubbles collapse into the hamburger once you leave the
+     top of the page and only pop back out at the very top; in between,
+     the hamburger opens the row of bubbles across beside it. */
   var navToggle = document.getElementById('navToggle');
   var mainNav = document.getElementById('mainNav');
   var navOverlay = document.getElementById('navOverlay');
+  var header = document.getElementById('siteHeader');
+  var desktopQuery = window.matchMedia('(min-width: 901px)');
+  var expandedAtY = 0;
 
   function closeNav() {
     if (!navToggle || !mainNav) return;
     navToggle.setAttribute('aria-expanded', 'false');
     mainNav.classList.remove('is-open');
     if (navOverlay) navOverlay.classList.remove('is-open');
+    if (header) header.classList.remove('is-expanded');
   }
 
-  var header = document.getElementById('siteHeader');
-  var desktopQuery = window.matchMedia('(min-width: 901px)');
+  // Each bubble's horizontal distance to the hamburger, so collapsing
+  // sends it into the hamburger and popping out retraces the same path.
+  // offsetLeft ignores transforms, so this is safe mid-animation.
+  function measureCollapse() {
+    if (!navToggle || !mainNav || !desktopQuery.matches) return;
+    var target = navToggle.offsetLeft + navToggle.offsetWidth / 2;
+    Array.prototype.forEach.call(mainNav.children, function (el) {
+      var x = target - (el.offsetLeft + el.offsetWidth / 2);
+      el.style.setProperty('--collapse-x', Math.round(x) + 'px');
+    });
+  }
 
   if (navToggle && mainNav) {
     navToggle.addEventListener('click', function () {
-      // Desktop: the hamburger is just the collapsed bubbles, so clicking
-      // it plays them back out instead of opening the drawer.
-      if (desktopQuery.matches && header) {
-        header.classList.remove('is-condensed');
-        var first = mainNav.querySelector('.nav-link');
-        if (first) first.focus({ preventScroll: true });
-        return;
-      }
       var open = navToggle.getAttribute('aria-expanded') === 'true';
       navToggle.setAttribute('aria-expanded', String(!open));
+      if (desktopQuery.matches && header) {
+        header.classList.toggle('is-expanded', !open);
+        expandedAtY = window.scrollY;
+        return;
+      }
       mainNav.classList.toggle('is-open', !open);
       if (navOverlay) navOverlay.classList.toggle('is-open', !open);
     });
@@ -48,27 +62,33 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeNav();
     });
+    // Desktop: a click anywhere outside the header closes the open row.
+    document.addEventListener('click', function (e) {
+      if (header && header.classList.contains('is-expanded') && !header.contains(e.target)) closeNav();
+    });
+    desktopQuery.addEventListener('change', function () { closeNav(); measureCollapse(); });
+    window.addEventListener('resize', measureCollapse);
+    window.addEventListener('load', measureCollapse);
+    measureCollapse();
   }
 
-  /* ---------- Header: bubbles collapse into the hamburger on scroll down ---------- */
-  var lastScrollY = window.scrollY;
+  /* ---------- Header: condensed everywhere except the very top ---------- */
   function onScrollHeader() {
     if (!header) return;
     var y = window.scrollY;
-    if (y < 80) {
+    if (y < 40) {
       header.classList.remove('is-condensed');
-      lastScrollY = y;
+      if (header.classList.contains('is-expanded')) closeNav();
       return;
     }
-    // Small dead-band so trackpad jitter doesn't flicker the bubbles.
-    if (Math.abs(y - lastScrollY) < 6) return;
+    // An opened row tucks itself away again after a good scroll.
+    if (header.classList.contains('is-expanded') && Math.abs(y - expandedAtY) > 200) closeNav();
     // Don't yank the bubbles out from under keyboard focus.
-    var focusInNav = mainNav && mainNav.contains(document.activeElement);
-    if (y > lastScrollY && !focusInNav) header.classList.add('is-condensed');
-    else if (y < lastScrollY) header.classList.remove('is-condensed');
-    lastScrollY = y;
+    if (mainNav && mainNav.contains(document.activeElement) && !header.classList.contains('is-expanded')) return;
+    header.classList.add('is-condensed');
   }
   document.addEventListener('scroll', onScrollHeader, { passive: true });
+  if (mainNav) mainNav.addEventListener('focusout', function () { window.setTimeout(onScrollHeader, 0); });
   onScrollHeader();
 
   /* ---------- Scroll-spy (home page only — sections live on index.html) ---------- */

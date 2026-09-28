@@ -64,9 +64,13 @@
   --radius-sm: 6px;
 
   --header-h: 76px;
+  /* Side padding for page content. Wider on desktop so the collapsed nav
+     hamburger sits in empty space at the left instead of over content. */
+  --gutter: var(--space-md);
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
+@media (min-width: 901px){ :root{ --gutter: 80px; } }
 
 /* ============ RESET ============ */
 *, *::before, *::after{ box-sizing: border-box; }
@@ -124,7 +128,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 
 /* ============ LAYOUT ============ */
-.section{ position: relative; z-index: 1; padding: var(--space-2xl) var(--space-md); }
+.section{ position: relative; z-index: 1; padding: var(--space-2xl) var(--gutter); }
 .section--alt{ background: linear-gradient(180deg, transparent, var(--bg-alt) 12%, var(--bg-alt) 88%, transparent); }
 .section-inner{ max-width: 1180px; margin: 0 auto; }
 
@@ -192,8 +196,10 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   height: var(--header-h); display: flex; align-items: center;
   pointer-events: none;
 }
+/* Full width and unpositioned, so the hamburger anchors to the viewport's
+   left edge (in the page gutter) and the bubbles start just right of it. */
 .header-inner{
-  position: relative; width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 var(--space-md);
+  width: 100%; padding: 0 var(--space-md) 0 var(--gutter);
   display: flex; align-items: center; gap: var(--space-md);
 }
 .nav-toggle, .main-nav, .header-inner > .btn{ pointer-events: auto; }
@@ -239,8 +245,9 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 .hero .btn-ghost:hover{ background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.5); }
 
-/* Hamburger: a round glass bubble pinned where the first nav bubble
-   starts. On desktop it only appears once the bubbles collapse into it. */
+/* Hamburger: a round glass bubble. On desktop it sits out in the left
+   page gutter, clear of the content, and only appears once the bubbles
+   collapse into it. */
 .nav-toggle{
   position: absolute; left: var(--space-md); top: 50%; z-index: 210;
   display: flex; flex-direction: column; justify-content: center; gap: 5px;
@@ -294,10 +301,13 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 .nav-dropdown-menu a:hover{ background: rgba(255,255,255,0.12); color: #ffffff; }
 
-/* Desktop: scrolling down collapses the bubbles, right to left, into the
-   hamburger; scrolling up (or clicking the hamburger) plays it back,
-   left to right. --i is each bubble's position in the row. */
+/* Desktop: leaving the top of the page collapses the bubbles, right to
+   left, into the hamburger; returning to the very top plays that back,
+   left to right. Anywhere else, the hamburger opens the row across beside
+   it (.is-expanded). --i is each bubble's position in the row; JS sets
+   --collapse-x to its distance from the hamburger. */
 @media (min-width: 901px){
+  .nav-toggle{ left: 18px; }
   .main-nav > *{
     --d: calc(var(--i) * 40ms);
     transition: opacity 0.3s var(--ease) var(--d), transform 0.4s var(--ease) var(--d), visibility 0s linear var(--d);
@@ -308,12 +318,12 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   .main-nav > :nth-child(4){ --i: 3; }
   .main-nav > :nth-child(5){ --i: 4; }
   .main-nav > :nth-child(6){ --i: 5; }
-  .site-header.is-condensed .main-nav{ pointer-events: none; }
-  .site-header.is-condensed .main-nav > *{
+  .site-header.is-condensed:not(.is-expanded) .main-nav{ pointer-events: none; }
+  .site-header.is-condensed:not(.is-expanded) .main-nav > *{
     --d: calc((5 - var(--i)) * 30ms);
     opacity: 0; visibility: hidden; pointer-events: none;
-    transform: translateX(calc(var(--i) * -30px - 16px)) scale(0.7);
-    transition: opacity 0.25s var(--ease) var(--d), transform 0.35s var(--ease) var(--d), visibility 0s linear calc(var(--d) + 0.35s);
+    transform: translateX(var(--collapse-x, calc(var(--i) * -30px - 16px))) scale(0.3);
+    transition: opacity 0.3s var(--ease) calc(var(--d) + 0.1s), transform 0.4s var(--ease) var(--d), visibility 0s linear calc(var(--d) + 0.4s);
   }
   .site-header.is-condensed .nav-toggle{
     opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(-50%) scale(1);
@@ -388,7 +398,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .hero-title{ color: #ffffff; }
 .hero-lede{ color: rgba(255,255,255,0.8); }
 
-.hero-content{ position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; width: 100%; padding: var(--space-xl) var(--space-md); }
+.hero-content{ position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; width: 100%; padding: var(--space-xl) var(--gutter); }
 .eyebrow{ font-family: var(--font-mono); font-size: 13px; color: var(--accent); letter-spacing: 0.05em; margin-bottom: var(--space-sm); }
 .hero-title{
   font-size: clamp(46px, 7.4vw, 100px); max-width: 900px; margin-bottom: var(--space-md);
@@ -582,7 +592,7 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 
 /* ============ PROJECT HERO (novaracing.html) ============ */
 .project-hero{
-  position: relative; padding: calc(var(--header-h) + var(--space-2xl)) var(--space-md) var(--space-2xl);
+  position: relative; padding: calc(var(--header-h) + var(--space-2xl)) var(--gutter) var(--space-2xl);
   overflow: hidden; min-height: 62svh; display: flex; align-items: center;
 }
 .project-hero-content{ position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; width: 100%; }
@@ -755,7 +765,7 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 
 /* ============ FOOTER ============ */
 /* Dark, to bookend the dark photo hero at the top of the page. */
-.site-footer{ position: relative; z-index: 1; background: #0b1320; padding: var(--space-lg) var(--space-md); }
+.site-footer{ position: relative; z-index: 1; background: #0b1320; padding: var(--space-lg) var(--gutter); }
 .footer-inner{
   max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;
   flex-wrap: wrap; gap: var(--space-md); font-size: 13.5px; color: rgba(255,255,255,0.6);
