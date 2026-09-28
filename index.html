@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=54">
+<link rel="stylesheet" href="css/styles.css?v=55">
 </head>
 <body>
 
@@ -27,6 +27,8 @@
     </button>
     <nav class="main-nav" id="mainNav" aria-label="Primary">
       <a href="#home" class="nav-link">Home</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#skills" class="nav-link">Skills</a>
       <div class="nav-dropdown">
         <a href="#projects" class="nav-link nav-dropdown-trigger">Projects</a>
         <div class="nav-dropdown-menu">
@@ -35,8 +37,6 @@
           <a href="#projects">Wind Tunnel &amp; Fluids Research</a>
         </div>
       </div>
-      <a href="#about" class="nav-link">About</a>
-      <a href="#skills" class="nav-link">Skills</a>
       <a href="#goals" class="nav-link">Interests</a>
       <a href="#contact" class="nav-link">Contact</a>
     </nav>
@@ -64,63 +64,10 @@
     </div>
   </section>
 
-  <!-- ============ PROJECTS ============ -->
-  <section class="section" id="projects">
-    <div class="section-inner">
-      <p class="section-eyebrow">01 &middot; Projects</p>
-      <h2 class="section-title">What I've Built</h2>
-      <p class="section-lede">Hands-on engineering work I've contributed to so far at Villanova.</p>
-
-      <div class="projects-grid">
-        <a href="novaracing.html" class="project-card reveal">
-          <div class="project-card-media">
-            <img src="assets/images/vu-cad-hero.jpg" alt="Full CAD render of the VU Formula SAE car with front wing, sidepods, and rear wing" width="1338" height="1161" loading="lazy">
-            <div class="project-card-tag">In Progress</div>
-            <span class="corner corner-tl" aria-hidden="true"></span>
-            <span class="corner corner-tr" aria-hidden="true"></span>
-            <span class="corner corner-bl" aria-hidden="true"></span>
-            <span class="corner corner-br" aria-hidden="true"></span>
-          </div>
-          <div class="project-card-body">
-            <span class="project-card-eyebrow">Formula SAE &middot; Dec. 2025 &ndash; Present</span>
-            <h3>NovaRacing</h3>
-            <p>Aerodynamic design and composite manufacturing for Villanova's Formula SAE race car, from VU17 carbon-fiber parts to VU18 aero package design.</p>
-            <span class="project-card-link">View Project <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
-          </div>
-        </a>
-
-        <div class="project-card reveal">
-          <div class="project-card-media project-card-media--split">
-            <img src="assets/images/beetlebot-cad-iso.png" alt="Isometric CAD render of the Beetlebot shell" loading="lazy">
-            <img src="assets/images/beetlebot-drawing.png" alt="Engineering drawing of the Beetlebot shell part" loading="lazy">
-            <div class="project-card-tag">In Progress</div>
-          </div>
-          <div class="project-card-body">
-            <span class="project-card-eyebrow">ME Analysis &amp; Design &middot; Fall 2026</span>
-            <h3>Beetlebot Competition</h3>
-            <p>A group project for my ME Analysis &amp; Design class: designing and building a combat robot, then battling it against other teams' robots.</p>
-          </div>
-        </div>
-
-        <div class="project-card reveal">
-          <div class="project-card-media">
-            <img src="assets/images/cfd-pressure-contour.png" alt="ANSYS Fluent pressure contour around an airfoil in a wind tunnel simulation" loading="lazy">
-            <div class="project-card-tag project-card-tag--pending">Planning</div>
-          </div>
-          <div class="project-card-body">
-            <span class="project-card-eyebrow">Undergraduate Research</span>
-            <h3>Wind Tunnel &amp; Fluids Research</h3>
-            <p>Looking to join a professor's lab for hands-on wind tunnel or fluids research. Currently searching for the right opportunity and advisor.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ============ ABOUT ============ -->
   <section class="section section--alt" id="about">
     <div class="section-inner">
-      <p class="section-eyebrow">02 &middot; About</p>
+      <p class="section-eyebrow">About</p>
       <h2 class="section-title">Who I Am</h2>
 
       <div class="about-grid">
@@ -128,7 +75,12 @@
           <div class="about-photo-frame">
             <img src="assets/images/profile.jpg" alt="Portrait of Ethan Mills" loading="lazy">
           </div>
-          <div class="about-photo-tag">Northern Virginia &rarr; Villanova, PA</div>
+          <ul class="about-facts">
+            <li>Villanova University</li>
+            <li>B.S. Mechanical Engineering, Class of 2029</li>
+            <li>Aerospace Engineering Minor</li>
+            <li>Thermal-Fluid Systems Concentration</li>
+          </ul>
         </div>
 
         <div class="about-copy reveal">
@@ -165,16 +117,6 @@
             materials, airflow, manufacturing, and structural requirements come together to shape
             a complete design.
           </p>
-
-          <div class="fact-line">
-            <span>Villanova University</span>
-            <span class="dot">&middot;</span>
-            <span>B.S. Mechanical Engineering, Class of 2029</span>
-            <span class="dot">&middot;</span>
-            <span>Aerospace Engineering Minor</span>
-            <span class="dot">&middot;</span>
-            <span>Thermal-Fluid Systems Concentration</span>
-          </div>
         </div>
       </div>
     </div>
@@ -183,7 +125,7 @@
   <!-- ============ SKILLS ============ -->
   <section class="section" id="skills">
     <div class="section-inner">
-      <p class="section-eyebrow">03 &middot; Skills</p>
+      <p class="section-eyebrow">Skills</p>
       <h2 class="section-title">What I Can Do</h2>
       <p class="section-lede">Technical skills I've built through my coursework, Formula SAE experience, and hands-on projects.</p>
 
@@ -236,10 +178,67 @@
     </div>
   </section>
 
-  <!-- ============ INTERESTS ============ -->
-  <section class="section section--alt goals-section" id="goals">
+  <!-- ============ PROJECTS ============ -->
+  <section class="section section--alt" id="projects">
     <div class="section-inner">
-      <p class="section-eyebrow">04 &middot; Interests</p>
+      <p class="section-eyebrow">Projects</p>
+      <h2 class="section-title">What I've Done</h2>
+      <p class="section-lede">Hands-on engineering work I've contributed to so far at Villanova.</p>
+
+      <div class="projects-grid">
+        <a href="novaracing.html" class="project-card reveal">
+          <div class="project-card-media">
+            <img src="assets/images/vu-cad-hero.jpg" alt="Full CAD render of the VU Formula SAE car with front wing, sidepods, and rear wing" width="1338" height="1161" loading="lazy">
+            <div class="project-card-tag">In Progress</div>
+            <span class="corner corner-tl" aria-hidden="true"></span>
+            <span class="corner corner-tr" aria-hidden="true"></span>
+            <span class="corner corner-bl" aria-hidden="true"></span>
+            <span class="corner corner-br" aria-hidden="true"></span>
+          </div>
+          <div class="project-card-body">
+            <span class="project-card-eyebrow">Formula SAE &middot; Dec. 2025 &ndash; Present</span>
+            <h3>NovaRacing</h3>
+            <p>Aerodynamic design and composite manufacturing for Villanova's Formula SAE race car, from VU17 carbon-fiber parts to VU18 aero package design.</p>
+            <span class="project-card-link">View Project <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+
+        <div class="project-card reveal">
+          <div class="project-card-media project-card-media--split">
+            <img src="assets/images/beetlebot-cad-iso.png" alt="Isometric CAD render of the Beetlebot shell" loading="lazy">
+            <img src="assets/images/beetlebot-drawing.png" alt="Engineering drawing of the Beetlebot shell part" loading="lazy">
+            <div class="project-card-tag">In Progress</div>
+          </div>
+          <div class="project-card-body">
+            <span class="project-card-eyebrow">ME Analysis &amp; Design &middot; Fall 2026</span>
+            <h3>Beetlebot Competition</h3>
+            <p>A group project for my ME Analysis &amp; Design class: designing and building a combat robot, then battling it against other teams' robots.</p>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <div class="project-card-media">
+            <img src="assets/images/cfd-pressure-contour.png" alt="ANSYS Fluent pressure contour around an airfoil in a wind tunnel simulation" loading="lazy">
+            <div class="project-card-tag project-card-tag--pending">Planning</div>
+          </div>
+          <div class="project-card-body">
+            <span class="project-card-eyebrow">Undergraduate Research</span>
+            <h3>Wind Tunnel &amp; Fluids Research</h3>
+            <p>Looking to join a professor's lab for hands-on wind tunnel or fluids research. Currently searching for the right opportunity and advisor.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INTERESTS ============ -->
+  <section class="section goals-section" id="goals">
+    <div class="goals-bg" aria-hidden="true">
+      <img src="assets/images/nasa-altair-uav.jpg" alt="" loading="lazy" width="2000" height="1250">
+      <div class="goals-bg-scrim"></div>
+    </div>
+    <div class="section-inner">
+      <p class="section-eyebrow">Interests</p>
       <h2 class="section-title">Where My Curiosity Goes</h2>
 
       <p class="section-lede">
@@ -280,12 +279,16 @@
         </div>
       </div>
     </div>
+    <p class="photo-credit">
+      Background: the Altair unmanned aerial vehicle (UAV), built by General Atomics Aeronautical Systems, Inc. for NASA, poised for flight at GA-ASI's flight test facility at El Mirage, California (March 24, 2003).
+      Photo: NASA/Alan Waide-GA-ASI, ED03-0078-1, via <a href="https://images.nasa.gov/details/ED03-0078-1" target="_blank" rel="noopener noreferrer">NASA Image and Video Library</a>.
+    </p>
   </section>
 
   <!-- ============ CONTACT ============ -->
   <section class="section" id="contact">
     <div class="section-inner">
-      <p class="section-eyebrow">05 &middot; Contact</p>
+      <p class="section-eyebrow">Contact</p>
       <h2 class="section-title">Where to Find Me</h2>
       <p class="section-lede">
         I'm always happy to connect about NovaRacing, shared engineering interests, or potential
@@ -320,9 +323,9 @@
     <span>&copy; <span id="year"></span> Ethan Mills.</span>
     <nav class="footer-nav" aria-label="Footer">
       <a href="#home">Home</a>
-      <a href="#projects">Projects</a>
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
       <a href="#goals">Interests</a>
       <a href="#contact">Contact</a>
     </nav>

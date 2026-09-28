@@ -223,11 +223,10 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .nav-link:hover{ background: rgba(var(--accent-rgb),0.78); border-color: rgba(255,255,255,0.32); color: #ffffff; }
 .nav-link.is-active{ background: rgba(var(--accent-rgb),0.86); border-color: rgba(157,192,239,0.55); color: #ffffff; }
 
-/* The CTA: same glass, but a denser fill and brighter rim so it stands
-   out from the nav bubbles. */
+/* The CTA: the same glass fill as the hamburger and nav bubbles, so it
+   reads at the same opacity all the way down the page. */
 .site-header .btn-primary{
-  background: rgba(var(--accent-rgb),0.86); color: #ffffff; border-color: rgba(255,255,255,0.4);
-  border-radius: 999px;
+  color: #ffffff; border-radius: 999px;
 }
 .site-header .btn-primary:hover{ background: var(--accent); border-color: rgba(255,255,255,0.7); }
 
@@ -419,18 +418,17 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 .about-photo-frame::after{ content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(9,7,5,0.7)); pointer-events: none; }
 .about-photo-frame img{ width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; filter: sepia(0.12) saturate(0.92); }
-.about-photo-tag{ margin-top: var(--space-sm); font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); text-align: left; }
+/* Degree facts stacked under the headshot */
+.about-facts{
+  list-style: none; margin: var(--space-sm) 0 0; padding: 0;
+  display: flex; flex-direction: column; gap: 6px;
+  font-family: var(--font-mono); font-size: 12px; line-height: 1.45; color: var(--text-faint);
+}
+.about-facts li{ padding-left: 12px; border-left: 2px solid var(--accent-dim); }
 
 .about-copy p{ color: var(--text-dim); font-size: 16.5px; margin-bottom: var(--space-md); }
 .about-copy strong{ font-weight: 600; }
 
-.fact-line{
-  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-  margin-top: var(--space-lg); padding-top: var(--space-lg);
-  border-top: 1px solid var(--border-soft);
-  font-family: var(--font-mono); font-size: 12.5px; color: var(--text-faint);
-}
-.fact-line .dot{ color: var(--accent-dim); }
 
 /* ============ SKILLS ============ */
 /* A spec sheet rather than a wall of cards: the category sits on the left
@@ -525,9 +523,41 @@ a.project-card:hover .corner{ opacity: 1; transform: translate(0,0); }
 a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 
 /* ============ GOALS ============ */
-.goals-section{ position: relative; }
+/* Full-bleed NASA photo behind the section, same treatment as the hero:
+   hard top and bottom edges (with a hairline) divide it from Skills-side
+   and Contact, and a left-weighted scrim keeps the light copy legible
+   while letting the aircraft show on the right. */
+.goals-section{
+  position: relative; overflow: hidden; color: #ffffff;
+  border-top: 1px solid rgba(0,0,0,0.15); border-bottom: 1px solid rgba(0,0,0,0.15);
+  padding-bottom: calc(var(--space-2xl) + 24px);
+}
+.goals-bg{ position: absolute; inset: 0; z-index: 0; }
+.goals-bg img{ width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
+.goals-bg-scrim{
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, rgba(6,9,14,0.86) 0%, rgba(6,9,14,0.74) 38%, rgba(6,9,14,0.4) 70%, rgba(6,9,14,0.55) 100%);
+}
 .goals-section .section-inner{ position: relative; z-index: 1; }
-.goals-section .section-lede{ max-width: 620px; }
+.goals-section .section-lede{ max-width: 620px; color: rgba(255,255,255,0.82); }
+.goals-section .section-eyebrow{ color: rgba(255,255,255,0.85); }
+.goals-section .section-title{ color: #ffffff; }
+.goals-section .interest-index{ max-width: 640px; border-top-color: rgba(255,255,255,0.2); }
+.goals-section .interest-row{ border-bottom-color: rgba(255,255,255,0.2); }
+.goals-section .interest-row:hover, .goals-section .interest-row:focus-visible{ background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent); }
+.goals-section .interest-row::before{ background: linear-gradient(180deg, #9dc0ef, #ffffff); }
+.goals-section .interest-num{ color: rgba(255,255,255,0.6); }
+.goals-section .interest-row:hover .interest-num, .goals-section .interest-row:focus-visible .interest-num{ color: #9dc0ef; }
+.goals-section .interest-name{ color: #ffffff; }
+.goals-section .interest-desc{ color: rgba(255,255,255,0.75); }
+
+.photo-credit{
+  position: absolute; z-index: 1; right: var(--space-md); bottom: 12px; left: var(--space-md);
+  margin: 0 0 0 auto; max-width: 560px; text-align: right;
+  font-family: var(--font-mono); font-size: 10.5px; line-height: 1.45; color: rgba(255,255,255,0.62);
+}
+.photo-credit a{ color: rgba(255,255,255,0.85); text-decoration: underline; text-underline-offset: 2px; }
+.photo-credit a:hover{ color: #ffffff; }
 
 /* Interest index — a numbered, expandable spec-sheet list (replaces icon cards) */
 .interest-index{ border-top: 1px solid var(--border-soft); }
@@ -564,6 +594,7 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
   .interest-row.is-open{ padding-left: 18px; background: linear-gradient(90deg, rgba(var(--accent-rgb),0.06), transparent); }
   .interest-row.is-open::before{ transform: scaleY(1); }
   .interest-row.is-open .interest-desc{ max-height: none; opacity: 1; margin-top: 6px; }
+  .goals-section .interest-row.is-open{ background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent); }
 }
 
 /* ============ CONTACT ============ */
