@@ -294,7 +294,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 .hero-photo img{
   width: 100%; height: 100%; object-fit: cover; object-position: 50% 48%;
-  opacity: 0.24; filter: saturate(0.75);
+  opacity: 0.48; filter: saturate(0.85);
 }
 @media (max-width: 980px){ .hero-photo{ display: none; } }
 
