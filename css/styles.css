@@ -393,6 +393,22 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   position: absolute; inset: 0;
   background: linear-gradient(100deg, rgba(6,9,14,0.8) 0%, rgba(6,9,14,0.6) 32%, rgba(6,9,14,0.28) 62%, rgba(6,9,14,0.48) 100%);
 }
+/* Home hero: the photo is shown whole. On desktop the section takes the
+   photo's own 3:2 shape so nothing is cropped, and the intro sits at the
+   bottom-left over the asphalt, clear of the car. A bottom-weighted scrim
+   keeps it legible. Phones can't fit a 3:2 frame at full height, so
+   there the photo covers and stays centered on the car. */
+.hero--home{ align-items: flex-end; }
+.hero--home .hero-bg img{ object-position: 42% 50%; }
+.hero--home .hero-bg-scrim{
+  background:
+    linear-gradient(0deg, rgba(6,9,14,0.82) 0%, rgba(6,9,14,0.5) 30%, rgba(6,9,14,0.08) 58%, rgba(6,9,14,0.18) 100%),
+    linear-gradient(90deg, rgba(6,9,14,0.35) 0%, transparent 55%);
+}
+@media (min-width: 901px){
+  .hero--home{ min-height: 0; aspect-ratio: 3 / 2; }
+  .hero--home .hero-content{ padding-bottom: var(--space-lg); }
+}
 .hero .eyebrow{ color: rgba(255,255,255,0.85); }
 .hero-title{ color: #ffffff; }
 .hero-lede{ color: rgba(255,255,255,0.8); }
@@ -468,7 +484,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 
 /* ============ PROJECTS ============ */
 /* Three equal cards across; one column once they'd get too narrow. */
-.projects-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+.projects-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); align-items: start; }
 @media (max-width: 860px){ .projects-grid{ grid-template-columns: 1fr; } }
 
 .project-card{
@@ -514,7 +530,24 @@ a.project-card:hover .corner{ opacity: 1; transform: translate(0,0); }
 .project-card-body{ padding: var(--space-lg); display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .project-card-eyebrow{ font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.04em; }
 .project-card-body h3{ font-size: 26px; }
-.project-card-body p{ color: var(--text-dim); font-size: 14.5px; line-height: 1.55; flex: 1; }
+.project-card-body p{ color: var(--text-dim); font-size: 14.5px; line-height: 1.55; }
+
+/* Drop-down description: everything under the card title stays folded
+   away until the card is hovered (or focused), then slides open. The
+   0fr -> 1fr grid row animates to the text's natural height. */
+.project-card-more{
+  display: grid; grid-template-rows: 0fr; opacity: 0; margin-top: -8px;
+  transition: grid-template-rows 0.4s var(--ease), opacity 0.3s var(--ease), margin-top 0.4s var(--ease);
+}
+.project-card-more-inner{ overflow: hidden; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+.project-card:hover .project-card-more,
+.project-card:focus-within .project-card-more,
+a.project-card:focus-visible .project-card-more{ grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
+/* Touch screens have no hover, so each card opens as it scrolls into view. */
+@media (hover: none), (pointer: coarse){
+  .project-card.is-inview .project-card-more{ grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
+}
+@media (prefers-reduced-motion: reduce){ .project-card-more{ transition: none; } }
 .project-card-link{
   display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 13px;
   color: var(--accent); margin-top: 6px;
@@ -530,7 +563,6 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 .goals-section{
   position: relative; overflow: hidden; color: #ffffff;
   border-top: 1px solid rgba(0,0,0,0.15); border-bottom: 1px solid rgba(0,0,0,0.15);
-  padding-bottom: calc(var(--space-2xl) + 24px);
 }
 .goals-bg{ position: absolute; inset: 0; z-index: 0; }
 .goals-bg img{ width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
