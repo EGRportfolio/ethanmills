@@ -183,71 +183,54 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .btn-sm{ padding: 9px 18px; font-size: 13.5px; }
 
 /* ============ HEADER ============ */
-/* The blur/background live on ::before rather than directly on
-   .site-header — backdrop-filter on the header itself would create a
-   new containing block for its position:fixed descendants (namely
-   #mainNav's mobile off-canvas panel), breaking its full-height slide. */
+/* No bar: the header is a transparent, click-through layer holding
+   floating glass bubbles. Nothing on .site-header itself may use
+   transform/filter/backdrop-filter, or it would become the containing
+   block for the fixed mobile drawer inside it. */
 .site-header{
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   height: var(--header-h); display: flex; align-items: center;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  transition: border-color 0.3s var(--ease), transform 0.35s var(--ease);
-}
-/* Slides out of view while scrolling down, back in on scroll up. The
-   transform lives only on the hidden state: any transform on the header
-   would make it the containing block for the fixed mobile drawer inside
-   it, and the drawer is never open while the header is hidden. */
-.site-header.is-hidden{ transform: translateY(-100%); }
-/* A true frosted-glass pane rather than a near-solid fill, so whatever is
-   scrolled beneath it (the hero photo at the top of the page, page
-   content further down) shows through blurred and tinted, not hidden. */
-.site-header::before{
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background: var(--header-bg, rgba(var(--accent-rgb),0.62));
-  backdrop-filter: blur(20px) saturate(1.6); -webkit-backdrop-filter: blur(20px) saturate(1.6);
-  transition: background 0.3s var(--ease);
+  pointer-events: none;
 }
 .header-inner{
-  width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 var(--space-md);
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--space-md);
+  position: relative; width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 var(--space-md);
+  display: flex; align-items: center; gap: var(--space-md);
 }
-/* Explicit columns: the hamburger is display:none on desktop and wouldn't
-   hold column 1, so auto-placement would shift the nav and CTA left. */
-.header-inner .nav-toggle{ grid-column: 1; justify-self: start; }
-.header-inner .main-nav{ grid-column: 2; justify-self: center; }
-.header-inner > .btn{ grid-column: 3; justify-self: end; }
+.nav-toggle, .main-nav, .header-inner > .btn{ pointer-events: auto; }
+.header-inner > .btn{ margin-left: auto; }
 
-/* Hamburger toggle — mobile only; desktop shows the nav inline instead */
-.nav-toggle{
-  display: none; flex-direction: column; justify-content: center; gap: 5px;
-  width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: var(--radius-sm);
-  position: relative; z-index: 210; flex-shrink: 0;
+/* Shared glass-bubble surface. Navy-tinted so it stays legible over the
+   dark photo heroes and the light page alike. */
+.nav-link, .nav-toggle, .site-header .btn-primary{
+  background: rgba(var(--accent-rgb),0.58);
+  border: 1px solid rgba(255,255,255,0.18);
+  backdrop-filter: blur(16px) saturate(1.6); -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  box-shadow: 0 6px 20px -10px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.14);
 }
-.nav-toggle span{ display: block; width: 18px; height: 2px; margin: 0 auto; background: #ffffff; transition: transform 0.25s var(--ease), opacity 0.25s var(--ease); }
-.nav-toggle[aria-expanded="true"] span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
-.nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
-.nav-toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
 
-/* Desktop: plain inline nav, always visible in the header */
-.main-nav{ display: flex; align-items: center; gap: clamp(14px, 2.4vw, 40px); flex-wrap: nowrap; }
+.main-nav{ display: flex; align-items: center; gap: 8px; }
 .nav-link{
-  font-family: var(--font-mono); font-size: 13.5px; color: var(--text-dim);
-  position: relative; padding: 10px 2px 14px; transition: color 0.2s var(--ease);
+  display: inline-flex; align-items: center; padding: 8px 16px; border-radius: 999px;
+  font-family: var(--font-mono); font-size: 13px; color: rgba(255,255,255,0.88); white-space: nowrap;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
 }
-.nav-link:hover{ color: var(--text); }
-.nav-link.is-active{ color: var(--accent); }
+.nav-link:hover{ background: rgba(var(--accent-rgb),0.78); border-color: rgba(255,255,255,0.32); color: #ffffff; }
+.nav-link.is-active{ background: rgba(var(--accent-rgb),0.86); border-color: rgba(157,192,239,0.55); color: #ffffff; }
 
-/* The header bar itself is always dark blue, so its CTA always needs the
-   light-on-navy treatment regardless of viewport width. It's glass too
-   (translucent + blurred) like the header, but a heavier fill, brighter
-   border, and drop shadow keep it standing out from the plain nav links. */
-.site-header .btn-primary,
+/* The CTA: same glass, but a denser fill and brighter rim so it stands
+   out from the nav bubbles. */
+.site-header .btn-primary{
+  background: rgba(var(--accent-rgb),0.86); color: #ffffff; border-color: rgba(255,255,255,0.4);
+  border-radius: 999px;
+}
+.site-header .btn-primary:hover{ background: var(--accent); border-color: rgba(255,255,255,0.7); }
+
+/* Hero buttons sit on a dark photo: light glass */
 .hero .btn-primary{
   background: rgba(255,255,255,0.14); color: #ffffff; border-color: rgba(255,255,255,0.5);
   backdrop-filter: blur(14px) saturate(1.5); -webkit-backdrop-filter: blur(14px) saturate(1.5);
   box-shadow: 0 4px 20px -8px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.22);
 }
-.site-header .btn-primary:hover,
 .hero .btn-primary:hover{ background: rgba(255,255,255,0.24); border-color: rgba(255,255,255,0.8); }
 .hero .btn-ghost{
   background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.92); border-color: rgba(255,255,255,0.26);
@@ -256,9 +239,25 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 .hero .btn-ghost:hover{ background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.5); }
 
-/* Projects nav dropdown */
+/* Hamburger: a round glass bubble pinned where the first nav bubble
+   starts. On desktop it only appears once the bubbles collapse into it. */
+.nav-toggle{
+  position: absolute; left: var(--space-md); top: 50%; z-index: 210;
+  display: flex; flex-direction: column; justify-content: center; gap: 5px;
+  width: 42px; height: 42px; border-radius: 999px;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transform: translateY(-50%) scale(0.6);
+  transition: opacity 0.25s var(--ease), transform 0.35s var(--ease), visibility 0s linear 0.35s;
+}
+.nav-toggle span{ display: block; width: 18px; height: 2px; margin: 0 auto; background: #ffffff; transition: transform 0.25s var(--ease), opacity 0.25s var(--ease); }
+.nav-toggle[aria-expanded="true"] span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+
+/* Projects nav dropdown. Left-aligned under its bubble (not centered),
+   so it can't run off the left edge now that the nav is left-justified. */
 .nav-dropdown{ position: relative; }
-.nav-dropdown-trigger{ display: inline-flex; align-items: center; gap: 5px; }
+.nav-dropdown-trigger{ gap: 6px; }
 .nav-dropdown-trigger::after{
   content: ""; width: 6px; height: 6px; margin-top: -3px;
   border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
@@ -267,10 +266,10 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .nav-dropdown:hover .nav-dropdown-trigger::after,
 .nav-dropdown:focus-within .nav-dropdown-trigger::after{ transform: rotate(225deg); margin-top: 3px; }
 .nav-dropdown-menu{
-  position: absolute; top: 100%; left: 50%; margin-top: 14px;
-  transform: translateX(-50%) translateY(4px); min-width: 230px; padding: 8px;
+  position: absolute; top: 100%; left: 0; margin-top: 10px;
+  transform: translateY(4px); min-width: 240px; padding: 8px;
   display: flex; flex-direction: column; gap: 2px;
-  background: rgba(10,18,32,0.7); border: 1px solid rgba(255,255,255,0.16); border-radius: var(--radius);
+  background: rgba(10,18,32,0.72); border: 1px solid rgba(255,255,255,0.16); border-radius: 16px;
   backdrop-filter: blur(20px) saturate(1.6); -webkit-backdrop-filter: blur(20px) saturate(1.6);
   box-shadow: 0 24px 48px -24px rgba(0,0,0,0.55);
   opacity: 0; visibility: hidden; pointer-events: none;
@@ -281,33 +280,51 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 /* Invisible bridge across the gap between the trigger and the menu, so
    the cursor never leaves .nav-dropdown on its way down. */
 .nav-dropdown-menu::before{
-  content: ""; position: absolute; left: 0; right: 0; top: -18px; height: 18px;
+  content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px;
 }
 .nav-dropdown:hover .nav-dropdown-menu,
 .nav-dropdown:focus-within .nav-dropdown-menu{
-  opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) translateY(0);
+  opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0);
   transition-delay: 0s;
 }
 .nav-dropdown-menu a{
   font-family: var(--font-mono); font-size: 13px; color: rgba(255,255,255,0.8);
-  padding: 10px 12px; border-radius: var(--radius-sm); white-space: nowrap;
+  padding: 10px 12px; border-radius: 10px; white-space: nowrap;
   transition: background 0.2s var(--ease), color 0.2s var(--ease);
 }
 .nav-dropdown-menu a:hover{ background: rgba(255,255,255,0.12); color: #ffffff; }
 
-/* Desktop nav sits inline in the dark-blue header bar, so it needs its
-   own light-on-navy palette; the mobile drawer below stays on the page's
-   light surface and keeps the default dark text. */
+/* Desktop: scrolling down collapses the bubbles, right to left, into the
+   hamburger; scrolling up (or clicking the hamburger) plays it back,
+   left to right. --i is each bubble's position in the row. */
 @media (min-width: 901px){
-  .nav-link{ color: rgba(255,255,255,0.75); }
-  .nav-link:hover{ color: #ffffff; }
-  .nav-link.is-active{ color: #9dc0ef; }
+  .main-nav > *{
+    --d: calc(var(--i) * 40ms);
+    transition: opacity 0.3s var(--ease) var(--d), transform 0.4s var(--ease) var(--d), visibility 0s linear var(--d);
+  }
+  .main-nav > :nth-child(1){ --i: 0; }
+  .main-nav > :nth-child(2){ --i: 1; }
+  .main-nav > :nth-child(3){ --i: 2; }
+  .main-nav > :nth-child(4){ --i: 3; }
+  .main-nav > :nth-child(5){ --i: 4; }
+  .main-nav > :nth-child(6){ --i: 5; }
+  .site-header.is-condensed .main-nav{ pointer-events: none; }
+  .site-header.is-condensed .main-nav > *{
+    --d: calc((5 - var(--i)) * 30ms);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateX(calc(var(--i) * -30px - 16px)) scale(0.7);
+    transition: opacity 0.25s var(--ease) var(--d), transform 0.35s var(--ease) var(--d), visibility 0s linear calc(var(--d) + 0.35s);
+  }
+  .site-header.is-condensed .nav-toggle{
+    opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(-50%) scale(1);
+    transition: opacity 0.3s var(--ease) 0.12s, transform 0.4s var(--ease) 0.12s, visibility 0s linear 0s;
+  }
 }
 
-/* Mobile: nav becomes a left-side sliding glass panel behind the hamburger,
-   matching the header rather than switching to an opaque sheet. */
+/* Mobile: the hamburger is always there, and opens a left-side sliding
+   glass drawer; nav links become plain rows inside it. */
 @media (max-width: 900px){
-  .nav-toggle{ display: flex; }
+  .nav-toggle{ opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(-50%); transition: none; }
   .main-nav{
     position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
     width: min(300px, 82vw); flex-direction: column; align-items: flex-start; gap: 0;
@@ -319,11 +336,13 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   }
   .main-nav.is-open{ transform: translateX(0); }
   .nav-link{
-    width: 100%; padding: 14px 2px; font-size: 15px;
-    color: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(255,255,255,0.12);
+    width: 100%; padding: 14px 2px; font-size: 15px; border-radius: 0;
+    background: none; border: none; border-bottom: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none;
+    color: rgba(255,255,255,0.85);
   }
-  .nav-link:hover{ color: #ffffff; }
-  .nav-link.is-active{ color: #9dc0ef; }
+  .nav-link:hover{ background: none; color: #ffffff; }
+  .nav-link.is-active{ background: none; color: #9dc0ef; }
   .nav-dropdown{ width: 100%; border-bottom: 1px solid rgba(255,255,255,0.12); }
   .nav-dropdown-trigger{ border-bottom: none; }
   .nav-dropdown-trigger::after{ display: none; }
@@ -440,31 +459,9 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .status-chip--design{ color: var(--text-dim); border-color: var(--border); border-style: dashed; }
 
 /* ============ PROJECTS ============ */
-.projects-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
-@media (max-width: 640px){ .projects-grid{ grid-template-columns: 1fr; } }
-
-/* The lead project spans the full row with its image and summary side by
-   side; the rest follow as a pair beneath it. */
-.project-card.project-card--feature{ grid-column: 1 / -1; display: grid; grid-template-columns: 1.35fr 1fr; }
-.project-card--feature .project-card-media{ aspect-ratio: auto; min-height: 400px; }
-.project-card--feature .project-card-media img{ object-position: 50% 45%; }
-.project-card--feature .project-card-body{ padding: var(--space-xl) var(--space-lg); justify-content: center; gap: 12px; }
-.project-card--feature .project-card-body h3{ font-size: clamp(30px, 3vw, 40px); }
-.project-card--feature .project-card-body p{ flex: none; }
-@media (max-width: 900px){
-  .project-card.project-card--feature{ grid-template-columns: 1fr; }
-  .project-card--feature .project-card-media{ aspect-ratio: 16 / 10; min-height: 0; }
-  .project-card--feature .project-card-body{ padding: var(--space-lg); }
-}
-.workstream-list{ margin: 4px 0; border-top: 1px solid var(--border-soft); }
-.workstream-list li{
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 11px 0; border-bottom: 1px solid var(--border-soft);
-  font-size: 14px; color: var(--text); line-height: 1.35;
-}
-@media (max-width: 480px){
-  .workstream-list li{ flex-direction: column; align-items: flex-start; gap: 6px; }
-}
+/* Three equal cards across; one column once they'd get too narrow. */
+.projects-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+@media (max-width: 860px){ .projects-grid{ grid-template-columns: 1fr; } }
 
 .project-card{
   display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border);

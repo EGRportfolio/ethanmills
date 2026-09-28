@@ -23,8 +23,19 @@
     if (navOverlay) navOverlay.classList.remove('is-open');
   }
 
+  var header = document.getElementById('siteHeader');
+  var desktopQuery = window.matchMedia('(min-width: 901px)');
+
   if (navToggle && mainNav) {
     navToggle.addEventListener('click', function () {
+      // Desktop: the hamburger is just the collapsed bubbles, so clicking
+      // it plays them back out instead of opening the drawer.
+      if (desktopQuery.matches && header) {
+        header.classList.remove('is-condensed');
+        var first = mainNav.querySelector('.nav-link');
+        if (first) first.focus({ preventScroll: true });
+        return;
+      }
       var open = navToggle.getAttribute('aria-expanded') === 'true';
       navToggle.setAttribute('aria-expanded', String(!open));
       mainNav.classList.toggle('is-open', !open);
@@ -39,27 +50,22 @@
     });
   }
 
-  /* ---------- Header: tint on scroll, hide while scrolling down ---------- */
-  var header = document.getElementById('siteHeader');
+  /* ---------- Header: bubbles collapse into the hamburger on scroll down ---------- */
   var lastScrollY = window.scrollY;
   function onScrollHeader() {
     if (!header) return;
     var y = window.scrollY;
-    // A solid baseline of blue at the top too, so the glass never washes
-    // out to white over a bright photo or the light page background.
-    if (y > 20) {
-      header.style.setProperty('--header-bg', 'rgba(15,47,102,0.78)');
-      header.style.borderBottomColor = 'rgba(255,255,255,0.16)';
-    } else {
-      header.style.setProperty('--header-bg', 'rgba(15,47,102,0.62)');
-      header.style.borderBottomColor = 'rgba(255,255,255,0.1)';
+    if (y < 80) {
+      header.classList.remove('is-condensed');
+      lastScrollY = y;
+      return;
     }
-    var navOpen = mainNav && mainNav.classList.contains('is-open');
-    var focusInHeader = header.contains(document.activeElement) && document.activeElement !== document.body;
-    // Small dead-band so trackpad jitter doesn't flicker the header.
+    // Small dead-band so trackpad jitter doesn't flicker the bubbles.
     if (Math.abs(y - lastScrollY) < 6) return;
-    var hide = y > lastScrollY && y > header.offsetHeight && !navOpen && !focusInHeader;
-    header.classList.toggle('is-hidden', hide);
+    // Don't yank the bubbles out from under keyboard focus.
+    var focusInNav = mainNav && mainNav.contains(document.activeElement);
+    if (y > lastScrollY && !focusInNav) header.classList.add('is-condensed');
+    else if (y < lastScrollY) header.classList.remove('is-condensed');
     lastScrollY = y;
   }
   document.addEventListener('scroll', onScrollHeader, { passive: true });
