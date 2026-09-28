@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=45">
+<link rel="stylesheet" href="css/styles.css?v=46">
 </head>
 <body>
 
@@ -29,7 +29,14 @@
       <a href="index.html#home" class="nav-link">Home</a>
       <a href="index.html#about" class="nav-link">About</a>
       <a href="index.html#skills" class="nav-link">Skills</a>
-      <a href="index.html#projects" class="nav-link is-active">Projects</a>
+      <div class="nav-dropdown">
+        <a href="index.html#projects" class="nav-link nav-dropdown-trigger is-active">Projects</a>
+        <div class="nav-dropdown-menu">
+          <a href="index.html#projects">NovaRacing</a>
+          <a href="index.html#projects">Beetlebot Competition</a>
+          <a href="index.html#projects">Wind Tunnel &amp; Fluids Research</a>
+        </div>
+      </div>
       <a href="index.html#goals" class="nav-link">Interests</a>
       <a href="index.html#contact" class="nav-link">Contact</a>
     </nav>
@@ -236,6 +243,6 @@
   <p class="lightbox-caption" id="lightboxCaption"></p>
 </div>
 
-<script src="js/main.js?v=31"></script>
+<script src="js/main.js?v=32"></script>
 </body>
 </html>

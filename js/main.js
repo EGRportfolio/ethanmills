@@ -44,10 +44,10 @@
   function onScrollHeader() {
     if (!header) return;
     if (window.scrollY > 20) {
-      header.style.setProperty('--header-bg', 'rgba(30,63,107,0.98)');
+      header.style.setProperty('--header-bg', 'rgba(15,47,102,0.55)');
       header.style.borderBottomColor = 'rgba(255,255,255,0.16)';
     } else {
-      header.style.setProperty('--header-bg', 'rgba(30,63,107,0.94)');
+      header.style.setProperty('--header-bg', 'rgba(15,47,102,0.3)');
       header.style.borderBottomColor = 'rgba(255,255,255,0.1)';
     }
   }

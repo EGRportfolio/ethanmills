@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=45">
+<link rel="stylesheet" href="css/styles.css?v=46">
 </head>
 <body>
 
@@ -29,7 +29,14 @@
       <a href="#home" class="nav-link">Home</a>
       <a href="#about" class="nav-link">About</a>
       <a href="#skills" class="nav-link">Skills</a>
-      <a href="#projects" class="nav-link">Projects</a>
+      <div class="nav-dropdown">
+        <a href="#projects" class="nav-link nav-dropdown-trigger">Projects</a>
+        <div class="nav-dropdown-menu">
+          <a href="novaracing.html">NovaRacing</a>
+          <a href="#projects">Beetlebot Competition</a>
+          <a href="#projects">Wind Tunnel &amp; Fluids Research</a>
+        </div>
+      </div>
       <a href="#goals" class="nav-link">Interests</a>
       <a href="#contact" class="nav-link">Contact</a>
     </nav>
@@ -69,11 +76,6 @@
             <img src="assets/images/profile.jpg" alt="Portrait of Ethan Mills" loading="lazy">
           </div>
           <div class="about-photo-tag">Northern Virginia &rarr; Villanova, PA</div>
-          <div class="about-gallery">
-            <img src="assets/images/interest-dogs.jpg" alt="Ethan's two dogs" loading="lazy">
-            <img src="assets/images/interest-motorsport.jpg" alt="Ethan with family at a motorsport track" loading="lazy">
-            <img src="assets/images/interest-travel.jpg" alt="Ethan traveling abroad" loading="lazy">
-          </div>
         </div>
 
         <div class="about-copy reveal">
@@ -354,6 +356,6 @@
   </div>
 </footer>
 
-<script src="js/main.js?v=31"></script>
+<script src="js/main.js?v=32"></script>
 </body>
 </html>
