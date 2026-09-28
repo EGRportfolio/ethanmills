@@ -282,6 +282,22 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   overflow: hidden;
 }
 
+/* A translucent, edge-faded photo on the right side of the hero — sits
+   behind the text (z-index 0 vs .hero-content's 1), masked with a soft
+   radial fade so it dissolves into the page instead of reading as a
+   pasted-in rectangle. Hidden below the width where it would crowd the
+   hero copy instead of complementing it. */
+.hero-photo{
+  position: absolute; top: 0; right: 0; bottom: 0; width: 48%; z-index: 0; pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 78% 62% at 58% 50%, #000 25%, transparent 82%);
+  mask-image: radial-gradient(ellipse 78% 62% at 58% 50%, #000 25%, transparent 82%);
+}
+.hero-photo img{
+  width: 100%; height: 100%; object-fit: cover; object-position: 50% 48%;
+  opacity: 0.24; filter: saturate(0.75);
+}
+@media (max-width: 980px){ .hero-photo{ display: none; } }
+
 .hud-badge{
   position: absolute; z-index: 1; display: flex; align-items: center; gap: 8px;
   font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em; color: var(--text-dim);
