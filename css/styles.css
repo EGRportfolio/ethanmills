@@ -191,8 +191,13 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   height: var(--header-h); display: flex; align-items: center;
   border-bottom: 1px solid rgba(255,255,255,0.1);
-  transition: border-color 0.3s var(--ease);
+  transition: border-color 0.3s var(--ease), transform 0.35s var(--ease);
 }
+/* Slides out of view while scrolling down, back in on scroll up. The
+   transform lives only on the hidden state: any transform on the header
+   would make it the containing block for the fixed mobile drawer inside
+   it, and the drawer is never open while the header is hidden. */
+.site-header.is-hidden{ transform: translateY(-100%); }
 /* A true frosted-glass pane rather than a near-solid fill, so whatever is
    scrolled beneath it (the hero photo at the top of the page, page
    content further down) shows through blurred and tinted, not hidden. */
@@ -206,9 +211,11 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 var(--space-md);
   display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--space-md);
 }
-.header-inner .nav-toggle{ justify-self: start; }
-.header-inner .main-nav{ justify-self: center; }
-.header-inner > .btn{ justify-self: end; }
+/* Explicit columns: the hamburger is display:none on desktop and wouldn't
+   hold column 1, so auto-placement would shift the nav and CTA left. */
+.header-inner .nav-toggle{ grid-column: 1; justify-self: start; }
+.header-inner .main-nav{ grid-column: 2; justify-self: center; }
+.header-inner > .btn{ grid-column: 3; justify-self: end; }
 
 /* Hamburger toggle — mobile only; desktop shows the nav inline instead */
 .nav-toggle{
@@ -234,12 +241,20 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
    light-on-navy treatment regardless of viewport width. It's glass too
    (translucent + blurred) like the header, but a heavier fill, brighter
    border, and drop shadow keep it standing out from the plain nav links. */
-.site-header .btn-primary{
-  background: rgba(255,255,255,0.55); color: var(--accent); border-color: rgba(255,255,255,0.7);
+.site-header .btn-primary,
+.hero .btn-primary{
+  background: rgba(255,255,255,0.14); color: #ffffff; border-color: rgba(255,255,255,0.5);
   backdrop-filter: blur(14px) saturate(1.5); -webkit-backdrop-filter: blur(14px) saturate(1.5);
-  box-shadow: 0 4px 20px -6px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.15);
+  box-shadow: 0 4px 20px -8px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.22);
 }
-.site-header .btn-primary:hover{ background: rgba(255,255,255,0.75); border-color: #ffffff; }
+.site-header .btn-primary:hover,
+.hero .btn-primary:hover{ background: rgba(255,255,255,0.24); border-color: rgba(255,255,255,0.8); }
+.hero .btn-ghost{
+  background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.92); border-color: rgba(255,255,255,0.26);
+  backdrop-filter: blur(10px) saturate(1.3); -webkit-backdrop-filter: blur(10px) saturate(1.3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.hero .btn-ghost:hover{ background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.5); }
 
 /* Projects nav dropdown */
 .nav-dropdown{ position: relative; }
@@ -259,11 +274,19 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   backdrop-filter: blur(20px) saturate(1.6); -webkit-backdrop-filter: blur(20px) saturate(1.6);
   box-shadow: 0 24px 48px -24px rgba(0,0,0,0.55);
   opacity: 0; visibility: hidden; pointer-events: none;
-  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
+  /* Closing waits a beat so a slightly diagonal path to the menu doesn't
+     drop it; opening is immediate. */
+  transition: opacity 0.2s var(--ease) 0.15s, transform 0.2s var(--ease) 0.15s, visibility 0s linear 0.35s;
+}
+/* Invisible bridge across the gap between the trigger and the menu, so
+   the cursor never leaves .nav-dropdown on its way down. */
+.nav-dropdown-menu::before{
+  content: ""; position: absolute; left: 0; right: 0; top: -18px; height: 18px;
 }
 .nav-dropdown:hover .nav-dropdown-menu,
 .nav-dropdown:focus-within .nav-dropdown-menu{
   opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) translateY(0);
+  transition-delay: 0s;
 }
 .nav-dropdown-menu a{
   font-family: var(--font-mono); font-size: 13px; color: rgba(255,255,255,0.8);
@@ -281,35 +304,44 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   .nav-link.is-active{ color: #9dc0ef; }
 }
 
-/* Mobile: nav becomes a left-side sliding panel behind the hamburger */
+/* Mobile: nav becomes a left-side sliding glass panel behind the hamburger,
+   matching the header rather than switching to an opaque sheet. */
 @media (max-width: 900px){
   .nav-toggle{ display: flex; }
   .main-nav{
     position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
     width: min(300px, 82vw); flex-direction: column; align-items: flex-start; gap: 0;
     padding: calc(var(--header-h) + var(--space-lg)) var(--space-lg) var(--space-lg);
-    background: var(--bg); border-right: 1px solid var(--border-soft);
+    background: rgba(var(--accent-rgb),0.5); border-right: 1px solid rgba(255,255,255,0.14);
+    backdrop-filter: blur(24px) saturate(1.6); -webkit-backdrop-filter: blur(24px) saturate(1.6);
     transform: translateX(-100%); transition: transform 0.3s var(--ease);
     overflow-y: auto;
   }
   .main-nav.is-open{ transform: translateX(0); }
-  .nav-link{ width: 100%; padding: 14px 2px; border-bottom: 1px solid var(--border-soft); font-size: 15px; }
-  .nav-dropdown{ width: 100%; }
+  .nav-link{
+    width: 100%; padding: 14px 2px; font-size: 15px;
+    color: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .nav-link:hover{ color: #ffffff; }
+  .nav-link.is-active{ color: #9dc0ef; }
+  .nav-dropdown{ width: 100%; border-bottom: 1px solid rgba(255,255,255,0.12); }
   .nav-dropdown-trigger{ border-bottom: none; }
   .nav-dropdown-trigger::after{ display: none; }
   .nav-dropdown-menu{
-    position: static; margin-top: 0; padding: 0 0 6px 14px; transform: none;
+    position: static; margin-top: 0; padding: 0 0 8px 14px; transform: none;
     background: none; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
-    opacity: 1; visibility: visible; pointer-events: auto;
+    opacity: 1; visibility: visible; pointer-events: auto; transition: none;
   }
-  .nav-dropdown-menu a{
-    color: var(--text-dim); font-size: 14px; padding: 10px 2px; border-bottom: 1px solid var(--border-soft);
-  }
+  .nav-dropdown-menu::before{ display: none; }
+  .nav-dropdown-menu a{ color: rgba(255,255,255,0.68); font-size: 14px; padding: 9px 2px; }
 }
 
-/* Dims the page behind the open nav panel; click it to close */
+/* Softens the page behind the open nav panel; click it to close. Sits
+   below the header (z-index 100) so it never covers the drawer, which
+   lives inside the header's stacking context. */
 .nav-overlay{
-  position: fixed; inset: 0; z-index: 150; background: rgba(5,7,10,0.6);
+  position: fixed; inset: 0; z-index: 90; background: rgba(8,14,26,0.3);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease);
 }
 .nav-overlay.is-open{ opacity: 1; pointer-events: auto; }
@@ -351,8 +383,8 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .hero-content{ position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; width: 100%; padding: var(--space-xl) var(--space-md); }
 .eyebrow{ font-family: var(--font-mono); font-size: 13px; color: var(--accent); letter-spacing: 0.05em; margin-bottom: var(--space-sm); }
 .hero-title{
-  font-size: clamp(56px, 10vw, 128px); max-width: 900px; margin-bottom: var(--space-md);
-  letter-spacing: 0.005em;
+  font-size: clamp(46px, 7.4vw, 100px); max-width: 900px; margin-bottom: var(--space-md);
+  font-weight: 500; letter-spacing: -0.02em; line-height: 1.02;
 }
 .hero-lede{ font-size: 18px; color: var(--text-dim); max-width: 540px; margin-bottom: var(--space-lg); }
 .hero-actions{ display: flex; gap: var(--space-sm); flex-wrap: wrap; }
@@ -383,20 +415,20 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .fact-line .dot{ color: var(--accent-dim); }
 
 /* ============ SKILLS ============ */
-.skills-groups{ display: flex; flex-direction: column; gap: var(--space-xl); }
+.skills-groups{ display: flex; flex-direction: column; gap: var(--space-lg); }
 
 .skills-group-title{
-  display: inline-block; font-family: var(--font-mono); font-size: 12px; color: var(--accent);
-  border: 1px solid var(--accent-dim); padding: 5px 12px; border-radius: 999px; margin: 0 0 var(--space-md);
+  display: inline-block; font-family: var(--font-mono); font-size: 11.5px; color: var(--accent);
+  border: 1px solid var(--accent-dim); padding: 4px 11px; border-radius: 999px; margin: 0 0 12px;
 }
 
-.skills-mini-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
+.skills-mini-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 @media (max-width: 960px){ .skills-mini-grid{ grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px){ .skills-mini-grid{ grid-template-columns: 1fr; } }
 
 .skill-mini{
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: var(--space-lg); transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  padding: 16px 18px; transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
   position: relative; overflow: hidden;
 }
 .skill-mini::before{
@@ -407,10 +439,10 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .skill-mini:hover{ border-color: var(--accent-dim); transform: translateY(-2px); }
 .skill-mini:hover::before{ transform: scaleX(1); }
 .skill-mini h4{
-  font-family: var(--font-head); font-weight: 700; font-size: 17px; color: var(--text);
-  margin: 0 0 8px; letter-spacing: 0.01em;
+  font-family: var(--font-head); font-weight: 600; font-size: 15px; color: var(--text);
+  margin: 0 0 4px; letter-spacing: 0;
 }
-.skill-mini p{ font-size: 14.5px; line-height: 1.6; color: var(--text-faint); margin: 0; }
+.skill-mini p{ font-size: 13px; line-height: 1.5; color: var(--text-faint); margin: 0; }
 
 /* ============ PROJECTS ============ */
 .projects-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
@@ -424,8 +456,14 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 a.project-card:hover{ border-color: var(--accent-dim); transform: translateY(-4px); box-shadow: 0 20px 50px -24px rgba(var(--accent-rgb),0.28), 0 30px 60px -34px rgba(var(--accent-rgb),0.14); }
 .project-card-media{ position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-alt); }
-.project-card-media img{ width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); filter: saturate(0.85); }
+.project-card-media img{ width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease), opacity 0.4s var(--ease); filter: saturate(0.85); }
 a.project-card:hover .project-card-media img{ transform: scale(1.05); }
+/* Desktop only: images rest semi-transparent and come fully forward on
+   hover. Touch devices have no hover, so they always show full images. */
+@media (hover: hover) and (min-width: 901px){
+  .project-card-media img{ opacity: 0.45; }
+  .project-card:hover .project-card-media img{ opacity: 1; }
+}
 .project-card-tag{
   position: absolute; top: 14px; left: 14px; font-family: var(--font-mono); font-size: 11px;
   letter-spacing: 0.05em; color: var(--success); background: rgba(var(--bg-rgb),0.7);
@@ -710,8 +748,12 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 
 /* Cover photo that sits beside the story copy, ahead of the gallery. */
 .story-side{ display: flex; flex-direction: column; gap: var(--space-sm); }
-.story-cover{ margin: 0; }
-.story-cover img{ aspect-ratio: 4 / 3; }
+/* flex:none — .collage-item's 220px flex-basis would otherwise become a
+   fixed height inside the column-flex .story-side and crop the photo. */
+.story-cover{ margin: 0; flex: none; }
+/* Portrait crop to match the cover photo, which runs tall beside the
+   story copy on desktop (spires at the top, car at the bottom). */
+.story-cover img{ height: auto; aspect-ratio: 3 / 4; object-position: center 62%; }
 .story-skills{ display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
 .story-skills li{
   font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim);

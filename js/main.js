@@ -30,7 +30,7 @@
       mainNav.classList.toggle('is-open', !open);
       if (navOverlay) navOverlay.classList.toggle('is-open', !open);
     });
-    mainNav.querySelectorAll('.nav-link').forEach(function (link) {
+    mainNav.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', closeNav);
     });
     if (navOverlay) navOverlay.addEventListener('click', closeNav);
@@ -39,17 +39,26 @@
     });
   }
 
-  /* ---------- Header background on scroll ---------- */
+  /* ---------- Header: tint on scroll, hide while scrolling down ---------- */
   var header = document.getElementById('siteHeader');
+  var lastScrollY = window.scrollY;
   function onScrollHeader() {
     if (!header) return;
-    if (window.scrollY > 20) {
+    var y = window.scrollY;
+    if (y > 20) {
       header.style.setProperty('--header-bg', 'rgba(15,47,102,0.55)');
       header.style.borderBottomColor = 'rgba(255,255,255,0.16)';
     } else {
       header.style.setProperty('--header-bg', 'rgba(15,47,102,0.3)');
       header.style.borderBottomColor = 'rgba(255,255,255,0.1)';
     }
+    var navOpen = mainNav && mainNav.classList.contains('is-open');
+    var focusInHeader = header.contains(document.activeElement) && document.activeElement !== document.body;
+    // Small dead-band so trackpad jitter doesn't flicker the header.
+    if (Math.abs(y - lastScrollY) < 6) return;
+    var hide = y > lastScrollY && y > header.offsetHeight && !navOpen && !focusInHeader;
+    header.classList.toggle('is-hidden', hide);
+    lastScrollY = y;
   }
   document.addEventListener('scroll', onScrollHeader, { passive: true });
   onScrollHeader();
