@@ -48,9 +48,9 @@
   --jet-navy-lead:   #0c2247;
   --gradient-jet-btn: linear-gradient(135deg, var(--jet-black-lead) 0%, var(--jet-navy-lead) 16%, var(--jet-blue-vivid) 38%, var(--jet-blue-vivid) 50%, var(--jet-red-vivid) 76%, var(--jet-amber-vivid) 100%);
 
-  --font-head: 'Big Shoulders Display', 'Inter', sans-serif;
+  --font-head: 'Manrope', 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-mono: 'Space Grotesk', ui-monospace, monospace;
 
   --space-xs: 8px;
   --space-sm: 16px;
@@ -198,12 +198,12 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .site-header{
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   height: var(--header-h); display: flex; align-items: center;
-  border-bottom: 1px solid var(--border-soft);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
   transition: border-color 0.3s var(--ease);
 }
 .site-header::before{
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: var(--header-bg, rgba(var(--bg-rgb),0.72));
+  background: var(--header-bg, rgba(var(--accent-rgb),0.94));
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   transition: background 0.3s var(--ease);
 }
@@ -215,10 +215,10 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 /* Hamburger toggle — mobile only; desktop shows the nav inline instead */
 .nav-toggle{
   display: none; flex-direction: column; justify-content: center; gap: 5px;
-  width: 40px; height: 40px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); border-radius: var(--radius-sm);
   position: relative; z-index: 210; flex-shrink: 0;
 }
-.nav-toggle span{ display: block; width: 18px; height: 2px; margin: 0 auto; background: var(--text); transition: transform 0.25s var(--ease), opacity 0.25s var(--ease); }
+.nav-toggle span{ display: block; width: 18px; height: 2px; margin: 0 auto; background: #ffffff; transition: transform 0.25s var(--ease), opacity 0.25s var(--ease); }
 .nav-toggle[aria-expanded="true"] span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
 .nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
 .nav-toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
@@ -231,6 +231,23 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 .nav-link:hover{ color: var(--text); }
 .nav-link.is-active{ color: var(--accent); }
+
+/* The header bar itself is always dark blue, so its CTA always needs the
+   light-on-navy treatment regardless of viewport width. */
+.site-header .btn-primary{
+  background: rgba(255,255,255,0.95); color: var(--accent); border-color: rgba(255,255,255,0.5);
+  box-shadow: 0 4px 16px -6px rgba(0,0,0,0.35);
+}
+.site-header .btn-primary:hover{ background: #ffffff; border-color: #ffffff; }
+
+/* Desktop nav sits inline in the dark-blue header bar, so it needs its
+   own light-on-navy palette; the mobile drawer below stays on the page's
+   light surface and keeps the default dark text. */
+@media (min-width: 901px){
+  .nav-link{ color: rgba(255,255,255,0.75); }
+  .nav-link:hover{ color: #ffffff; }
+  .nav-link.is-active{ color: #9dc0ef; }
+}
 
 /* Mobile: nav becomes a left-side sliding panel behind the hamburger */
 @media (max-width: 900px){

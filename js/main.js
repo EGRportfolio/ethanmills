@@ -44,11 +44,11 @@
   function onScrollHeader() {
     if (!header) return;
     if (window.scrollY > 20) {
-      header.style.setProperty('--header-bg', 'rgba(255,255,255,0.92)');
-      header.style.borderBottomColor = 'var(--border)';
+      header.style.setProperty('--header-bg', 'rgba(30,63,107,0.98)');
+      header.style.borderBottomColor = 'rgba(255,255,255,0.16)';
     } else {
-      header.style.setProperty('--header-bg', 'rgba(255,255,255,0.72)');
-      header.style.borderBottomColor = 'var(--border-soft)';
+      header.style.setProperty('--header-bg', 'rgba(30,63,107,0.94)');
+      header.style.borderBottomColor = 'rgba(255,255,255,0.1)';
     }
   }
   document.addEventListener('scroll', onScrollHeader, { passive: true });
