@@ -22,6 +22,8 @@
   var header = document.getElementById('siteHeader');
   var desktopQuery = window.matchMedia('(min-width: 901px)');
   var expandedAtY = 0;
+  var navDropdown = mainNav && mainNav.querySelector('.nav-dropdown');
+  var dropdownTrigger = navDropdown && navDropdown.querySelector('.nav-dropdown-trigger');
 
   function closeNav() {
     if (!navToggle || !mainNav) return;
@@ -29,6 +31,8 @@
     mainNav.classList.remove('is-open');
     if (navOverlay) navOverlay.classList.remove('is-open');
     if (header) header.classList.remove('is-expanded');
+    if (navDropdown) navDropdown.classList.remove('is-open');
+    if (dropdownTrigger) dropdownTrigger.setAttribute('aria-expanded', 'false');
   }
 
   // Each bubble's horizontal distance to the hamburger, so collapsing
@@ -46,6 +50,7 @@
   if (navToggle && mainNav) {
     navToggle.addEventListener('click', function () {
       var open = navToggle.getAttribute('aria-expanded') === 'true';
+      if (open) { closeNav(); return; }
       navToggle.setAttribute('aria-expanded', String(!open));
       if (desktopQuery.matches && header) {
         header.classList.toggle('is-expanded', !open);
@@ -56,8 +61,20 @@
       if (navOverlay) navOverlay.classList.toggle('is-open', !open);
     });
     mainNav.querySelectorAll('a').forEach(function (link) {
+      if (link === dropdownTrigger) return;
       link.addEventListener('click', closeNav);
     });
+    // Mobile drawer: tapping Projects opens/closes its sub-links instead
+    // of jumping to the section. On desktop it stays a normal link.
+    if (dropdownTrigger) {
+      dropdownTrigger.setAttribute('aria-expanded', 'false');
+      dropdownTrigger.addEventListener('click', function (e) {
+        if (desktopQuery.matches) { closeNav(); return; }
+        e.preventDefault();
+        var open = navDropdown.classList.toggle('is-open');
+        dropdownTrigger.setAttribute('aria-expanded', String(open));
+      });
+    }
     if (navOverlay) navOverlay.addEventListener('click', closeNav);
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeNav();

@@ -354,11 +354,25 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   .nav-link.is-active{ background: none; color: #9dc0ef; }
   .nav-dropdown{ width: 100%; border-bottom: 1px solid rgba(255,255,255,0.12); }
   .nav-dropdown-trigger{ border-bottom: none; }
-  .nav-dropdown-trigger::after{ display: none; }
-  .nav-dropdown-menu{
-    position: static; margin-top: 0; padding: 0 0 8px 14px; transform: none;
+  /* Projects is a tap-to-toggle dropdown in the drawer: a chevron on the
+     row, and the sub-links slide open/closed underneath it (JS toggles
+     .is-open on .nav-dropdown). Hover/focus never open it here. */
+  .nav-dropdown-trigger{ justify-content: space-between; }
+  .nav-dropdown-trigger::after{ display: block; margin: -3px 4px 0 0; }
+  .nav-dropdown:hover .nav-dropdown-trigger::after,
+  .nav-dropdown:focus-within .nav-dropdown-trigger::after{ transform: rotate(45deg); margin-top: -3px; }
+  .nav-dropdown.is-open .nav-dropdown-trigger::after{ transform: rotate(225deg); margin-top: 3px; }
+  .nav-dropdown .nav-dropdown-menu,
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown:focus-within .nav-dropdown-menu{
+    position: static; margin-top: 0; padding: 0 0 0 14px; transform: none;
     background: none; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
-    opacity: 1; visibility: visible; pointer-events: auto; transition: none;
+    max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; pointer-events: none;
+    transition: max-height 0.3s var(--ease), opacity 0.25s var(--ease), padding-bottom 0.3s var(--ease), visibility 0s linear 0.3s;
+  }
+  .nav-dropdown.is-open .nav-dropdown-menu{
+    max-height: 200px; opacity: 1; visibility: visible; pointer-events: auto; padding-bottom: 8px;
+    transition: max-height 0.3s var(--ease), opacity 0.25s var(--ease), padding-bottom 0.3s var(--ease), visibility 0s linear 0s;
   }
   .nav-dropdown-menu::before{ display: none; }
   .nav-dropdown-menu a{ color: rgba(255,255,255,0.68); font-size: 14px; padding: 9px 2px; }
