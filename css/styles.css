@@ -513,20 +513,6 @@ a.project-card:hover .project-card-media img{ transform: scale(1.05); }
   border: 1px solid rgba(var(--success-rgb),0.4); padding: 5px 10px; border-radius: 999px;
 }
 .project-card-tag--pending{ color: var(--accent); border-color: rgba(var(--accent-rgb),0.4); }
-/* Targeting corner brackets — reveal on hover, CAD-selection style */
-.corner{ position: absolute; width: 18px; height: 18px; opacity: 0; transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); pointer-events: none; }
-.corner::before, .corner::after{ content: ""; position: absolute; background: var(--accent); }
-.corner::before{ width: 100%; height: 2px; }
-.corner::after{ width: 2px; height: 100%; }
-.corner-tl{ top: 10px; left: 10px; transform: translate(6px, 6px); }
-.corner-tr{ top: 10px; right: 10px; transform: translate(-6px, 6px); }
-.corner-bl{ bottom: 10px; left: 10px; transform: translate(6px, -6px); }
-.corner-br{ bottom: 10px; right: 10px; transform: translate(-6px, -6px); }
-.corner-tl::before, .corner-tl::after{ top: 0; left: 0; }
-.corner-tr::before{ top: 0; right: 0; } .corner-tr::after{ top: 0; right: 0; }
-.corner-bl::before{ bottom: 0; left: 0; } .corner-bl::after{ bottom: 0; left: 0; }
-.corner-br::before{ bottom: 0; right: 0; } .corner-br::after{ bottom: 0; right: 0; }
-a.project-card:hover .corner{ opacity: 1; transform: translate(0,0); }
 
 /* Two images side by side, each covering half the card media area. */
 .project-card-media--split{ display: flex; }
@@ -553,6 +539,11 @@ a.project-card:focus-visible .project-card-more{ grid-template-rows: 1fr; opacit
   .project-card.is-inview .project-card-more{ grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
 }
 @media (prefers-reduced-motion: reduce){ .project-card-more{ transition: none; } }
+/* Used by JS for one synchronous measurement of the grid with every
+   description open (it reserves that height so the page below never
+   moves); never painted. */
+.projects-grid.is-measuring .project-card-more{ grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
+.projects-grid.no-anim .project-card-more{ transition: none; }
 .project-card-link{
   display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 13px;
   color: var(--accent); margin-top: 6px;

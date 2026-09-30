@@ -171,6 +171,34 @@
     projectCards.forEach(function (card) { cardObserver.observe(card); });
   }
 
+  /* ---------- Projects grid: fixed height ----------
+     Card descriptions drop down on hover (or on scroll-in on touch), which
+     would grow the grid and shove every section below it. Measure the grid
+     with every description open and hold it at that height, so opening and
+     closing happens inside reserved space and nothing below moves.
+     Re-measured only when the width changes. */
+  var projectsGrid = document.querySelector('.projects-grid');
+  if (projectsGrid && projectsGrid.querySelector('.project-card-more')) {
+    var lastGridWidth = 0;
+    var pinProjectsGrid = function () {
+      var width = projectsGrid.offsetWidth;
+      if (width === lastGridWidth) return;
+      lastGridWidth = width;
+      projectsGrid.style.minHeight = '';
+      projectsGrid.classList.add('is-measuring', 'no-anim');
+      var openHeight = projectsGrid.offsetHeight;
+      projectsGrid.classList.remove('is-measuring');
+      void projectsGrid.offsetHeight; // settle closed state with no animation
+      projectsGrid.classList.remove('no-anim');
+      projectsGrid.style.minHeight = openHeight + 'px';
+    };
+    pinProjectsGrid();
+    var repinProjectsGrid = function () { lastGridWidth = 0; pinProjectsGrid(); };
+    window.addEventListener('load', repinProjectsGrid);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(repinProjectsGrid);
+    window.addEventListener('resize', pinProjectsGrid);
+  }
+
   /* ---------- Year tabs ---------- */
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.year-tab'));
   var panels = {
