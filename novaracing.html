@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=65">
+<link rel="stylesheet" href="css/styles.css?v=66">
 </head>
 <body>
 
@@ -51,7 +51,7 @@
   <!-- ============ PROJECT HERO ============ -->
   <section class="project-hero">
     <div class="hero-bg" aria-hidden="true">
-      <img src="assets/images/novaracing-team-dock.jpg" alt="" width="1206" height="889">
+      <img src="assets/images/novaracing-team-dock.jpg" alt="" width="2376" height="1778">
       <div class="hero-bg-scrim"></div>
     </div>
     <div class="project-hero-content">
@@ -142,24 +142,7 @@
             </p>
           </div>
           <div class="story-side">
-            <figure class="collage-item story-cover">
-              <img src="assets/images/vu17-church.jpg" alt="VU17, car #64, parked in front of St. Thomas of Villanova Church" width="728" height="1100" loading="lazy">
-            </figure>
-            <ul class="story-skills">
-              <li>SolidWorks</li>
-              <li>Wet Layup &amp; Resin Infusion</li>
-              <li>Mold Preparation</li>
-              <li>Finishing</li>
-              <li>Manual Mill &amp; Band Saw</li>
-            </ul>
-          </div>
-          <div class="photo-gallery" data-gallery>
-            <button type="button" class="gallery-toggle" aria-pressed="false">Pause slideshow</button>
-            <div class="photo-gallery-track">
-              <figure class="collage-item square">
-                <img src="assets/images/vu17-capstone-team.jpg" alt="The VU17 senior capstone team" loading="lazy">
-                <figcaption><strong>Senior Capstone Team</strong> (left to right): Jase Co, Chassis &amp; Frame; James Breckner, Powertrain; Conner Brett, Aerodynamics; Chris Fleschner, Chief Engineer &amp; VU17 Aerodynamic Package Designer</figcaption>
-              </figure>
+            <div class="story-grid">
               <figure class="collage-item square">
                 <img src="assets/images/vu17-cnc.jpg" alt="CNC router cutting a mold from MDF" loading="lazy">
                 <figcaption>CNC Router cutting MDF sheet stock for undertray mold</figcaption>
@@ -186,9 +169,6 @@
                 <img src="assets/images/vu17-layup2.jpg" alt="Trimming a cured carbon-fiber panel edge" loading="lazy">
               </figure>
               <figure class="collage-item square">
-                <img src="assets/images/vu17-vacuum-bag.jpg" alt="Vacuum-bag preparation for resin infusion" loading="lazy">
-              </figure>
-              <figure class="collage-item square">
                 <img src="assets/images/vu17-undertray-vacuum-bag.jpg" alt="Undertray and diffuser vacuum-bagged for cure" loading="lazy">
               </figure>
               <figure class="collage-item square">
@@ -197,6 +177,25 @@
               </figure>
               <figure class="collage-item square">
                 <img src="assets/images/vu17-mold.jpg" alt="CNC-routed MDF mold, sanded and prepped" loading="lazy">
+              </figure>
+            </div>
+            <ul class="story-skills">
+              <li>SolidWorks</li>
+              <li>Wet Layup &amp; Resin Infusion</li>
+              <li>Mold Preparation</li>
+              <li>Finishing</li>
+              <li>Manual Mill &amp; Band Saw</li>
+            </ul>
+          </div>
+          <div class="photo-gallery" data-gallery>
+            <button type="button" class="gallery-toggle" aria-pressed="false">Pause slideshow</button>
+            <div class="photo-gallery-track">
+              <figure class="collage-item square">
+                <img src="assets/images/vu17-capstone-team.jpg" alt="The VU17 senior capstone team" loading="lazy">
+                <figcaption><strong>Senior Capstone Team</strong> (left to right): Jase Co, Chassis &amp; Frame; James Breckner, Powertrain; Conner Brett, Aerodynamics; Chris Fleschner, Chief Engineer &amp; VU17 Aerodynamic Package Designer</figcaption>
+              </figure>
+              <figure class="collage-item square">
+                <img src="assets/images/vu17-vacuum-bag.jpg" alt="Vacuum-bag preparation for resin infusion" loading="lazy">
               </figure>
               <figure class="collage-item square">
                 <img src="assets/images/vu17-pit.jpg" alt="Mounting the undertray to the frame" loading="lazy">
@@ -212,41 +211,10 @@
               <figure class="collage-item square">
                 <img src="assets/images/vu17-autocross.jpg" alt="VU17 on track during a testing day after the build" loading="lazy">
               </figure>
+              <figure class="collage-item square focus-low">
+                <img src="assets/images/vu17-church.jpg" alt="VU17, car #64, parked in front of St. Thomas of Villanova Church" width="728" height="1100" loading="lazy">
+              </figure>
             </div>
-          </div>
-        </article>
-
-        <article class="story reveal">
-          <div class="story-copy">
-            <div class="story-head">
-              <span class="pill">Pushrod Suspension Rocker</span>
-              <span class="status-chip status-chip--sim">Simulated &middot; FEA</span>
-            </div>
-            <dl class="story-spec">
-              <div><dt>Tools</dt><dd>SolidWorks, SolidWorks FEA</dd></div>
-              <div><dt>Material</dt><dd>7075-T6 aluminum, chosen from three candidates</dd></div>
-              <div><dt>Result</dt><dd>0.388 mm predicted max deformation vs. a 1.0 mm limit</dd></div>
-            </dl>
-            <p>
-              I designed a pushrod suspension rocker in SolidWorks and compared three materials
-              using finite element analysis. I selected <strong>7075-T6 aluminum</strong>, which had a
-              predicted maximum deformation of <strong>0.388&nbsp;mm</strong> under the prescribed
-              loads, meeting the 1.0&nbsp;mm deformation limit.
-            </p>
-          </div>
-          <div class="story-figures">
-            <figure class="collage-item is-wide">
-              <img src="assets/images/vu17-fea-rocker.jpg" alt="SolidWorks static displacement plot of the two-plate suspension rocker assembly" width="1350" height="1800" loading="lazy">
-              <figcaption>SolidWorks static displacement study of the rocker assembly</figcaption>
-            </figure>
-            <figure class="collage-item">
-              <img src="assets/images/vu17-rocker-coilover.jpg" alt="Rocker assembly in CAD, mounted with the pushrod and coilover" width="1012" height="1800" loading="lazy">
-              <figcaption>Rocker mounted with the pushrod and coilover in the suspension assembly</figcaption>
-            </figure>
-            <figure class="collage-item">
-              <img src="assets/images/vu17-rocker-plates.jpg" alt="CAD model of the two triangular rocker plates" width="1350" height="1800" loading="lazy">
-              <figcaption>The two rocker plates in SolidWorks</figcaption>
-            </figure>
           </div>
         </article>
       </div>

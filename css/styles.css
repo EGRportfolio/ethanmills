@@ -793,15 +793,8 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .collage-item figcaption{ display: none; }
 .collage-item.square img{ aspect-ratio: 1 / 1; }
 
-/* Figure grid beside a story: a lead image across the top, supporting
-   views in pairs beneath it. */
-.story-figures{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; }
-.story-figures .collage-item img{ height: auto; aspect-ratio: 3 / 4; }
-.story-figures .collage-item.is-wide{ grid-column: 1 / -1; }
-.story-figures .collage-item.is-wide img{ aspect-ratio: 4 / 3; object-position: center 56%; }
-.story-figures .collage-item.is-tall img{ aspect-ratio: 1164 / 1700; }
-/* CAD screenshots: show the whole model rather than cropping it */
-.story-figures .fit-contain img{ object-fit: contain; background: #ffffff; }
+/* Tall portrait photos cropped square: keep the lower subject in frame */
+.collage-item.focus-low img{ object-position: center 72%; }
 
 /* Auto-rotating photo gallery: a horizontally scrollable, scroll-snapped
    strip that advances on a timer. It pauses while hovered, focused, or
@@ -829,12 +822,11 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   flex: 0 0 clamp(180px, 24vw, 250px); margin: 6px 0; scroll-snap-align: start;
 }
 
-/* Cover photo that sits beside the story copy, ahead of the gallery. */
+/* Beside the story copy: the project's own photos in a 2 x 5 grid of
+   squares (same frame as the slideshow), with the skills underneath. */
 .story-side{ display: flex; flex-direction: column; gap: var(--space-sm); }
-.story-cover{ flex: none; }
-/* Portrait crop to match the cover photo, which runs tall beside the
-   story copy on desktop (spires at the top, car at the bottom). */
-.story-cover img{ height: auto; aspect-ratio: 3 / 4; object-position: center 62%; }
+.story-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.story-grid .collage-item img{ height: auto; aspect-ratio: 1 / 1; }
 .story-skills{ display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
 .story-skills li{
   font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim);
