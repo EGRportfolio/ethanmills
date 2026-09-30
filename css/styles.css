@@ -814,6 +814,14 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .photo-gallery-track .collage-item{
   flex: 0 0 clamp(180px, 24vw, 250px); margin: 6px 0; scroll-snap-align: start;
 }
+/* Single-photo variant (beside the overview): one full-width 4:3 slide at
+   a time, no scrollbar; it still swipes and auto-advances. */
+.photo-gallery--single{ margin: 0; grid-column: auto; }
+.photo-gallery--single .photo-gallery-track{ gap: 14px; padding: 0 0 10px; scrollbar-width: none; }
+.photo-gallery--single .photo-gallery-track::-webkit-scrollbar{ display: none; }
+.photo-gallery--single .photo-gallery-track .collage-item{ flex: 0 0 100%; margin: 0; }
+.photo-gallery--single .collage-item img{ aspect-ratio: 4 / 3; }
+.photo-gallery--single .collage-item:hover{ transform: none; }
 
 /* Beside the overview copy: the at-a-glance facts and skills. */
 .story-side{ display: flex; flex-direction: column; gap: var(--space-sm); }
@@ -835,7 +843,6 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .phase-media .collage-item.is-wide{ grid-column: 1 / -1; }
 .phase-media .collage-item.is-wide img{ aspect-ratio: 2 / 1; }
 .phase-media--1 .collage-item.is-wide img{ aspect-ratio: 4 / 3; }
-.story--phases .photo-gallery{ margin-top: var(--space-xl); }
 /* A phase whose text column also carries a photo: it sits under the copy
    and stretches to line up with the bottom of the photo grid beside it. */
 .phase--copy-photo{ align-items: stretch; }
