@@ -585,7 +585,7 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 .goals-section .section-title{ color: #ffffff; }
 .goals-section .interest-index{ max-width: 640px; border-top-color: rgba(255,255,255,0.2); }
 .goals-section .interest-row{ border-bottom-color: rgba(255,255,255,0.2); }
-.goals-section .interest-row.is-open, .goals-section .interest-row:focus-visible{ background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent); }
+.goals-section .interest-row::after{ background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent); }
 .goals-section .interest-row::before{ background: linear-gradient(180deg, #9dc0ef, #ffffff); }
 .goals-section .interest-num{ color: rgba(255,255,255,0.6); }
 .goals-section .interest-row.is-open .interest-num, .goals-section .interest-row:focus-visible .interest-num{ color: #9dc0ef; }
@@ -604,31 +604,46 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 .interest-index{ border-top: 1px solid var(--border-soft); }
 .interest-row{
   padding: 16px 4px; border-bottom: 1px solid var(--border-soft); position: relative;
-  transition: padding-left 0.3s var(--ease), background 0.3s var(--ease);
+  transition: padding-left 0.35s var(--ease), background 0.35s var(--ease);
 }
 .interest-row::before{
   content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
   background: linear-gradient(180deg, var(--jet-blue), var(--jet-red)); transform: scaleY(0); transform-origin: top;
-  transition: transform 0.3s var(--ease);
+  transition: transform 0.35s var(--ease);
 }
-.interest-row.is-open, .interest-row:focus-visible{
-  padding-left: 18px; background: linear-gradient(90deg, rgba(var(--accent-rgb),0.06), transparent);
+.interest-row.is-open, .interest-row:focus-visible{ padding-left: 18px; }
+/* Row highlight on its own layer: gradients can't be transitioned, but
+   this layer's opacity can, so the tint fades with everything else. */
+.interest-row{ isolation: isolate; }
+.interest-row::after{
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, rgba(var(--accent-rgb),0.06), transparent);
+  opacity: 0; transition: opacity 0.35s var(--ease);
 }
+.interest-row.is-open::after, .interest-row:focus-visible::after{ opacity: 1; }
 .interest-row.is-open::before, .interest-row:focus-visible::before{ transform: scaleY(1); }
 .interest-row-top{ display: flex; align-items: baseline; gap: 18px; }
 .interest-num{
   font-family: var(--font-mono); font-size: 13px; color: var(--text-faint); width: 26px;
-  flex-shrink: 0; transition: color 0.3s var(--ease);
+  flex-shrink: 0; transition: color 0.35s var(--ease);
 }
 .interest-row.is-open .interest-num, .interest-row:focus-visible .interest-num{ color: var(--accent); }
 .interest-name{ font-family: var(--font-head); font-weight: 700; font-size: 17px; letter-spacing: 0.01em; }
+/* The description folds with a 0fr -> 1fr grid row, which animates to
+   the text's exact height, so opening, closing, and switching rows all
+   move at the same speed with no dead pause. The top gap lives inside
+   the folding part, so it collapses with it. */
 .interest-desc{
-  max-height: 0; opacity: 0; overflow: hidden; margin-left: 44px; margin-top: 0; color: var(--text-faint);
-  font-size: 13.5px; line-height: 1.5; transition: max-height 0.35s var(--ease), opacity 0.3s var(--ease), margin-top 0.35s var(--ease);
+  display: grid; grid-template-rows: 0fr; opacity: 0; margin-left: 44px; color: var(--text-faint);
+  font-size: 13.5px; line-height: 1.5;
+  transition: grid-template-rows 0.35s var(--ease), opacity 0.35s var(--ease);
 }
+.interest-desc > p{ min-height: 0; overflow: hidden; margin: 0; }
+.interest-desc > p::before{ content: ""; display: block; height: 8px; }
 .interest-row.is-open .interest-desc, .interest-row:focus-visible .interest-desc{
-  max-height: 90px; opacity: 1; margin-top: 8px;
+  grid-template-rows: 1fr; opacity: 1;
 }
+@media (prefers-reduced-motion: reduce){ .interest-desc{ transition: none; } }
 .interest-row{ -webkit-tap-highlight-color: transparent; }
 
 /* ============ CONTACT ============ */
