@@ -171,26 +171,36 @@
     projectCards.forEach(function (card) { cardObserver.observe(card); });
   }
 
-  /* ---------- Project cards: one fixed size ----------
-     Every card is held at the height of the tallest card with its
-     description open, so all three match, and a card's drop-down text
-     opens into its own reserved space: the card never grows, and nothing
-     below it moves. Re-measured only when the width changes. */
+  /* ---------- Project cards: matching closed/open sizes ----------
+     Cards sit collapsed at one shared height (the tallest card with its
+     text folded) and grow on hover to another (the tallest with its text
+     open), so they always match. The grid itself is held at its fully
+     open height, so a card growing never moves the sections below.
+     Re-measured only when the width changes. */
   var projectsGrid = document.querySelector('.projects-grid');
   if (projectsGrid && projectsGrid.querySelector('.project-card-more')) {
     var lastGridWidth = 0;
+    var tallestCard = function () {
+      return projectCards.reduce(function (max, card) { return Math.max(max, card.offsetHeight); }, 0);
+    };
     var sizeProjectCards = function () {
       var width = projectsGrid.offsetWidth;
       if (width === lastGridWidth) return;
       lastGridWidth = width;
-      projectsGrid.style.removeProperty('--project-card-h');
-      projectsGrid.classList.add('is-measuring', 'no-anim');
-      var tallest = 0;
-      projectCards.forEach(function (card) { tallest = Math.max(tallest, card.offsetHeight); });
+      var style = projectsGrid.style;
+      style.minHeight = '';
+      style.removeProperty('--project-card-closed-h');
+      style.removeProperty('--project-card-open-h');
+      projectsGrid.classList.add('no-anim', 'is-measuring');
+      style.setProperty('--project-card-open-h', tallestCard() + 'px');
+      var openGridHeight = projectsGrid.offsetHeight; // every card open, same size
       projectsGrid.classList.remove('is-measuring');
-      void projectsGrid.offsetHeight; // settle closed state with no animation
+      projectsGrid.classList.add('is-measuring-closed'); // even a hovered/in-view card
+      style.setProperty('--project-card-closed-h', tallestCard() + 'px');
+      projectsGrid.classList.remove('is-measuring-closed');
+      style.minHeight = openGridHeight + 'px';
+      void projectsGrid.offsetHeight; // settle the new sizes with no animation
       projectsGrid.classList.remove('no-anim');
-      projectsGrid.style.setProperty('--project-card-h', tallest + 'px');
     };
     sizeProjectCards();
     var resizeProjectCards = function () { lastGridWidth = 0; sizeProjectCards(); };
