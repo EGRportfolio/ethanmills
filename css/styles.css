@@ -798,18 +798,11 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 
 /* Auto-rotating photo gallery: a horizontally scrollable, scroll-snapped
    strip that advances on a timer. It pauses while hovered, focused, or
-   touched, and the visible toggle stops it outright. */
+   touched. */
 .photo-gallery{
   position: relative; display: flex; flex-direction: column;
   margin: var(--space-md) 0 0; min-width: 0; grid-column: 1 / -1;
 }
-.gallery-toggle{
-  align-self: flex-end; margin-bottom: 6px; padding: 6px 12px;
-  font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim);
-  border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
-}
-.gallery-toggle:hover{ color: var(--accent); border-color: var(--accent-dim); }
 .photo-gallery-track{
   display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
   padding: 10px 4px 16px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
@@ -843,6 +836,16 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .phase-media .collage-item.is-wide img{ aspect-ratio: 2 / 1; }
 .phase-media--1 .collage-item.is-wide img{ aspect-ratio: 4 / 3; }
 .story--phases .photo-gallery{ margin-top: var(--space-xl); }
+/* A phase whose text column also carries a photo: it sits under the copy
+   and stretches to line up with the bottom of the photo grid beside it. */
+.phase--copy-photo{ align-items: stretch; }
+.phase--copy-photo .phase-copy{ display: flex; flex-direction: column; }
+.phase-copy .copy-photo{ flex: 1 1 auto; min-height: 260px; margin-top: var(--space-md); }
+.phase-copy .copy-photo img{ position: absolute; inset: 0; height: 100%; aspect-ratio: auto; }
+@media (max-width: 900px){
+  .phase-copy .copy-photo{ min-height: 0; }
+  .phase-copy .copy-photo img{ position: static; aspect-ratio: 3 / 4; }
+}
 @media (max-width: 900px){
   .story-overview, .phase{ grid-template-columns: 1fr; gap: var(--space-lg); }
 }

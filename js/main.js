@@ -385,8 +385,6 @@
 
     var timer = null;
     var resumeTimer = null;
-    var userPaused = false;
-    var toggle = gallery.querySelector('.gallery-toggle');
 
     function step(dir) {
       var item = track.querySelector('.collage-item');
@@ -401,7 +399,7 @@
       else step(1);
     }
     function start() {
-      if (prefersReducedMotion || userPaused) return;
+      if (prefersReducedMotion) return;
       stop();
       timer = window.setInterval(advance, 3200);
     }
@@ -412,17 +410,6 @@
       stop();
       if (resumeTimer) window.clearTimeout(resumeTimer);
       resumeTimer = window.setTimeout(start, 5000);
-    }
-
-    if (toggle) {
-      // Nothing auto-advances under reduced motion, so there's nothing to pause.
-      if (prefersReducedMotion) toggle.hidden = true;
-      toggle.addEventListener('click', function () {
-        userPaused = !userPaused;
-        toggle.setAttribute('aria-pressed', String(userPaused));
-        toggle.textContent = userPaused ? 'Play slideshow' : 'Pause slideshow';
-        if (userPaused) stop(); else start();
-      });
     }
 
     track.addEventListener('mouseenter', stop);
