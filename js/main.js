@@ -171,32 +171,32 @@
     projectCards.forEach(function (card) { cardObserver.observe(card); });
   }
 
-  /* ---------- Projects grid: fixed height ----------
-     Card descriptions drop down on hover (or on scroll-in on touch), which
-     would grow the grid and shove every section below it. Measure the grid
-     with every description open and hold it at that height, so opening and
-     closing happens inside reserved space and nothing below moves.
-     Re-measured only when the width changes. */
+  /* ---------- Project cards: one fixed size ----------
+     Every card is held at the height of the tallest card with its
+     description open, so all three match, and a card's drop-down text
+     opens into its own reserved space: the card never grows, and nothing
+     below it moves. Re-measured only when the width changes. */
   var projectsGrid = document.querySelector('.projects-grid');
   if (projectsGrid && projectsGrid.querySelector('.project-card-more')) {
     var lastGridWidth = 0;
-    var pinProjectsGrid = function () {
+    var sizeProjectCards = function () {
       var width = projectsGrid.offsetWidth;
       if (width === lastGridWidth) return;
       lastGridWidth = width;
-      projectsGrid.style.minHeight = '';
+      projectsGrid.style.removeProperty('--project-card-h');
       projectsGrid.classList.add('is-measuring', 'no-anim');
-      var openHeight = projectsGrid.offsetHeight;
+      var tallest = 0;
+      projectCards.forEach(function (card) { tallest = Math.max(tallest, card.offsetHeight); });
       projectsGrid.classList.remove('is-measuring');
       void projectsGrid.offsetHeight; // settle closed state with no animation
       projectsGrid.classList.remove('no-anim');
-      projectsGrid.style.minHeight = openHeight + 'px';
+      projectsGrid.style.setProperty('--project-card-h', tallest + 'px');
     };
-    pinProjectsGrid();
-    var repinProjectsGrid = function () { lastGridWidth = 0; pinProjectsGrid(); };
-    window.addEventListener('load', repinProjectsGrid);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(repinProjectsGrid);
-    window.addEventListener('resize', pinProjectsGrid);
+    sizeProjectCards();
+    var resizeProjectCards = function () { lastGridWidth = 0; sizeProjectCards(); };
+    window.addEventListener('load', resizeProjectCards);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(resizeProjectCards);
+    window.addEventListener('resize', sizeProjectCards);
   }
 
   /* ---------- Year tabs ---------- */
