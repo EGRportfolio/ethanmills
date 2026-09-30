@@ -555,7 +555,11 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
   position: relative; overflow: hidden; color: #ffffff;
   border-top: 1px solid rgba(0,0,0,0.15); border-bottom: 1px solid rgba(0,0,0,0.15);
 }
+/* JS pins this box to a fixed pixel height (the section plus room for an
+   open description), so rows opening and closing never resize or re-crop
+   the photo; the section simply reveals a bit more of it. */
 .goals-bg{ position: absolute; inset: 0; z-index: 0; }
+.goals-bg.is-pinned{ bottom: auto; }
 .goals-bg img{ width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
 .goals-bg-scrim{
   position: absolute; inset: 0;
@@ -567,10 +571,10 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 .goals-section .section-title{ color: #ffffff; }
 .goals-section .interest-index{ max-width: 640px; border-top-color: rgba(255,255,255,0.2); }
 .goals-section .interest-row{ border-bottom-color: rgba(255,255,255,0.2); }
-.goals-section .interest-row:hover, .goals-section .interest-row:focus-visible{ background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent); }
+.goals-section .interest-row.is-open, .goals-section .interest-row:focus-visible{ background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent); }
 .goals-section .interest-row::before{ background: linear-gradient(180deg, #9dc0ef, #ffffff); }
 .goals-section .interest-num{ color: rgba(255,255,255,0.6); }
-.goals-section .interest-row:hover .interest-num, .goals-section .interest-row:focus-visible .interest-num{ color: #9dc0ef; }
+.goals-section .interest-row.is-open .interest-num, .goals-section .interest-row:focus-visible .interest-num{ color: #9dc0ef; }
 .goals-section .interest-name{ color: #ffffff; }
 .goals-section .interest-desc{ color: rgba(255,255,255,0.75); }
 
@@ -593,32 +597,25 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
   background: linear-gradient(180deg, var(--jet-blue), var(--jet-red)); transform: scaleY(0); transform-origin: top;
   transition: transform 0.3s var(--ease);
 }
-.interest-row:hover, .interest-row:focus-visible{
+.interest-row.is-open, .interest-row:focus-visible{
   padding-left: 18px; background: linear-gradient(90deg, rgba(var(--accent-rgb),0.06), transparent);
 }
-.interest-row:hover::before, .interest-row:focus-visible::before{ transform: scaleY(1); }
+.interest-row.is-open::before, .interest-row:focus-visible::before{ transform: scaleY(1); }
 .interest-row-top{ display: flex; align-items: baseline; gap: 18px; }
 .interest-num{
   font-family: var(--font-mono); font-size: 13px; color: var(--text-faint); width: 26px;
   flex-shrink: 0; transition: color 0.3s var(--ease);
 }
-.interest-row:hover .interest-num, .interest-row:focus-visible .interest-num{ color: var(--accent); }
+.interest-row.is-open .interest-num, .interest-row:focus-visible .interest-num{ color: var(--accent); }
 .interest-name{ font-family: var(--font-head); font-weight: 700; font-size: 17px; letter-spacing: 0.01em; }
 .interest-desc{
   max-height: 0; opacity: 0; overflow: hidden; margin-left: 44px; margin-top: 0; color: var(--text-faint);
   font-size: 13.5px; line-height: 1.5; transition: max-height 0.35s var(--ease), opacity 0.3s var(--ease), margin-top 0.35s var(--ease);
 }
-.interest-row:hover .interest-desc, .interest-row:focus-visible .interest-desc{
-  max-height: 60px; opacity: 1; margin-top: 8px;
+.interest-row.is-open .interest-desc, .interest-row:focus-visible .interest-desc{
+  max-height: 90px; opacity: 1; margin-top: 8px;
 }
-/* Touch/no-hover: there's no hover state, so the gradient trim and
-   description stay hidden until the row is tapped (JS toggles .is-open). */
-@media (hover: none), (pointer: coarse){
-  .interest-row.is-open{ padding-left: 18px; background: linear-gradient(90deg, rgba(var(--accent-rgb),0.06), transparent); }
-  .interest-row.is-open::before{ transform: scaleY(1); }
-  .interest-row.is-open .interest-desc{ max-height: none; opacity: 1; margin-top: 6px; }
-  .goals-section .interest-row.is-open{ background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent); }
-}
+.interest-row{ -webkit-tap-highlight-color: transparent; }
 
 /* ============ CONTACT ============ */
 .contact-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-md); max-width: 720px; }

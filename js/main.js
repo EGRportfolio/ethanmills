@@ -255,12 +255,55 @@
     else if (e.key === 'ArrowRight') showAt(lightboxIndex + 1);
   });
 
-  /* ---------- Interest rows: tap-to-reveal on touch/no-hover devices ---------- */
-  document.querySelectorAll('.interest-row').forEach(function (row) {
+  /* ---------- Interest rows: one open at a time ----------
+     A mouse opens a row on hover and closes it on leave. On touch, a tap
+     opens a row and closes whichever one was open; tapping the open row
+     again closes it. Both paths share .is-open, so every open/close
+     animates the same way. */
+  var interestRows = Array.prototype.slice.call(document.querySelectorAll('.interest-row'));
+  var touchQuery = window.matchMedia('(hover: none), (pointer: coarse)');
+
+  function openInterest(row) {
+    interestRows.forEach(function (r) { r.classList.toggle('is-open', r === row); });
+  }
+
+  interestRows.forEach(function (row) {
+    row.addEventListener('mouseenter', function () { if (!touchQuery.matches) openInterest(row); });
+    row.addEventListener('mouseleave', function () { if (!touchQuery.matches) row.classList.remove('is-open'); });
     row.addEventListener('click', function () {
-      row.classList.toggle('is-open');
+      if (!touchQuery.matches) return;
+      openInterest(row.classList.contains('is-open') ? null : row);
     });
   });
+
+  /* ---------- Interests background: pinned size ----------
+     The photo is object-fit: cover, so if its box followed the section,
+     every row opening would grow the section and rescale the photo. Pin
+     the box to the section's closed height plus room for one open
+     description instead; the section just reveals a little more of it.
+     Re-measured only when the width changes (not on mobile URL-bar
+     height changes). */
+  var goalsSection = document.getElementById('goals');
+  var goalsBg = goalsSection && goalsSection.querySelector('.goals-bg');
+  if (goalsBg) {
+    var lastGoalsWidth = 0;
+    var pinGoalsBg = function () {
+      var width = goalsSection.offsetWidth;
+      if (width === lastGoalsWidth) return;
+      lastGoalsWidth = width;
+      var openExtra = 0;
+      interestRows.forEach(function (r) {
+        if (r.classList.contains('is-open')) openExtra += r.querySelector('.interest-desc').offsetHeight;
+      });
+      goalsBg.style.height = (goalsSection.offsetHeight - openExtra + 140) + 'px';
+      goalsBg.classList.add('is-pinned');
+    };
+    pinGoalsBg();
+    var repinGoalsBg = function () { lastGoalsWidth = 0; pinGoalsBg(); };
+    window.addEventListener('load', repinGoalsBg);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(repinGoalsBg);
+    window.addEventListener('resize', pinGoalsBg);
+  }
 
   /* ---------- Auto-rotating photo gallery ---------- */
   document.querySelectorAll('[data-gallery]').forEach(function (gallery) {
