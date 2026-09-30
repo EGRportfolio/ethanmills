@@ -569,9 +569,9 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
   position: relative; overflow: hidden; color: #ffffff;
   border-top: 1px solid rgba(0,0,0,0.15); border-bottom: 1px solid rgba(0,0,0,0.15);
 }
-/* JS pins this box to a fixed pixel height (the section plus room for an
-   open description), so rows opening and closing never resize or re-crop
-   the photo; the section simply reveals a bit more of it. */
+/* JS fixes the section at one height (with room reserved for an open
+   description) and pins this box to match, so rows opening and closing
+   never move the section's bottom edge or resize the photo. */
 .goals-bg{ position: absolute; inset: 0; z-index: 0; }
 .goals-bg.is-pinned{ bottom: auto; }
 .goals-bg img{ width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }

@@ -293,13 +293,14 @@
     });
   });
 
-  /* ---------- Interests background: pinned size ----------
-     The photo is object-fit: cover, so if its box followed the section,
-     every row opening would grow the section and rescale the photo. Pin
-     the box to the section's closed height plus room for one open
-     description instead; the section just reveals a little more of it.
-     Re-measured only when the width changes (not on mobile URL-bar
-     height changes). */
+  /* ---------- Interests section: fixed height, pinned background ----------
+     Only one row is ever open, so the section reserves room for the
+     tallest description up front (min-height = closed height + that
+     description). Rows then open into that space and the section, its
+     bottom edge, and everything below it never move. The photo box is
+     pinned to the same pixel height, so the cover-fit photo never
+     rescales either. Re-measured only when the width changes (not on
+     mobile URL-bar height changes). */
   var goalsSection = document.getElementById('goals');
   var goalsBg = goalsSection && goalsSection.querySelector('.goals-bg');
   if (goalsBg) {
@@ -308,11 +309,28 @@
       var width = goalsSection.offsetWidth;
       if (width === lastGoalsWidth) return;
       lastGoalsWidth = width;
+      goalsSection.style.minHeight = '';
       var openExtra = 0;
+      var tallestDesc = 0;
       interestRows.forEach(function (r) {
-        if (r.classList.contains('is-open')) openExtra += r.querySelector('.interest-desc').offsetHeight;
+        var desc = r.querySelector('.interest-desc');
+        if (r.classList.contains('is-open')) openExtra += desc.offsetHeight;
+        tallestDesc = Math.max(tallestDesc, desc.firstElementChild.scrollHeight);
       });
-      goalsBg.style.height = (goalsSection.offsetHeight - openExtra + 140) + 'px';
+      var height = goalsSection.offsetHeight - openExtra + tallestDesc;
+      // Keep the photo credit (pinned to the bottom) clear of the list
+      // even with the tallest description open.
+      var credit = goalsSection.querySelector('.photo-credit');
+      var index = goalsSection.querySelector('.interest-index');
+      if (credit && index) {
+        // Offsets, not bounding boxes: the list may still be mid reveal
+        // (translated), which would skew a bounding-box measurement.
+        var listBottom = index.offsetParent.offsetTop + index.offsetTop + index.offsetHeight - openExtra;
+        var creditSpace = credit.offsetHeight + parseFloat(getComputedStyle(credit).bottom) + 24;
+        height = Math.max(height, Math.ceil(listBottom + tallestDesc + creditSpace));
+      }
+      goalsSection.style.minHeight = height + 'px';
+      goalsBg.style.height = (height + 40) + 'px';
       goalsBg.classList.add('is-pinned');
     };
     pinGoalsBg();
