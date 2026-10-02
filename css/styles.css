@@ -49,6 +49,10 @@
   --jet-navy-lead:   #0c2247;
   --gradient-jet-btn: linear-gradient(135deg, var(--jet-black-lead) 0%, var(--jet-navy-lead) 16%, var(--jet-blue-vivid) 38%, var(--jet-blue-vivid) 50%, var(--jet-red-vivid) 76%, var(--jet-amber-vivid) 100%);
 
+  /* Three type roles, used consistently across both pages:
+     --font-head  headers and titles
+     --font-body  body text (paragraphs, list items, captions)
+     --font-mono  navigation, buttons, and small labels */
   --font-head: 'Bricolage Grotesque', 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'Space Grotesk', ui-monospace, monospace;
@@ -465,7 +469,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 .spec-row dd{ margin: 0; }
 .spec-list{ display: flex; flex-wrap: wrap; row-gap: 6px; }
-.spec-list li{ font-family: var(--font-head); font-size: 17px; font-weight: 500; color: var(--text); }
+.spec-list li{ font-family: var(--font-body); font-size: 17px; font-weight: 500; color: var(--text); }
 .spec-list li:not(:last-child)::after{ content: "\00B7"; margin: 0 12px; color: var(--accent-dim); }
 .spec-note{
   margin-left: 4px; font-family: var(--font-mono); font-size: 11px; font-weight: 400;
@@ -608,7 +612,7 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 .photo-credit{
   position: absolute; z-index: 1; right: var(--space-md); bottom: 12px; left: var(--space-md);
   margin: 0 0 0 auto; max-width: 560px; text-align: right;
-  font-family: var(--font-mono); font-size: 10.5px; line-height: 1.45; color: rgba(255,255,255,0.62);
+  font-family: var(--font-body); font-size: 10.5px; line-height: 1.45; color: rgba(255,255,255,0.62);
 }
 .photo-credit a{ color: rgba(255,255,255,0.85); text-decoration: underline; text-underline-offset: 2px; }
 .photo-credit a:hover{ color: #ffffff; }
@@ -885,7 +889,7 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   flex-wrap: wrap; gap: var(--space-md); font-size: 13.5px; color: rgba(255,255,255,0.6);
 }
 .footer-nav{ display: flex; flex-wrap: wrap; gap: var(--space-md); }
-.footer-nav a{ color: rgba(255,255,255,0.65); font-size: 13.5px; transition: color 0.2s var(--ease); }
+.footer-nav a{ font-family: var(--font-mono); color: rgba(255,255,255,0.65); font-size: 13.5px; transition: color 0.2s var(--ease); }
 .footer-nav a:hover{ color: #ffffff; }
 
 /* ============ LIGHTBOX ============ */
@@ -903,7 +907,7 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   border-radius: var(--radius); border: 1px solid var(--border);
   box-shadow: 0 30px 70px -30px rgba(0,0,0,0.45);
 }
-.lightbox-caption{ font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); text-align: center; max-width: 700px; }
+.lightbox-caption{ font-family: var(--font-body); font-size: 13px; color: var(--text-dim); text-align: center; max-width: 700px; }
 .lightbox-close{
   position: absolute; top: var(--space-md); right: var(--space-md); width: 44px; height: 44px;
   border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.75); color: var(--text);
