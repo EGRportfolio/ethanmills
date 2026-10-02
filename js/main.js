@@ -368,7 +368,7 @@
         height = Math.max(height, Math.ceil(listBottom + tallestDesc + creditSpace));
       }
       goalsSection.style.minHeight = height + 'px';
-      goalsBg.style.height = (height + 40) + 'px';
+      goalsBg.style.height = height + 'px';
       goalsBg.classList.add('is-pinned');
     };
     pinGoalsBg();

@@ -440,12 +440,12 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .about-photo-frame::after{ content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(9,7,5,0.7)); pointer-events: none; }
 .about-photo-frame img{ width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; filter: sepia(0.12) saturate(0.92); }
 /* Degree facts stacked under the headshot */
-.about-facts{
-  list-style: none; margin: var(--space-sm) 0 0; padding: 0;
-  display: flex; flex-direction: column; gap: 6px;
-  font-family: var(--font-mono); font-size: 12px; line-height: 1.45; color: var(--text-faint);
-}
-.about-facts li{ padding-left: 12px; border-left: 2px solid var(--accent-dim); }
+/* Degree facts under the headshot, in the same label/value format as the
+   NovaRacing overview's quick facts, one per row in this narrow column. */
+.about-spec{ margin: var(--space-sm) 0 0; grid-template-columns: 1fr; }
+.about-spec > div{ padding: 10px 0; }
+.about-spec > div + div{ border-top: 1px solid var(--border-soft); }
+.spec-aside{ display: block; margin-top: 3px; font-size: 12.5px; color: var(--text-faint); }
 
 .about-copy p{ color: var(--text-dim); font-size: 16.5px; margin-bottom: var(--space-md); }
 .about-copy strong{ font-weight: 600; }
@@ -579,7 +579,15 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
    never move the section's bottom edge or resize the photo. */
 .goals-bg{ position: absolute; inset: 0; z-index: 0; }
 .goals-bg.is-pinned{ bottom: auto; }
-.goals-bg img{ width: 100%; height: 100%; object-fit: cover; object-position: 62% 50%; }
+/* The photo is fit to the full width and anchored to the bottom, so the
+   whole aircraft always shows; any height above it is filled with the
+   photo's own top-of-sky navy, and its top edge fades into that fill. */
+.goals-bg{ background: rgb(8, 13, 32); }
+.goals-bg img{
+  position: absolute; left: 0; bottom: 0; width: 100%; height: auto;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 8%);
+}
 .goals-bg-scrim{
   position: absolute; inset: 0;
   background: linear-gradient(100deg, rgba(6,9,14,0.86) 0%, rgba(6,9,14,0.74) 38%, rgba(6,9,14,0.4) 70%, rgba(6,9,14,0.55) 100%);
