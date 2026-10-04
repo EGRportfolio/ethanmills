@@ -191,6 +191,9 @@
       style.minHeight = '';
       style.removeProperty('--project-card-closed-h');
       style.removeProperty('--project-card-open-h');
+      projectsGrid.querySelectorAll('.project-card-more').forEach(function (more) {
+        more.style.setProperty('--more-h', more.firstElementChild.getBoundingClientRect().height + 'px');
+      });
       projectsGrid.classList.add('no-anim', 'is-measuring');
       style.setProperty('--project-card-open-h', tallestCard() + 'px');
       var openGridHeight = projectsGrid.offsetHeight; // every card open, same size
@@ -352,8 +355,10 @@
       var tallestDesc = 0;
       interestRows.forEach(function (r) {
         var desc = r.querySelector('.interest-desc');
+        var full = desc.firstElementChild.getBoundingClientRect().height;
+        desc.style.setProperty('--desc-h', full + 'px');
         if (r.classList.contains('is-open')) openExtra += desc.offsetHeight;
-        tallestDesc = Math.max(tallestDesc, desc.firstElementChild.scrollHeight);
+        tallestDesc = Math.max(tallestDesc, full);
       });
       var height = goalsSection.offsetHeight - openExtra + tallestDesc;
       // Keep the photo credit (pinned to the bottom) clear of the list

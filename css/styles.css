@@ -304,6 +304,14 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 }
 .nav-dropdown-menu a:hover{ background: rgba(255,255,255,0.12); color: #ffffff; }
 
+/* Each bubble's position in the row/column, for staggered animations. */
+.main-nav > :nth-child(1){ --i: 0; }
+.main-nav > :nth-child(2){ --i: 1; }
+.main-nav > :nth-child(3){ --i: 2; }
+.main-nav > :nth-child(4){ --i: 3; }
+.main-nav > :nth-child(5){ --i: 4; }
+.main-nav > :nth-child(6){ --i: 5; }
+
 /* Desktop: leaving the top of the page collapses the bubbles, right to
    left, into the hamburger; returning to the very top plays that back,
    left to right. Anywhere else, the hamburger opens the row across beside
@@ -315,12 +323,6 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
     --d: calc(var(--i) * 40ms);
     transition: opacity 0.3s var(--ease) var(--d), transform 0.4s var(--ease) var(--d), visibility 0s linear var(--d);
   }
-  .main-nav > :nth-child(1){ --i: 0; }
-  .main-nav > :nth-child(2){ --i: 1; }
-  .main-nav > :nth-child(3){ --i: 2; }
-  .main-nav > :nth-child(4){ --i: 3; }
-  .main-nav > :nth-child(5){ --i: 4; }
-  .main-nav > :nth-child(6){ --i: 5; }
   .site-header.is-condensed:not(.is-expanded) .main-nav{ pointer-events: none; }
   .site-header.is-condensed:not(.is-expanded) .main-nav > *{
     --d: calc((5 - var(--i)) * 30ms);
@@ -334,52 +336,51 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   }
 }
 
-/* Mobile: the hamburger is always there, and opens a left-side sliding
-   glass drawer; nav links become plain rows inside it. */
+/* Mobile: the hamburger is always there. Tapping it fans the nav bubbles
+   out downward beneath it, one after another (the same glass bubbles as
+   desktop); closing plays it back from the bottom up. Projects is a
+   tap-to-toggle dropdown whose panel slides out to the right of its
+   bubble. Hover/focus never open it here (JS toggles .is-open). */
 @media (max-width: 900px){
   .nav-toggle{ opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(-50%); transition: none; }
   .main-nav{
-    position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
-    width: min(300px, 82vw); flex-direction: column; align-items: flex-start; gap: 0;
-    padding: calc(var(--header-h) + var(--space-lg)) var(--space-lg) var(--space-lg);
-    background: rgba(var(--accent-rgb),0.5); border-right: 1px solid rgba(255,255,255,0.14);
-    backdrop-filter: blur(24px) saturate(1.6); -webkit-backdrop-filter: blur(24px) saturate(1.6);
-    transform: translateX(-100%); transition: transform 0.3s var(--ease);
-    overflow-y: auto;
+    position: fixed; top: calc(var(--header-h) - 10px); left: var(--space-md); z-index: 200;
+    flex-direction: column; align-items: flex-start; gap: 8px; pointer-events: none;
   }
-  .main-nav.is-open{ transform: translateX(0); }
-  .nav-link{
-    width: 100%; padding: 14px 2px; font-size: 15px; border-radius: 0;
-    background: none; border: none; border-bottom: 1px solid rgba(255,255,255,0.12);
-    backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none;
-    color: rgba(255,255,255,0.85);
+  .main-nav > *{
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateY(-12px) scale(0.92); transform-origin: top left;
+    transition:
+      opacity 0.22s var(--ease) calc((5 - var(--i)) * 25ms),
+      transform 0.3s var(--ease) calc((5 - var(--i)) * 25ms),
+      visibility 0s linear calc((5 - var(--i)) * 25ms + 0.3s);
   }
-  .nav-link:hover{ background: none; color: #ffffff; }
-  .nav-link.is-active{ background: none; color: #9dc0ef; }
-  .nav-dropdown{ width: 100%; border-bottom: 1px solid rgba(255,255,255,0.12); }
-  .nav-dropdown-trigger{ border-bottom: none; }
-  /* Projects is a tap-to-toggle dropdown in the drawer: a chevron on the
-     row, and the sub-links slide open/closed underneath it (JS toggles
-     .is-open on .nav-dropdown). Hover/focus never open it here. */
-  .nav-dropdown-trigger{ justify-content: space-between; }
-  .nav-dropdown-trigger::after{ display: block; margin: -3px 4px 0 0; }
+  .main-nav.is-open > *{
+    opacity: 1; visibility: visible; pointer-events: auto; transform: none;
+    transition:
+      opacity 0.3s var(--ease) calc(var(--i) * 45ms),
+      transform 0.4s var(--ease) calc(var(--i) * 45ms),
+      visibility 0s linear 0s;
+  }
+  .nav-link{ font-size: 14px; padding: 10px 18px; }
+  .nav-dropdown-trigger::after,
   .nav-dropdown:hover .nav-dropdown-trigger::after,
-  .nav-dropdown:focus-within .nav-dropdown-trigger::after{ transform: rotate(45deg); margin-top: -3px; }
-  .nav-dropdown.is-open .nav-dropdown-trigger::after{ transform: rotate(225deg); margin-top: 3px; }
+  .nav-dropdown:focus-within .nav-dropdown-trigger::after{ transform: rotate(-45deg); margin: 0 0 0 2px; }
+  .nav-dropdown.is-open .nav-dropdown-trigger::after{ transform: rotate(135deg); }
   .nav-dropdown .nav-dropdown-menu,
   .nav-dropdown:hover .nav-dropdown-menu,
   .nav-dropdown:focus-within .nav-dropdown-menu{
-    position: static; margin-top: 0; padding: 0 0 0 14px; transform: none;
-    background: none; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
-    max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; pointer-events: none;
-    transition: max-height 0.3s var(--ease), opacity 0.25s var(--ease), padding-bottom 0.3s var(--ease), visibility 0s linear 0.3s;
+    top: 0; left: calc(100% + 8px); margin-top: 0; min-width: 0; width: max-content;
+    max-width: calc(100vw - 170px); padding: 6px;
+    opacity: 0; visibility: hidden; pointer-events: none; transform: translateX(-10px);
+    transition: opacity 0.25s var(--ease), transform 0.3s var(--ease), visibility 0s linear 0.3s;
   }
   .nav-dropdown.is-open .nav-dropdown-menu{
-    max-height: 200px; opacity: 1; visibility: visible; pointer-events: auto; padding-bottom: 8px;
-    transition: max-height 0.3s var(--ease), opacity 0.25s var(--ease), padding-bottom 0.3s var(--ease), visibility 0s linear 0s;
+    opacity: 1; visibility: visible; pointer-events: auto; transform: none;
+    transition: opacity 0.3s var(--ease), transform 0.35s var(--ease), visibility 0s linear 0s;
   }
   .nav-dropdown-menu::before{ display: none; }
-  .nav-dropdown-menu a{ color: rgba(255,255,255,0.68); font-size: 14px; padding: 9px 2px; }
+  .nav-dropdown-menu a{ white-space: normal; padding: 9px 12px; }
 }
 
 /* Softens the page behind the open nav panel; click it to close. Sits
@@ -534,19 +535,20 @@ a.project-card:hover .project-card-media img{ transform: scale(1.05); }
 .project-card-body p{ color: var(--text-dim); font-size: 14.5px; line-height: 1.55; }
 
 /* Drop-down description: everything under the card title stays folded
-   away until the card is hovered (or focused), then slides open. The
-   0fr -> 1fr grid row animates to the text's natural height. */
+   away until the card is hovered (or focused), then slides open. It
+   animates an explicit height (--more-h, the text's measured height, set
+   by JS), which every browser can transition smoothly. */
 .project-card-more{
-  display: grid; grid-template-rows: 0fr; opacity: 0; margin-top: -8px;
-  transition: grid-template-rows 0.4s var(--ease), opacity 0.3s var(--ease), margin-top 0.4s var(--ease);
+  height: 0; overflow: hidden; opacity: 0; margin-top: -8px;
+  transition: height 0.4s var(--ease), opacity 0.3s var(--ease), margin-top 0.4s var(--ease);
 }
-.project-card-more-inner{ overflow: hidden; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+.project-card-more-inner{ display: flex; flex-direction: column; gap: 8px; }
 .project-card:hover .project-card-more,
 .project-card:focus-within .project-card-more,
-a.project-card:focus-visible .project-card-more{ grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
+a.project-card:focus-visible .project-card-more{ height: var(--more-h, auto); opacity: 1; margin-top: 0; }
 /* Touch screens have no hover, so each card opens as it scrolls into view. */
 @media (hover: none), (pointer: coarse){
-  .project-card.is-inview .project-card-more{ grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
+  .project-card.is-inview .project-card-more{ height: var(--more-h, auto); opacity: 1; margin-top: 0; }
   .project-card.is-inview{ min-height: var(--project-card-open-h, auto); }
 }
 @media (prefers-reduced-motion: reduce){
@@ -556,9 +558,9 @@ a.project-card:focus-visible .project-card-more{ grid-template-rows: 1fr; opacit
 /* Used by JS for synchronous measurements with every card open; never
    painted. no-anim drops only the size transitions, so a card's scroll
    reveal is never interrupted. */
-.projects-grid.is-measuring .project-card-more{ grid-template-rows: 1fr; opacity: 1; margin-top: 0; }
+.projects-grid.is-measuring .project-card-more{ height: auto; opacity: 1; margin-top: 0; }
 .projects-grid.is-measuring .project-card{ min-height: var(--project-card-open-h, auto); }
-.projects-grid.is-measuring-closed .project-card-more{ grid-template-rows: 0fr; opacity: 0; margin-top: -8px; }
+.projects-grid.is-measuring-closed .project-card-more{ height: 0; opacity: 0; margin-top: -8px; }
 .projects-grid.is-measuring-closed .project-card{ min-height: 0; }
 .projects-grid.no-anim .project-card-more{ transition: none; }
 .projects-grid.no-anim .project-card{ transition-property: border-color, transform, box-shadow; }
@@ -596,6 +598,8 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
   position: absolute; inset: 0;
   background: linear-gradient(100deg, rgba(6,9,14,0.86) 0%, rgba(6,9,14,0.74) 38%, rgba(6,9,14,0.4) 70%, rgba(6,9,14,0.55) 100%);
 }
+/* Phones: the list runs over the bright aircraft, so shade evenly. */
+@media (max-width: 900px){ .goals-bg-scrim{ background: rgba(6,9,14,0.66); } }
 .goals-section .section-inner{ position: relative; z-index: 1; }
 .goals-section .section-lede{ max-width: 620px; color: rgba(255,255,255,0.82); }
 .goals-section .section-eyebrow{ color: rgba(255,255,255,0.85); }
@@ -621,14 +625,20 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 .interest-index{ border-top: 1px solid var(--border-soft); }
 .interest-row{
   padding: 16px 4px; border-bottom: 1px solid var(--border-soft); position: relative;
-  transition: padding-left 0.35s var(--ease), background 0.35s var(--ease);
+  transition: background 0.35s var(--ease);
 }
 .interest-row::before{
   content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
   background: linear-gradient(180deg, var(--jet-blue), var(--jet-red)); transform: scaleY(0); transform-origin: top;
   transition: transform 0.35s var(--ease);
 }
-.interest-row.is-open, .interest-row:focus-visible{ padding-left: 18px; }
+/* The open row's content slides right with a transform, not padding, so
+   the text never rewraps (its measured height stays exact) and the
+   motion stays smooth. The description keeps 14px spare on its right so
+   the shifted text still fits. */
+.interest-row-top, .interest-desc{ will-change: transform; }
+.interest-row.is-open .interest-row-top, .interest-row:focus-visible .interest-row-top,
+.interest-row.is-open .interest-desc, .interest-row:focus-visible .interest-desc{ transform: translateX(14px); }
 /* Row highlight on its own layer: gradients can't be transitioned, but
    this layer's opacity can, so the tint fades with everything else. */
 .interest-row{ isolation: isolate; }
@@ -639,28 +649,29 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 }
 .interest-row.is-open::after, .interest-row:focus-visible::after{ opacity: 1; }
 .interest-row.is-open::before, .interest-row:focus-visible::before{ transform: scaleY(1); }
-.interest-row-top{ display: flex; align-items: baseline; gap: 18px; }
+.interest-row-top{ display: flex; align-items: baseline; gap: 18px; transition: transform 0.35s var(--ease); }
 .interest-num{
   font-family: var(--font-mono); font-size: 13px; color: var(--text-faint); width: 26px;
   flex-shrink: 0; transition: color 0.35s var(--ease);
 }
 .interest-row.is-open .interest-num, .interest-row:focus-visible .interest-num{ color: var(--accent); }
 .interest-name{ font-family: var(--font-head); font-weight: 700; font-size: 17px; letter-spacing: 0.01em; }
-/* The description folds with a 0fr -> 1fr grid row, which animates to
-   the text's exact height, so opening, closing, and switching rows all
-   move at the same speed with no dead pause. The top gap lives inside
-   the folding part, so it collapses with it. */
+/* The description folds by animating an explicit height (--desc-h, the
+   text's measured height, set by JS) so opening, closing, and switching
+   rows move smoothly at the same speed in every browser, including iOS
+   Safari. The top gap lives inside the folding part, so it collapses
+   with it. */
 .interest-desc{
-  display: grid; grid-template-rows: 0fr; opacity: 0; margin-left: 44px; color: var(--text-faint);
+  height: 0; overflow: hidden; opacity: 0; margin-left: 44px; padding-right: 14px; color: var(--text-faint);
   font-size: 13.5px; line-height: 1.5;
-  transition: grid-template-rows 0.35s var(--ease), opacity 0.35s var(--ease);
+  transition: height 0.35s var(--ease), opacity 0.35s var(--ease), transform 0.35s var(--ease);
 }
-.interest-desc > p{ min-height: 0; overflow: hidden; margin: 0; }
+.interest-desc > p{ margin: 0; }
 .interest-desc > p::before{ content: ""; display: block; height: 8px; }
 .interest-row.is-open .interest-desc, .interest-row:focus-visible .interest-desc{
-  grid-template-rows: 1fr; opacity: 1;
+  height: var(--desc-h, auto); opacity: 1;
 }
-@media (prefers-reduced-motion: reduce){ .interest-desc{ transition: none; } }
+@media (prefers-reduced-motion: reduce){ .interest-desc, .interest-row-top{ transition: none; } }
 .interest-row{ -webkit-tap-highlight-color: transparent; }
 
 /* ============ CONTACT ============ */
@@ -907,6 +918,7 @@ a.contact-card:hover::before{ transform: scaleX(1); }
   border-radius: var(--radius); border: 1px solid var(--border);
   box-shadow: 0 30px 70px -30px rgba(0,0,0,0.45);
 }
+.lightbox-caption:empty{ display: none; }
 .lightbox-caption{ font-family: var(--font-body); font-size: 13px; color: var(--text-dim); text-align: center; max-width: 700px; }
 .lightbox-close{
   position: absolute; top: var(--space-md); right: var(--space-md); width: 44px; height: 44px;
