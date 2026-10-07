@@ -542,6 +542,23 @@ a.project-card:hover .project-card-media img{ transform: scale(1.05); }
 }
 .project-card-tag--pending{ color: var(--accent); border-color: rgba(var(--accent-rgb),0.4); }
 
+/* Cover swap (Beetlebot): the shell render sits over the interior
+   housing render, registered to the same isometric view, and fades away
+   on hover (or focus) to reveal what's inside, like lifting the shell
+   off the assembly. Both images share the card's hover zoom, so they
+   stay aligned. Touch screens have no hover, so the reveal plays once
+   when the card scrolls into view. */
+.project-card-media--swap .swap-over{
+  position: absolute; inset: 0;
+  transition: opacity 0.7s var(--ease), transform 0.6s var(--ease), filter 0.4s var(--ease);
+}
+.project-card:hover .project-card-media--swap .swap-over,
+a.project-card:focus-visible .project-card-media--swap .swap-over{ opacity: 0; }
+@media (hover: none), (pointer: coarse){
+  .project-card.is-inview .project-card-media--swap .swap-over{ opacity: 0; transition-delay: 1.2s; }
+}
+@media (prefers-reduced-motion: reduce){ .project-card-media--swap .swap-over{ transition: none; } }
+
 /* Two images side by side, each covering half the card media area. */
 .project-card-media--split{ display: flex; }
 .project-card-media--split img{ width: 50%; height: 100%; flex: 1 1 50%; object-fit: cover; }
