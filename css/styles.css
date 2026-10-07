@@ -348,7 +348,17 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
     position: fixed; top: calc(var(--header-h) - 10px); left: var(--space-md); z-index: 200;
     flex-direction: column; align-items: flex-start; gap: 8px; pointer-events: none;
   }
+  /* Phones can't afford live backdrop blur on elements that animate (every
+     frame re-blurs what's behind them, so the fan-out dropped frames). Here
+     the bubbles and the Projects panel use a near-solid navy instead, and
+     the animated properties are promoted up front. */
+  .main-nav .nav-link{
+    background: rgba(var(--accent-rgb),0.94);
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  .main-nav .nav-link.is-active{ background: rgb(var(--accent-rgb)); }
   .main-nav > *{
+    will-change: opacity, transform;
     opacity: 0; visibility: hidden; pointer-events: none;
     transform: translateY(-16px) scale(0.9); transform-origin: top left;
     transition:
@@ -373,6 +383,8 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   .nav-dropdown:focus-within .nav-dropdown-menu{
     top: 0; left: calc(100% + 8px); margin-top: 0; min-width: 0; width: max-content;
     max-width: calc(100vw - 170px); padding: 6px;
+    background: rgba(10,18,32,0.96); backdrop-filter: none; -webkit-backdrop-filter: none;
+    will-change: opacity, transform;
     opacity: 0; visibility: hidden; pointer-events: none; transform: translateX(-10px);
     transition: opacity 0.25s var(--ease), transform 0.3s var(--ease), visibility 0s linear 0.3s;
   }
@@ -393,6 +405,10 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease);
 }
 .nav-overlay.is-open{ opacity: 1; pointer-events: auto; }
+/* Phones: dim without blurring the whole page, which is expensive to fade. */
+@media (max-width: 900px){
+  .nav-overlay{ background: rgba(8,14,26,0.45); backdrop-filter: none; -webkit-backdrop-filter: none; will-change: opacity; }
+}
 
 /* ============ HERO ============ */
 /* Full-bleed photo background, SpaceX-style: the image fills the section
