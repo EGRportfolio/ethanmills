@@ -134,6 +134,56 @@
     sections.forEach(function (s) { spyObserver.observe(s); });
   }
 
+  /* ---------- Project pager ----------
+     Previous/next links at the bottom of each project page. The order is
+     the Projects dropdown's, counting only entries that have their own
+     page (not links back to the home page), so adding a project page to
+     the dropdown adds it here too. With three or more project pages the
+     links wrap around (first <-> last); with two, the first page links
+     forward and the second links back. Built before the reveal observer
+     so the pager reveals like the rest of the page. */
+  var pager = document.querySelector('[data-project-pager]');
+  if (pager && mainNav) {
+    var pageKey = function (href) {
+      var path = new URL(href, window.location.href).pathname;
+      return path.replace(/\/index(\.html)?$/, '/').replace(/\.html$/, '').replace(/\/$/, '');
+    };
+    var projects = Array.prototype.slice.call(mainNav.querySelectorAll('.nav-dropdown-menu a'))
+      .filter(function (a) { return !/(^|\/)index(\.html)?(#|$)|^#/.test(a.getAttribute('href')); })
+      .map(function (a) { return { href: a.getAttribute('href'), title: a.textContent.trim(), key: pageKey(a.href) }; });
+    var here = pageKey(window.location.href);
+    var at = -1;
+    projects.forEach(function (p, i) { if (p.key === here) at = i; });
+
+    if (at > -1 && projects.length > 1) {
+      var n = projects.length;
+      var wrap = n > 2;
+      var prev = wrap || at > 0 ? projects[(at - 1 + n) % n] : null;
+      var next = wrap || at < n - 1 ? projects[(at + 1) % n] : null;
+      var arrow = function (dir) {
+        return '<span class="pager-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          (dir === 'prev' ? '<path d="M19 12H5M11 18l-6-6 6-6"/>' : '<path d="M5 12h14M13 6l6 6-6 6"/>') + '</svg></span>';
+      };
+      var link = function (p, dir) {
+        var label = dir === 'prev' ? 'Previous project' : 'Next project';
+        var a = document.createElement('a');
+        a.className = 'pager-link pager-link--' + dir;
+        a.href = p.href;
+        a.setAttribute('rel', dir);
+        a.innerHTML = arrow(dir) + '<span class="pager-text"><span class="pager-label">' + label + '</span><span class="pager-title"></span></span>';
+        a.querySelector('.pager-title').textContent = p.title;
+        return a;
+      };
+      var inner = document.createElement('div');
+      inner.className = 'project-pager-inner reveal';
+      if (prev) inner.appendChild(link(prev, 'prev'));
+      if (next) inner.appendChild(link(next, 'next'));
+      pager.appendChild(inner);
+    } else {
+      pager.hidden = true;
+    }
+  }
+
   /* ---------- Reveal on scroll ---------- */
   var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
   if (prefersReducedMotion || !('IntersectionObserver' in window)) {

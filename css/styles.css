@@ -732,6 +732,14 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .project-hero .hero-bg img{ object-position: center 58%; }
 /* Beetlebot header: the arena crowd, framed on the glass test box. */
 .project-hero--arena .hero-bg img{ object-position: center 62%; }
+/* Project header photos are enlarged from small originals, so a faint
+   film grain sits over them: it masks softness and JPEG blockiness and
+   reads as texture rather than low resolution. */
+.project-hero .hero-bg-scrim::after{
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px; opacity: 0.16; mix-blend-mode: overlay;
+}
 .project-hero .hero-bg-scrim{
   background: linear-gradient(100deg, rgba(6,9,14,0.84) 0%, rgba(6,9,14,0.66) 42%, rgba(6,9,14,0.34) 75%, rgba(6,9,14,0.46) 100%);
 }
@@ -930,6 +938,52 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .coming-soon-title{
   font-family: var(--font-head); font-size: clamp(24px, 3vw, 34px); font-weight: 500;
   letter-spacing: -0.01em; color: var(--text);
+}
+
+/* ============ PROJECT PAGER ============ */
+/* Previous/next project links at the bottom of a project page (built by
+   JS). Previous sits on the left, next on the right; on hover the card
+   lifts, the arrow fills with the accent and nudges toward its target. */
+.project-pager{ position: relative; z-index: 1; padding: 0 var(--gutter) var(--space-2xl); }
+.project-pager-inner{
+  max-width: 1180px; margin: 0 auto; padding-top: var(--space-lg);
+  display: flex; gap: var(--space-md); border-top: 1px solid var(--border-soft);
+}
+.pager-link{
+  flex: 0 1 380px; min-width: 0; display: flex; align-items: center; gap: 16px;
+  padding: 18px 22px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.pager-link--next{ margin-left: auto; flex-direction: row-reverse; text-align: right; }
+.pager-link:hover, .pager-link:focus-visible{
+  border-color: var(--accent-dim); transform: translateY(-3px);
+  box-shadow: 0 18px 40px -24px rgba(var(--accent-rgb),0.35);
+}
+.pager-link:active{ transform: translateY(-1px); transition-duration: 0.1s; }
+.pager-arrow{
+  flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 50%;
+  color: var(--accent); background: rgba(var(--accent-rgb),0.08); border: 1px solid rgba(var(--accent-rgb),0.18);
+  transition: transform 0.3s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.pager-link:hover .pager-arrow, .pager-link:focus-visible .pager-arrow{ background: var(--accent); border-color: var(--accent); color: #ffffff; }
+.pager-link--prev:hover .pager-arrow, .pager-link--prev:focus-visible .pager-arrow{ transform: translateX(-4px); }
+.pager-link--next:hover .pager-arrow, .pager-link--next:focus-visible .pager-arrow{ transform: translateX(4px); }
+.pager-text{ display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.pager-label{ font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-faint); }
+.pager-title{ font-family: var(--font-head); font-weight: 700; font-size: 20px; line-height: 1.2; color: var(--text); }
+@media (max-width: 600px){
+  .project-pager-inner{ gap: 12px; }
+  .pager-link{ flex: 1 1 0; max-width: calc(50% - 6px); padding: 14px; gap: 10px; }
+  .pager-link:only-child{ max-width: 75%; }
+  .pager-arrow{ width: 36px; height: 36px; }
+  .pager-title{ font-size: 16px; }
+  .pager-label{ font-size: 10.5px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .pager-link, .pager-arrow{ transition: none; }
+  .pager-link:hover, .pager-link:focus-visible,
+  .pager-link--prev:hover .pager-arrow, .pager-link--next:hover .pager-arrow{ transform: none; }
 }
 
 /* ============ FOOTER ============ */
