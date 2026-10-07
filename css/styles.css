@@ -885,6 +885,27 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .phase-media--single, .phase-media--stack{ grid-template-columns: 1fr; }
 .phase-media--single .collage-item img,
 .phase-media--stack .collage-item img{ aspect-ratio: auto; object-fit: contain; background: #ffffff; }
+/* A set of CAD views: two across in matching 4:3 frames (the renders
+   have generous margins, so the light crop never cuts the model). */
+.phase-media--cad-grid .collage-item img{ aspect-ratio: 4 / 3; object-fit: cover; }
+/* Wide phase (desktop): title across the top, paragraphs side by side,
+   photos in one row underneath, so a short write-up isn't dwarfed by a
+   tall stack of images. */
+@media (min-width: 901px){
+  .phase--wide{ grid-template-columns: 1fr; gap: var(--space-lg); }
+  .phase--wide .phase-copy{ display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--space-2xl); }
+  .phase--wide .phase-title{ grid-column: 1 / -1; }
+  .phase--wide .phase-copy p{ margin-bottom: 0; }
+}
+/* Strip: one row of images at a shared height, each shown whole. Each
+   figure's width share is its aspect ratio (--ar), so heights line up. */
+.phase-media--strip{ display: flex; gap: 12px; align-items: flex-start; }
+.phase-media--strip .collage-item{ flex: calc(var(--ar)) 1 0; min-width: 0; }
+.phase-media--strip .collage-item img{ aspect-ratio: var(--ar); object-fit: contain; }
+@media (max-width: 700px){
+  .phase-media--strip{ flex-direction: column; }
+  .phase-media--strip .collage-item{ flex: none; width: 100%; }
+}
 /* A phase whose text column also carries a photo: it sits under the copy
    and stretches to line up with the bottom of the photo grid beside it. */
 .phase--copy-photo{ align-items: stretch; }

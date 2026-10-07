@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Beetlebot | Ethan Mills</title>
-<meta name="description" content="Beetlebot: a 3 lb combat robot designed and built by a team of three for ME Analysis &amp; Design at Villanova, by Ethan Mills.">
+<meta name="description" content="Beetlebot: a 3 lb combat robot designed and built by a team of three for the yearly ME 2505 competition at Villanova, by Ethan Mills.">
 
 <link rel="icon" href="assets/favicon.svg?v=4" type="image/svg+xml">
 
@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=80">
+<link rel="stylesheet" href="css/styles.css?v=82">
 </head>
 <body>
 
@@ -59,15 +59,15 @@
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
         Projects
       </a>
-      <p class="eyebrow">Project 02 &middot; ME Analysis &amp; Design</p>
+      <p class="eyebrow">Project 02 &middot; ME 2505</p>
       <h1 class="project-hero-title">Beetlebot</h1>
       <p class="hero-lede">
-        A group project for my ME Analysis &amp; Design class: designing and building a 3 lb
-        combat robot, then battling it against other teams' robots. My team of three is
-        developing a working prototype.
+        A group project for ME 2505: designing and building a 3 lb combat robot for the course's
+        yearly competition, where it battles other teams' robots. My team of three is developing
+        a working prototype.
       </p>
       <div class="project-meta-row">
-        <span><strong>Course</strong> ME Analysis &amp; Design, Villanova University</span>
+        <span><strong>Course</strong> ME 2505, Villanova University</span>
         <span><strong>Team</strong> 3 students</span>
         <span><strong>Timeline</strong> Fall 2026 &ndash; Present</span>
       </div>
@@ -85,18 +85,29 @@
             </div>
             <h3 class="phase-title">Overview</h3>
             <p>
-              My team of three has begun developing a working prototype of our combat robot. The
-              interior electronics are soldered together with the motors and batteries, and a
-              preliminary 3D-printed housing is built to take the exterior aluminum shell.
+              Beetlebot is a semester-long project for ME 2505 that runs in the background alongside
+              the course's lab work and builds toward its yearly combat robot competition. We're
+              still in the early stages of development, and my team of three has
+              begun building a working prototype: the interior electronics are soldered together
+              with the motors and batteries, and a preliminary 3D-printed housing is built to take
+              the exterior aluminum shell.
             </p>
             <p>
-              Our design goal is a lightweight, maneuverable beetlebot with a zero turn radius,
-              maximum power output and torque through the wheels, and easy serviceability, all
-              within a 3 lb limit on the full assembly.
+              The arena has lawn mower blades in all four corners, so we chose the no-weapon track
+              and plan to use those blades to our advantage: zip around the arena, avoid our
+              opponent's attacks, and force them into the blades.
+            </p>
+            <p>
+              That plan sets our priorities: endurance, durability, serviceability, and a simple
+              design that leaves time to practice driving and controlling the robot, which is a
+              challenge in itself. The goal is a lightweight, maneuverable beetlebot with a zero
+              turn radius and maximum power and torque through the wheels, all within a 3 lb limit
+              on the full assembly.
             </p>
           </div>
           <div class="story-side">
             <dl class="story-spec">
+              <div><dt>Track</dt><dd>No-weapon</dd></div>
               <div><dt>Weight</dt><dd>1.42 lb of a 3 lb limit, before the aluminum shell</dd></div>
               <div><dt>Printer</dt><dd>Bambu Lab X1 Carbon</dd></div>
               <div><dt>Print</dt><dd>85% infill, gyroid pattern</dd></div>
@@ -121,7 +132,7 @@
             </div>
           </section>
 
-          <section class="phase phase--text">
+          <section class="phase">
             <div class="phase-copy">
               <h3 class="phase-title">3D-Printed Housing</h3>
               <p>
@@ -130,10 +141,30 @@
               <p>
                 That weight work keeps the robot inside its 3 lb limit for the full assembly: it currently weighs 1.42 lb without the aluminum shell.
               </p>
+              <p>
+                The CAD views here are basic models made after the first prototype: a simple assembly of the housing with a 12V DC gear motor, 25 mm OD, in each motor bay.
+              </p>
+              <p class="footnote">
+                Motor model: &ldquo;Economy Gear Motor, 25mm Spur Gear 12V DC Motor&rdquo; by Seth Schaffer, GrabCAD (March 6, 2020).
+              </p>
+            </div>
+            <div class="phase-media phase-media--cad-grid">
+              <figure class="collage-item">
+                <img src="assets/images/beetlebot-housing-iso.jpg" alt="Isometric CAD view of the interior housing with the drive motor and triangulated divider walls" width="1081" height="811" loading="lazy">
+              </figure>
+              <figure class="collage-item">
+                <img src="assets/images/beetlebot-housing-angle.jpg" alt="Angled CAD view of the interior housing assembly" width="579" height="420" loading="lazy">
+              </figure>
+              <figure class="collage-item">
+                <img src="assets/images/beetlebot-housing-top.jpg" alt="Top CAD view of the interior housing: motor bays on each side and the center electronics bay" width="796" height="697" loading="lazy">
+              </figure>
+              <figure class="collage-item">
+                <img src="assets/images/beetlebot-housing-front.jpg" alt="Front CAD view of the interior housing with the motor shaft through the side wall" width="798" height="649" loading="lazy">
+              </figure>
             </div>
           </section>
 
-          <section class="phase">
+          <section class="phase phase--wide">
             <div class="phase-copy">
               <h3 class="phase-title">Aluminum Shell</h3>
               <p>
@@ -143,9 +174,15 @@
                 It mounts to the printed housing through threaded heat-set inserts, so the shell bolts on and comes off without wearing out plastic threads.
               </p>
             </div>
-            <div class="phase-media phase-media--single">
-              <figure class="collage-item">
-                <img src="assets/images/beetlebot-shell-cad.jpg" alt="CAD of the Beetlebot aluminum shell: sheet panels joined by angled, riveted brackets" width="1623" height="1048" loading="lazy">
+            <div class="phase-media phase-media--strip">
+              <figure class="collage-item" style="--ar: 951 / 544">
+                <img src="assets/images/beetlebot-shell-iso.jpg" alt="Updated CAD of the Beetlebot aluminum shell: sheet panels with a sloped front wedge" width="951" height="544" loading="lazy">
+              </figure>
+              <figure class="collage-item" style="--ar: 1392 / 697">
+                <img src="assets/images/beetlebot-shell-underside.jpg" alt="Underside CAD view of the aluminum shell over the printed housing" width="1392" height="697" loading="lazy">
+              </figure>
+              <figure class="collage-item" style="--ar: 1195 / 435">
+                <img src="assets/images/beetlebot-shell-side.jpg" alt="Side CAD view of the aluminum shell profile and front wedge" width="1195" height="435" loading="lazy">
               </figure>
             </div>
           </section>
