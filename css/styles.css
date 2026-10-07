@@ -730,14 +730,8 @@ a.contact-card:hover::before{ transform: scaleX(1); }
    the meta row, not just a title. */
 .project-hero{ border-bottom: 1px solid rgba(0,0,0,0.15); }
 .project-hero .hero-bg img{ object-position: center 58%; }
-/* A project header with no photo: the footer's deep navy, lifted by a
-   soft accent glow, with the same light text as the photo headers. */
-.project-hero--plain{
-  min-height: 48svh;
-  background:
-    radial-gradient(ellipse 70% 90% at 85% 10%, rgba(37,74,140,0.55), transparent 70%),
-    linear-gradient(160deg, #0f1b30 0%, #0b1320 100%);
-}
+/* Beetlebot header: the arena crowd, framed on the glass test box. */
+.project-hero--arena .hero-bg img{ object-position: center 62%; }
 .project-hero .hero-bg-scrim{
   background: linear-gradient(100deg, rgba(6,9,14,0.84) 0%, rgba(6,9,14,0.66) 42%, rgba(6,9,14,0.34) 75%, rgba(6,9,14,0.46) 100%);
 }
