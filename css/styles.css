@@ -730,6 +730,14 @@ a.contact-card:hover::before{ transform: scaleX(1); }
    the meta row, not just a title. */
 .project-hero{ border-bottom: 1px solid rgba(0,0,0,0.15); }
 .project-hero .hero-bg img{ object-position: center 58%; }
+/* A project header with no photo: the footer's deep navy, lifted by a
+   soft accent glow, with the same light text as the photo headers. */
+.project-hero--plain{
+  min-height: 48svh;
+  background:
+    radial-gradient(ellipse 70% 90% at 85% 10%, rgba(37,74,140,0.55), transparent 70%),
+    linear-gradient(160deg, #0f1b30 0%, #0b1320 100%);
+}
 .project-hero .hero-bg-scrim{
   background: linear-gradient(100deg, rgba(6,9,14,0.84) 0%, rgba(6,9,14,0.66) 42%, rgba(6,9,14,0.34) 75%, rgba(6,9,14,0.46) 100%);
 }
@@ -873,6 +881,16 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .phase-media .collage-item.is-wide{ grid-column: 1 / -1; }
 .phase-media .collage-item.is-wide img{ aspect-ratio: 2 / 1; }
 .phase-media--1 .collage-item.is-wide img{ aspect-ratio: 4 / 3; }
+/* A phase with no photos yet: text only, at a readable width. */
+.phase--text{ grid-template-columns: 1fr; }
+.phase--text .phase-copy{ max-width: 760px; }
+/* Alternate side: photos on the left, text on the right (desktop). */
+@media (min-width: 901px){ .phase--flip .phase-copy{ order: 2; } }
+/* CAD renders and drawings: shown whole (never cropped) on white, one
+   filling the column or several stacked. */
+.phase-media--single, .phase-media--stack{ grid-template-columns: 1fr; }
+.phase-media--single .collage-item img,
+.phase-media--stack .collage-item img{ aspect-ratio: auto; object-fit: contain; background: #ffffff; }
 /* A phase whose text column also carries a photo: it sits under the copy
    and stretches to line up with the bottom of the photo grid beside it. */
 .phase--copy-photo{ align-items: stretch; }
