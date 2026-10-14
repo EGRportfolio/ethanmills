@@ -517,7 +517,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 
 /* ============ PROJECTS ============ */
 /* Three equal cards across; one column once they'd get too narrow. */
-.projects-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); align-items: start; }
+.projects-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); align-items: start; }
 @media (max-width: 860px){ .projects-grid{ grid-template-columns: 1fr; } }
 
 /* Two shared sizes from JS: --project-card-closed-h (tallest card with its
@@ -565,6 +565,12 @@ a.project-card:focus-visible .project-card-media--swap .swap-over{ opacity: 0; }
   .project-card.is-inview .project-card-media--swap .swap-over{ opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce){ .project-card-media--swap .swap-over{ transition: none; } }
+
+/* A poster beside a project overview: shown whole, never cropped. */
+.story-side .story-poster img{ height: auto; aspect-ratio: 1206 / 1574; }
+
+/* Poster cover: frame the top of the poster, where its title is. */
+.project-card-media--poster img{ object-position: center 18%; }
 
 /* Two images side by side, each covering half the card media area. */
 .project-card-media--split{ display: flex; }
@@ -772,6 +778,8 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 .project-hero .hero-bg img{ object-position: center 58%; }
 /* Beetlebot header: the arena crowd, framed on the glass test box. */
 .project-hero--arena .hero-bg img{ object-position: center 62%; }
+/* Roommate LED header: the demo around the table. */
+.project-hero--led .hero-bg img{ object-position: center 45%; }
 /* Project header photos are enlarged from small originals, so a faint
    film grain sits over them: it masks softness and JPEG blockiness and
    reads as texture rather than low resolution. */
