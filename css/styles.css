@@ -312,6 +312,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 .main-nav > :nth-child(4){ --i: 3; }
 .main-nav > :nth-child(5){ --i: 4; }
 .main-nav > :nth-child(6){ --i: 5; }
+.main-nav > :nth-child(7){ --i: 6; }
 
 /* Desktop: leaving the top of the page collapses the bubbles, right to
    left, into the hamburger; returning to the very top plays that back,
@@ -326,7 +327,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
   }
   .site-header.is-condensed:not(.is-expanded) .main-nav{ pointer-events: none; }
   .site-header.is-condensed:not(.is-expanded) .main-nav > *{
-    --d: calc((5 - var(--i)) * 30ms);
+    --d: calc((6 - var(--i)) * 30ms);
     opacity: 0; visibility: hidden; pointer-events: none;
     transform: translateX(var(--collapse-x, calc(var(--i) * -30px - 16px))) scale(0.3);
     transition: opacity 0.3s var(--ease) calc(var(--d) + 0.1s), transform 0.4s var(--ease) var(--d), visibility 0s linear calc(var(--d) + 0.4s);
