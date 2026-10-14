@@ -776,8 +776,8 @@ a.contact-card:hover::before{ transform: scaleX(1); }
    the meta row, not just a title. */
 .project-hero{ border-bottom: 1px solid rgba(0,0,0,0.15); }
 .project-hero .hero-bg img{ object-position: center 58%; }
-/* Beetlebot header: the arena crowd, framed on the glass test box. */
-.project-hero--arena .hero-bg img{ object-position: center 62%; }
+/* Beetlebot header: the engineering makerspace (printers, benches). */
+.project-hero--makerspace .hero-bg img{ object-position: center 55%; }
 /* Roommate LED header: the demo around the table. */
 .project-hero--led .hero-bg img{ object-position: center 45%; }
 /* Project header photos are enlarged from small originals, so a faint
