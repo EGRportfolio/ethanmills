@@ -517,7 +517,7 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 
 /* ============ PROJECTS ============ */
 /* Three equal cards across; one column once they'd get too narrow. */
-.projects-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); align-items: start; }
+.projects-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); align-items: start; }
 @media (max-width: 860px){ .projects-grid{ grid-template-columns: 1fr; } }
 
 /* Two shared sizes from JS: --project-card-closed-h (tallest card with its
@@ -535,12 +535,8 @@ a.project-card:hover{ border-color: var(--accent-dim); transform: translateY(-4p
 .project-card-media{ position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--bg-alt); }
 .project-card-media img{ width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease), opacity 0.4s var(--ease); filter: saturate(0.85); }
 a.project-card:hover .project-card-media img{ transform: scale(1.05); }
-/* Images rest semi-transparent and come fully forward once the card
-   scrolls into view (JS adds .is-inview) or on hover — on every device. */
-.project-card-media img{ opacity: 0.45; }
-.project-card.is-inview .project-card-media img,
-.project-card:hover .project-card-media img{ opacity: 1; }
-@media (prefers-reduced-motion: reduce){ .project-card-media img{ opacity: 1; } }
+/* Card images use one constant look: no fade or color change on scroll. */
+.project-card-media img{ opacity: 1; }
 .project-card-tag{
   position: absolute; top: 14px; left: 14px; font-family: var(--font-mono); font-size: 11px;
   letter-spacing: 0.05em; color: var(--success); background: rgba(var(--bg-rgb),0.7);
@@ -568,6 +564,9 @@ a.project-card:focus-visible .project-card-media--swap .swap-over{ opacity: 0; }
 
 /* A poster beside a project overview: shown whole, never cropped. */
 .story-side .story-poster img{ height: auto; aspect-ratio: 1206 / 1574; }
+
+/* Images shown whole at their own proportions, never cropped. */
+.collage-item.collage-item--natural img{ height: auto; aspect-ratio: auto; object-fit: contain; }
 
 /* Poster cover: frame the top of the poster, where its title is. */
 .project-card-media--poster img{ object-position: center 18%; }

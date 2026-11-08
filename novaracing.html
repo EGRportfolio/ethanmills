@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=93">
+<link rel="stylesheet" href="css/styles.css?v=96">
 </head>
 <body>
 
@@ -287,23 +287,45 @@
               </p>
             </div>
             <div class="story-side">
-              <figure class="collage-item">
-                <img src="assets/images/vu-cad-hero.jpg" alt="Full-car CAD assembly with front wing, sidepods, and rear wing" width="1338" height="1161" loading="lazy">
+              <figure class="collage-item collage-item--natural">
+                <img src="assets/images/vu18-front-wing-iso.jpg" alt="Isometric CAD view of the preliminary VU18 front wing: a main plane between two endplates with a curved outboard element on each side" width="1279" height="1017" loading="lazy">
+              </figure>
+              <figure class="collage-item collage-item--natural">
+                <img src="assets/images/vu18-front-wing-front.jpg" alt="Front CAD view of the preliminary front wing with its front boundary and reference-plane sketch lines" width="1713" height="606" loading="lazy">
               </figure>
               <dl class="story-spec">
                 <div><dt>Car</dt><dd>VU18 (2027 car)</dd></div>
                 <div><dt>Focus</dt><dd>Front wing</dd></div>
                 <div><dt>Timeline</dt><dd>May 2026 &ndash; Present</dd></div>
                 <div><dt>Envelope</dt><dd>2027 FSAE IC aerodynamic envelope</dd></div>
+                <div><dt>Airfoils</dt><dd>S1223 and NACA 2412</dd></div>
+                <div><dt>Ground clearance</dt><dd>1 in, set by reference planes</dd></div>
+                <div><dt>Max outboard height</dt><dd>250 mm from the ground</dd></div>
               </dl>
               <ul class="story-skills">
                 <li>SolidWorks</li>
+                <li>Parametric Design</li>
                 <li>Aerodynamic Design</li>
                 <li>Full-Car Integration</li>
                 <li>ANSYS Fluent (learning)</li>
               </ul>
             </div>
           </div>
+
+          <section class="phase phase--text">
+            <div class="phase-copy">
+              <h3 class="phase-title">Preliminary Design: Built for Meshability and Iteration</h3>
+              <p>
+                The wing shown here is a preliminary version, designed around meshability and parametrized for iteration. Each element is built from SolidWorks blocks for scalable, rotatable S1223 and NACA 2412 airfoils with defined chord lengths and defined leading and trailing edges. 3D lofts are coincident to those defined points, and the geometry avoids sliver faces and infinitely small features that would keep a simulation from converging. It is kept simple so more elements can be added later.
+              </p>
+              <p>
+                The wing is designed within the FSAE bounding box and around integration with the nosecone. Reference planes set a 1 in ground clearance when the wing is placed in the frame file and mated to the real ground plane, and outboard height is limited to 250 mm from the ground.
+              </p>
+              <p>
+                Next, I plan to add more elements inboard to use the inboard space for more aerodynamic performance, a decision that is waiting on the final front suspension geometry. I am also considering the sidepod inlet position and attitude for maximum airflow for cooling.
+              </p>
+            </div>
+          </section>
         </article>
       </div>
     </div>
