@@ -34,9 +34,8 @@
         <a href="index.html#projects" class="nav-link nav-dropdown-trigger is-active">Projects</a>
         <div class="nav-dropdown-menu">
           <a href="novaracing.html">NovaRacing</a>
-          <a href="beetlebot.html" aria-current="page">Beetlebot Competition</a>
+          <a href="beetlebot.html" aria-current="page">Beetlebot</a>
           <a href="roommate-led.html">Roommate LED Alert System</a>
-          <a href="index.html#projects">Research</a>
         </div>
       </div>
       <a href="index.html#goals" class="nav-link">Interests</a>
@@ -66,12 +65,13 @@
       <p class="hero-lede">
         A group project for ME 2505: designing and building a 3 lb combat robot for the course's
         yearly competition, where it battles other teams' robots. My team of three is developing
-        a working prototype.
+        a working prototype, and I own the CAD and hardware design.
       </p>
       <div class="project-meta-row">
         <span><strong>Course</strong> ME 2505, Villanova University</span>
         <span><strong>Team</strong> 3 students</span>
-        <span><strong>Timeline</strong> Fall 2026 &ndash; Present</span>
+        <span><strong>Role</strong> CAD and hardware</span>
+        <span><strong>Timeline</strong> Aug. 2026 &ndash; Present</span>
       </div>
     </div>
   </section>
@@ -89,10 +89,9 @@
             <p>
               Beetlebot is a semester-long project for ME 2505 that runs in the background alongside
               the course's lab work and builds toward its yearly combat robot competition. We're
-              still in the early stages of development, and my team of three has
-              begun building a working prototype: the interior electronics are soldered together
-              with the motors and batteries, and a preliminary 3D-printed housing is built to take
-              the exterior aluminum shell.
+              still in the early stages of development: the interior electronics are soldered together
+              with the motors and batteries, the wheels are 3D-printed, and the sheet-metal shell
+              design and panel cutting plan are finalized. Our first drive test is still ahead.
             </p>
             <p>
               The arena has lawn mower blades in all four corners, so we chose the no-weapon track
@@ -110,16 +109,16 @@
           <div class="story-side">
             <dl class="story-spec">
               <div><dt>Track</dt><dd>No-weapon</dd></div>
-              <div><dt>Weight</dt><dd>1.42 lb of a 3 lb limit, before the aluminum shell</dd></div>
-              <div><dt>Printer</dt><dd>Bambu Lab X1 Carbon</dd></div>
-              <div><dt>Print</dt><dd>85% infill, gyroid pattern</dd></div>
-              <div><dt>Shell</dt><dd>1/8 in aluminum sheet, riveted panels</dd></div>
+              <div><dt>Drivetrain</dt><dd>Two-wheel, zero turn radius</dd></div>
+              <div><dt>Weight</dt><dd>Under the 3 lb limit; added mass planned up to 3 lb</dd></div>
+              <div><dt>Ground clearance</dt><dd>7 mm minimum target, within manufacturing accuracy</dd></div>
+              <div><dt>Shell</dt><dd>0.05 in aluminum sheet, bolted angle brackets</dd></div>
             </dl>
             <ul class="story-skills">
               <li>SolidWorks</li>
               <li>3D Printing</li>
-              <li>Soldering</li>
-              <li>Heat-Set Inserts</li>
+              <li>Sheet Metal</li>
+              <li>Zero-Turn Drivetrain</li>
               <li>Design for Serviceability</li>
             </ul>
           </div>
@@ -129,40 +128,26 @@
             <div class="phase-copy">
               <h3 class="phase-title">Electronics</h3>
               <p>
-                We soldered the interior electronic components together with the drive motors and batteries, bringing the power and drive systems up as one working unit before they go into the housing.
+                My teammates handle the electronics and controls; I own the CAD and hardware. The team has soldered the drive motors, batteries, and interior electronic components together into one working power and drive unit.
               </p>
             </div>
           </section>
 
-          <section class="phase">
+          <section class="phase phase--text">
             <div class="phase-copy">
-              <h3 class="phase-title">3D-Printed Housing</h3>
+              <h3 class="phase-title">Wheels &amp; Ground Clearance</h3>
               <p>
-                The preliminary housing was printed on a Bambu Lab X1 Carbon at 85% infill with a gyroid pattern, which keeps the part stiff and strong in every direction. The housing walls use a triangulated pattern to cut weight without giving up rigidity.
-              </p>
-              <p>
-                That weight work keeps the robot inside its 3 lb limit for the full assembly: it currently weighs 1.42 lb without the aluminum shell.
-              </p>
-              <p>
-                The CAD views here are basic models made after the first prototype: a simple assembly of the housing with a 12V DC gear motor, 25 mm OD, in each motor bay.
-              </p>
-              <p class="footnote">
-                Motor model: &ldquo;Economy Gear Motor, 25mm Spur Gear 12V DC Motor&rdquo; by Seth Schaffer, GrabCAD (March 6, 2020).
+                The two-wheel, zero-turn drivetrain sets the wheel design. I designed the 3D-printed wheels around the motor placement inside the shell, and modeled a ball-joint offset in SolidWorks to target a 7 mm minimum ground clearance, within the margin of error of manufacturing accuracy.
               </p>
             </div>
-            <div class="phase-media phase-media--cad-grid">
-              <figure class="collage-item">
-                <img src="assets/images/beetlebot-housing-iso.jpg" alt="Isometric CAD view of the interior housing with the drive motor and triangulated divider walls" width="1081" height="811" loading="lazy">
-              </figure>
-              <figure class="collage-item">
-                <img src="assets/images/beetlebot-housing-angle.jpg" alt="Angled CAD view of the interior housing assembly" width="579" height="420" loading="lazy">
-              </figure>
-              <figure class="collage-item">
-                <img src="assets/images/beetlebot-housing-top.jpg" alt="Top CAD view of the interior housing: motor bays on each side and the center electronics bay" width="796" height="697" loading="lazy">
-              </figure>
-              <figure class="collage-item">
-                <img src="assets/images/beetlebot-housing-front.jpg" alt="Front CAD view of the interior housing with the motor shaft through the side wall" width="798" height="649" loading="lazy">
-              </figure>
+          </section>
+
+          <section class="phase phase--text">
+            <div class="phase-copy">
+              <h3 class="phase-title">Mass Distribution</h3>
+              <p>
+                The layout keeps mass low and near the center of the robot to lower its center of gravity and its yaw moment of inertia, which helps it turn quickly and resist flipping. Added mass is planned up to the 3 lb limit so opponents can't push the robot around as easily.
+              </p>
             </div>
           </section>
 
@@ -170,10 +155,7 @@
             <div class="phase-copy">
               <h3 class="phase-title">Aluminum Shell</h3>
               <p>
-                The exterior shell will be cut from 1/8 in aluminum sheet stock into panels, then riveted together with brackets angled to match each joint between panels.
-              </p>
-              <p>
-                It mounts to the printed housing through threaded heat-set inserts, so the shell bolts on and comes off without wearing out plastic threads.
+                The shell design and panel cutting plan are finalized: 0.05 in aluminum sheet stock cut into panels on a stomp shear, with bolted angle brackets joining adjoining faces.
               </p>
             </div>
             <div class="phase-media phase-media--strip">
@@ -181,7 +163,7 @@
                 <img src="assets/images/beetlebot-shell-iso.jpg" alt="Updated CAD of the Beetlebot aluminum shell: sheet panels with a sloped front wedge" width="951" height="544" loading="lazy">
               </figure>
               <figure class="collage-item" style="--ar: 1392 / 697">
-                <img src="assets/images/beetlebot-shell-underside.jpg" alt="Underside CAD view of the aluminum shell over the printed housing" width="1392" height="697" loading="lazy">
+                <img src="assets/images/beetlebot-shell-underside.jpg" alt="Underside CAD view of the aluminum shell" width="1392" height="697" loading="lazy">
               </figure>
               <figure class="collage-item" style="--ar: 1195 / 435">
                 <img src="assets/images/beetlebot-shell-side.jpg" alt="Side CAD view of the aluminum shell profile and front wedge" width="1195" height="435" loading="lazy">
