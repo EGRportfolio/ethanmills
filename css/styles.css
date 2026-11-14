@@ -727,8 +727,8 @@ a.project-card:hover .project-card-link svg{ transform: translateX(3px); }
 .interest-row{ -webkit-tap-highlight-color: transparent; }
 
 /* ============ CONTACT ============ */
-.contact-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-md); max-width: 720px; }
-@media (max-width: 620px){ .contact-grid{ grid-template-columns: 1fr; } }
+.contact-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); max-width: 1080px; }
+@media (max-width: 900px){ .contact-grid{ grid-template-columns: 1fr; max-width: 720px; } }
 
 .contact-card{
   position: relative; overflow: hidden;
