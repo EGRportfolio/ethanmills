@@ -65,7 +65,7 @@
       <p class="hero-lede">
         Villanova's Formula SAE team designs and builds an open-wheel formula race car from
         scratch every year. I work as an Aerodynamics Subsystem Engineer on the Chassis System,
-        moving from composite manufacturing on the 2026 car (VU17) to front wing design for the 2027 car (VU18).
+        moving from composite manufacturing on the 2026 car (VU17) to aerodynamics package development for the 2027 car (VU18).
       </p>
       <div class="project-meta-row">
         <span><strong>Role</strong> Aerodynamics Subsystem Engineer, Chassis System</span>
@@ -271,19 +271,20 @@
           <div class="story-overview">
             <div class="story-copy">
               <div class="story-head">
-                <span class="pill">VU18 Front Wing Design</span>
+                <span class="pill">VU18 Aerodynamics Package Development</span>
               </div>
               <h3 class="phase-title">Overview</h3>
               <p>
-                For the 2027 car, I am designing the VU18 front wing in SolidWorks. My work focuses on
-                positioning the airfoil elements for flow attachment and conditioning the inlet flow to
-                the undertray, while staying within the 2027 FSAE IC aerodynamic envelope and integrating
-                with the full-car assembly.
+                For the 2027 car, I am designing a parametric front wing in SolidWorks. Adjustable
+                airfoil blocks and reference planes let me vary each element&rsquo;s chord length,
+                angle of attack, and distance from the centerline, so the wing can be reshaped quickly
+                for CFD comparisons once we begin simulating the VU18 package.
               </p>
               <p>
-                I collaborate with the senior capstone engineers on Formula SAE aero development, using
-                Claude-assisted CFD workflows to guide SolidWorks design iterations. Front-wing CFD runs
-                are still ahead.
+                I collaborate with the senior capstone engineers on a Claude-assisted CFD workflow that
+                compares successive aero package configurations and guides revisions in SolidWorks and
+                nTop toward a full-car downforce target of 1,650 N at 50 mph. The pipeline for CFD
+                sweeps is already established and proven, so the CAD is built to plug straight into it.
               </p>
             </div>
             <div class="story-side">
@@ -295,8 +296,9 @@
               </figure>
               <dl class="story-spec">
                 <div><dt>Car</dt><dd>VU18 (2027 car)</dd></div>
-                <div><dt>Focus</dt><dd>Front wing</dd></div>
-                <div><dt>Timeline</dt><dd>May 2026 &ndash; Present</dd></div>
+                <div><dt>Focus</dt><dd>Parametric front wing, CFD-driven aero package</dd></div>
+                <div><dt>Timeline</dt><dd>Oct. 2026 &ndash; Present</dd></div>
+                <div><dt>Downforce target</dt><dd>1,650 N full-car at 50 mph</dd></div>
                 <div><dt>Envelope</dt><dd>2027 FSAE IC aerodynamic envelope</dd></div>
                 <div><dt>Airfoils</dt><dd>S1223 and NACA 2412</dd></div>
                 <div><dt>Ground clearance</dt><dd>1 in, set by reference planes</dd></div>
@@ -306,17 +308,42 @@
                 <li>SolidWorks</li>
                 <li>Parametric Design</li>
                 <li>Aerodynamic Design</li>
+                <li>CFD Workflows (Claude)</li>
+                <li>nTop</li>
                 <li>Full-Car Integration</li>
                 <li>ANSYS Fluent (learning)</li>
               </ul>
             </div>
           </div>
 
+          <section class="phase phase--wide">
+            <div class="phase-copy">
+              <h3 class="phase-title">Parametric Front Wing: Clean CAD for CFD Sweeps</h3>
+              <p>
+                The current front wing is built entirely around adjustable parameters. Each element is a SolidWorks block holding its airfoil profile, which can be scaled to set chord length and rotated to set angle of attack, with defined leading and trailing edges that the 3D geometry is built from.
+              </p>
+              <p>
+                Smart dimensions drive the reference-plane offsets that set where each element sits and how far it extends from the car&rsquo;s midplane. Changing one value (for example, a 10, 12, or 14 in offset from the midplane) resizes the wing element, which leaves room for other components to be packaged later and makes front or rear wing geometry changes quick, wherever we decide to put wing elements.
+              </p>
+              <p>
+                The goal is easy adjustment once we begin simulating the VU18 package: the Claude-assisted CFD sweep pipeline is already a proven concept, so clean, parametric CAD means each configuration can be swapped in and compared without rebuilding the model.
+              </p>
+            </div>
+            <div class="phase-media phase-media--strip">
+              <figure class="collage-item" style="--ar: 690 / 273">
+                <img src="assets/images/vu18-airfoil-block.jpg" alt="SolidWorks airfoil block with scale and rotation parameters used to set chord length and angle of attack" width="690" height="273" loading="lazy">
+              </figure>
+              <figure class="collage-item" style="--ar: 496 / 118">
+                <img src="assets/images/vu18-wing-offset-sweep.jpg" alt="Wing element resized by changing the reference-plane offset from the midplane: 10 in, 12 in, and 14 in" width="496" height="118" loading="lazy">
+              </figure>
+            </div>
+          </section>
+
           <section class="phase phase--text">
             <div class="phase-copy">
-              <h3 class="phase-title">Preliminary Design: Built for Meshability and Iteration</h3>
+              <h3 class="phase-title">Earlier Preliminary Design: Built for Meshability and Iteration</h3>
               <p>
-                The wing shown here is a preliminary version, designed around meshability and parametrized for iteration. Each element is built from SolidWorks blocks for scalable, rotatable S1223 and NACA 2412 airfoils with defined chord lengths and defined leading and trailing edges. 3D lofts are coincident to those defined points, and the geometry avoids sliver faces and infinitely small features that would keep a simulation from converging. It is kept simple so more elements can be added later.
+                The first version of the wing (pictured above) was designed around meshability and parametrized for iteration. Each element is built from SolidWorks blocks for scalable, rotatable S1223 and NACA 2412 airfoils with defined chord lengths and defined leading and trailing edges. 3D lofts are coincident to those defined points, and the geometry avoids sliver faces and infinitely small features that would keep a simulation from converging. It is kept simple so more elements can be added later.
               </p>
               <p>
                 The wing is designed within the FSAE bounding box and around integration with the nosecone. Reference planes set a 1 in ground clearance when the wing is placed in the frame file and mated to the real ground plane, and outboard height is limited to 250 mm from the ground.

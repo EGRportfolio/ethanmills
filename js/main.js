@@ -221,47 +221,6 @@
     projectCards.forEach(function (card) { cardObserver.observe(card); });
   }
 
-  /* ---------- Project cards: matching closed/open sizes ----------
-     Cards sit collapsed at one shared height (the tallest card with its
-     text folded) and grow on hover to another (the tallest with its text
-     open), so they always match. The grid itself is held at its fully
-     open height, so a card growing never moves the sections below.
-     Re-measured only when the width changes. */
-  var projectsGrid = document.querySelector('.projects-grid');
-  if (projectsGrid && projectsGrid.querySelector('.project-card-more')) {
-    var lastGridWidth = 0;
-    var tallestCard = function () {
-      return projectCards.reduce(function (max, card) { return Math.max(max, card.offsetHeight); }, 0);
-    };
-    var sizeProjectCards = function () {
-      var width = projectsGrid.offsetWidth;
-      if (width === lastGridWidth) return;
-      lastGridWidth = width;
-      var style = projectsGrid.style;
-      style.minHeight = '';
-      style.removeProperty('--project-card-closed-h');
-      style.removeProperty('--project-card-open-h');
-      projectsGrid.querySelectorAll('.project-card-more').forEach(function (more) {
-        more.style.setProperty('--more-h', more.firstElementChild.getBoundingClientRect().height + 'px');
-      });
-      projectsGrid.classList.add('no-anim', 'is-measuring');
-      style.setProperty('--project-card-open-h', tallestCard() + 'px');
-      var openGridHeight = projectsGrid.offsetHeight; // every card open, same size
-      projectsGrid.classList.remove('is-measuring');
-      projectsGrid.classList.add('is-measuring-closed'); // even a hovered/in-view card
-      style.setProperty('--project-card-closed-h', tallestCard() + 'px');
-      projectsGrid.classList.remove('is-measuring-closed');
-      style.minHeight = openGridHeight + 'px';
-      void projectsGrid.offsetHeight; // settle the new sizes with no animation
-      projectsGrid.classList.remove('no-anim');
-    };
-    sizeProjectCards();
-    var resizeProjectCards = function () { lastGridWidth = 0; sizeProjectCards(); };
-    window.addEventListener('load', resizeProjectCards);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(resizeProjectCards);
-    window.addEventListener('resize', sizeProjectCards);
-  }
-
   /* ---------- Year tabs ---------- */
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.year-tab'));
   var panels = {

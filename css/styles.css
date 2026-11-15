@@ -517,20 +517,14 @@ html{ scrollbar-color: var(--accent-dim) var(--bg-alt); scrollbar-width: thin; }
 
 /* ============ PROJECTS ============ */
 /* Three equal cards across; one column once they'd get too narrow. */
-.projects-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); align-items: start; }
+.projects-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); align-items: stretch; }
 @media (max-width: 860px){ .projects-grid{ grid-template-columns: 1fr; } }
 
-/* Two shared sizes from JS: --project-card-closed-h (tallest card with its
-   text folded) and --project-card-open-h (tallest with its text open). A
-   card sits collapsed at the first and grows to the second on hover, so
-   the cards always match each other, closed or open. */
 .project-card{
-  min-height: var(--project-card-closed-h, auto);
   display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); overflow: hidden;
   transition: border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease), min-height 0.4s var(--ease);
 }
-.project-card:hover, .project-card:focus-within{ min-height: var(--project-card-open-h, auto); }
 a.project-card:hover{ border-color: var(--accent-dim); transform: translateY(-4px); box-shadow: 0 20px 50px -24px rgba(var(--accent-rgb),0.28), 0 30px 60px -34px rgba(var(--accent-rgb),0.14); }
 .project-card-media{ position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--bg-alt); }
 .project-card-media img{ width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease), opacity 0.4s var(--ease); filter: saturate(0.85); }
@@ -580,36 +574,11 @@ a.project-card:focus-visible .project-card-media--swap .swap-over{ opacity: 0; }
 .project-card-body h3{ font-size: 26px; }
 .project-card-body p{ color: var(--text-dim); font-size: 14.5px; line-height: 1.55; }
 
-/* Drop-down description: everything under the card title stays folded
-   away until the card is hovered (or focused), then slides open. It
-   animates an explicit height (--more-h, the text's measured height, set
-   by JS), which every browser can transition smoothly. */
-.project-card-more{
-  height: 0; overflow: hidden; opacity: 0; margin-top: -8px;
-  transition: height 0.4s var(--ease), opacity 0.3s var(--ease), margin-top 0.4s var(--ease);
-}
-.project-card-more-inner{ display: flex; flex-direction: column; gap: 8px; }
-.project-card:hover .project-card-more,
-.project-card:focus-within .project-card-more,
-a.project-card:focus-visible .project-card-more{ height: var(--more-h, auto); opacity: 1; margin-top: 0; }
-/* Touch screens have no hover, so each card opens as it scrolls into view. */
-@media (hover: none), (pointer: coarse){
-  .project-card.is-inview .project-card-more{ height: var(--more-h, auto); opacity: 1; margin-top: 0; }
-  .project-card.is-inview{ min-height: var(--project-card-open-h, auto); }
-}
-@media (prefers-reduced-motion: reduce){
-  .project-card-more{ transition: none; }
-  .project-card{ transition-property: border-color, transform, box-shadow; }
-}
-/* Used by JS for synchronous measurements with every card open; never
-   painted. no-anim drops only the size transitions, so a card's scroll
-   reveal is never interrupted. */
-.projects-grid.is-measuring .project-card-more{ height: auto; opacity: 1; margin-top: 0; }
-.projects-grid.is-measuring .project-card{ min-height: var(--project-card-open-h, auto); }
-.projects-grid.is-measuring-closed .project-card-more{ height: 0; opacity: 0; margin-top: -8px; }
-.projects-grid.is-measuring-closed .project-card{ min-height: 0; }
-.projects-grid.no-anim .project-card-more{ transition: none; }
-.projects-grid.no-anim .project-card{ transition-property: border-color, transform, box-shadow; }
+/* Card descriptions are always open; equal-height cards (grid stretch)
+   let the text fill the space below, with the link pinned to the bottom. */
+.project-card-more{ flex: 1; display: flex; flex-direction: column; }
+.project-card-more-inner{ display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.project-card-more-inner .project-card-link{ margin-top: auto; padding-top: 4px; }
 .project-card-link{
   display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 13px;
   color: var(--accent); margin-top: 6px;
