@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=96">
+<link rel="stylesheet" href="css/styles.css?v=97">
 </head>
 <body>
 
@@ -275,10 +275,10 @@
               </div>
               <h3 class="phase-title">Overview</h3>
               <p>
-                For the 2027 car, I am designing a parametric front wing in SolidWorks. Adjustable
-                airfoil blocks and reference planes let me vary each element&rsquo;s chord length,
-                angle of attack, and distance from the centerline, so the wing can be reshaped quickly
-                for CFD comparisons once we begin simulating the VU18 package.
+                For the 2027 car, I am designing the front wing in SolidWorks so that everything can be
+                changed without rebuild errors. Adjustable airfoil blocks and reference planes let me vary
+                each element&rsquo;s chord length, angle of attack, and distance from the centerline, and my
+                latest revision adds curved elements to the wing.
               </p>
               <p>
                 I collaborate with the senior capstone engineers on a Claude-assisted CFD workflow that
@@ -289,14 +289,14 @@
             </div>
             <div class="story-side">
               <figure class="collage-item collage-item--natural">
-                <img src="assets/images/vu18-front-wing-iso.jpg" alt="Isometric CAD view of the preliminary VU18 front wing: a main plane between two endplates with a curved outboard element on each side" width="1279" height="1017" loading="lazy">
+                <img src="assets/images/vu18-curved-wing-iso.jpg" alt="Isometric CAD view of the curved-element VU18 front wing, with filleted endplates and two curved elements on each side of the main plane" width="1887" height="679" loading="lazy">
               </figure>
               <figure class="collage-item collage-item--natural">
-                <img src="assets/images/vu18-front-wing-front.jpg" alt="Front CAD view of the preliminary front wing with its front boundary and reference-plane sketch lines" width="1713" height="606" loading="lazy">
+                <img src="assets/images/vu18-curved-wing-top.jpg" alt="Top CAD view of the curved-element front wing showing the swept outboard elements between the endplates" width="1678" height="796" loading="lazy">
               </figure>
               <dl class="story-spec">
                 <div><dt>Car</dt><dd>VU18 (2027 car)</dd></div>
-                <div><dt>Focus</dt><dd>Parametric front wing, CFD-driven aero package</dd></div>
+                <div><dt>Focus</dt><dd>Parametric, curved-element front wing</dd></div>
                 <div><dt>Timeline</dt><dd>Oct. 2026 &ndash; Present</dd></div>
                 <div><dt>Downforce target</dt><dd>1,650 N full-car at 50 mph</dd></div>
                 <div><dt>Envelope</dt><dd>2027 FSAE IC aerodynamic envelope</dd></div>
@@ -318,9 +318,31 @@
 
           <section class="phase phase--wide">
             <div class="phase-copy">
-              <h3 class="phase-title">Parametric Front Wing: Clean CAD for CFD Sweeps</h3>
+              <h3 class="phase-title">Curved-Element Front Wing</h3>
+              <p class="phase-date">Designed 11/23/26</p>
               <p>
-                The current front wing is built entirely around adjustable parameters. Each element is a SolidWorks block holding its airfoil profile, which can be scaled to set chord length and rotated to set angle of attack, with defined leading and trailing edges that the 3D geometry is built from.
+                The newest front wing keeps the same design theory as the earlier versions: every element is driven by adjustable parameters, so any dimension can be changed without rebuild errors. This version adds curved elements to the wing and shows it integrated with the full car and rear wing.
+              </p>
+              <p>
+                It was also a cleanup pass on the geometry. I resolved bounding-box issues so the wing fits cleanly within the FSAE envelope, fixed minimum-cell-size problems at the edges, and added fillets for smoother edge transitions, which also help with meshing as the model moves toward simulation.
+              </p>
+            </div>
+            <div class="phase-media phase-media--pair">
+              <figure class="collage-item collage-item--natural">
+                <img src="assets/images/vu18-curved-wing-car-front.jpg" alt="Front view of the VU18 car CAD with the curved-element front wing and rear wing" width="1489" height="1248" loading="lazy">
+              </figure>
+              <figure class="collage-item collage-item--natural">
+                <img src="assets/images/vu18-curved-wing-car-iso.jpg" alt="Isometric view of the VU18 car CAD with the curved-element front wing, driver, roll hoop, and rear wing" width="1539" height="1248" loading="lazy">
+              </figure>
+            </div>
+          </section>
+
+          <section class="phase phase--wide">
+            <div class="phase-copy">
+              <h3 class="phase-title">Parametric Front Wing: Clean CAD for CFD Sweeps</h3>
+              <p class="phase-date">Designed 11/15/26</p>
+              <p>
+                This front wing is built entirely around adjustable parameters. Each element is a SolidWorks block holding its airfoil profile, which can be scaled to set chord length and rotated to set angle of attack, with defined leading and trailing edges that the 3D geometry is built from.
               </p>
               <p>
                 Smart dimensions drive the reference-plane offsets that set where each element sits and how far it extends from the car&rsquo;s midplane. Changing one value (for example, a 10, 12, or 14 in offset from the midplane) resizes the wing element, which leaves room for other components to be packaged later and makes front or rear wing geometry changes quick, wherever we decide to put wing elements.
@@ -339,11 +361,12 @@
             </div>
           </section>
 
-          <section class="phase phase--text">
+          <section class="phase">
             <div class="phase-copy">
               <h3 class="phase-title">Earlier Preliminary Design: Built for Meshability and Iteration</h3>
+              <p class="phase-date">Designed 11/15/26</p>
               <p>
-                The first version of the wing (pictured above) was designed around meshability and parametrized for iteration. Each element is built from SolidWorks blocks for scalable, rotatable S1223 and NACA 2412 airfoils with defined chord lengths and defined leading and trailing edges. 3D lofts are coincident to those defined points, and the geometry avoids sliver faces and infinitely small features that would keep a simulation from converging. It is kept simple so more elements can be added later.
+                The first version of the wing was designed around meshability and parametrized for iteration. Each element is built from SolidWorks blocks for scalable, rotatable S1223 and NACA 2412 airfoils with defined chord lengths and defined leading and trailing edges. 3D lofts are coincident to those defined points, and the geometry avoids sliver faces and infinitely small features that would keep a simulation from converging. It is kept simple so more elements can be added later.
               </p>
               <p>
                 The wing is designed within the FSAE bounding box and around integration with the nosecone. Reference planes set a 1 in ground clearance when the wing is placed in the frame file and mated to the real ground plane, and outboard height is limited to 250 mm from the ground.
@@ -351,6 +374,14 @@
               <p>
                 Next, I plan to add more elements inboard to use the inboard space for more aerodynamic performance, a decision that is waiting on the final front suspension geometry. I am also considering the sidepod inlet position and attitude for maximum airflow for cooling.
               </p>
+            </div>
+            <div class="phase-media phase-media--stack">
+              <figure class="collage-item collage-item--natural">
+                <img src="assets/images/vu18-front-wing-iso.jpg" alt="Isometric CAD view of the preliminary VU18 front wing: a main plane between two endplates with a curved outboard element on each side" width="1279" height="1017" loading="lazy">
+              </figure>
+              <figure class="collage-item collage-item--natural">
+                <img src="assets/images/vu18-front-wing-front.jpg" alt="Front CAD view of the preliminary front wing with its front boundary and reference-plane sketch lines" width="1713" height="606" loading="lazy">
+              </figure>
             </div>
           </section>
         </article>

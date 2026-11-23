@@ -1054,3 +1054,10 @@ a.contact-card:hover::before{ transform: scaleX(1); }
 }
 
 @media (max-width: 480px){ .main-nav{ width: 100%; } }
+
+/* Completion date shown as a subtitle under a design phase title. */
+.phase-copy p.phase-date{ font-family: var(--font-mono); font-size: 13px; color: var(--accent); margin: calc(var(--space-xs) * -1) 0 var(--space-md); }
+@media (min-width: 901px){ .phase--wide .phase-date{ grid-column: 1 / -1; } }
+/* Two whole (uncropped) images side by side. */
+.phase-media--pair{ grid-template-columns: 1fr 1fr; align-items: start; }
+@media (max-width: 700px){ .phase-media--pair{ grid-template-columns: 1fr; } }
