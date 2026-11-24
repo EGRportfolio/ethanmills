@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/styles.css?v=97">
+<link rel="stylesheet" href="css/styles.css?v=98">
 </head>
 <body>
 
@@ -64,8 +64,8 @@
       <h1 class="project-hero-title">Beetlebot</h1>
       <p class="hero-lede">
         A group project for ME 2505: designing and building a 3 lb combat robot for the course's
-        yearly competition, where it battles other teams' robots. My team of three is building a
-        two-wheel, zero-turn prototype, and I own the CAD and hardware design.
+        yearly competition, where it battles other teams' robots. My team of three has built a
+        working two-wheel, zero-turn prototype, and I own the CAD and hardware design.
       </p>
       <div class="project-meta-row">
         <span><strong>Course</strong> ME 2505, Villanova University</span>
@@ -89,9 +89,9 @@
             <p>
               Beetlebot is a semester-long project for ME 2505 that runs in the background alongside
               the course's lab work and builds toward its yearly combat robot competition. We're
-              building toward a working prototype: the interior electronics are soldered together with
-              the motors and batteries, the wheels are 3D-printed, and we are now testing an updated
-              0.05 in aluminum shell.
+              building toward the competition robot, and our first build is now working and driving: the
+              interior electronics are soldered together with the motors and batteries, the wheels are
+              3D-printed, and the shell is 0.05 in aluminum sheet. The full assembly weighs 1.854 lb.
             </p>
             <p>
               The arena has lawn mower blades in all four corners, so we chose the no-weapon track
@@ -110,7 +110,7 @@
             <dl class="story-spec">
               <div><dt>Track</dt><dd>No-weapon</dd></div>
               <div><dt>Drivetrain</dt><dd>Two-wheel, zero turn radius</dd></div>
-              <div><dt>Weight</dt><dd>3 lb limit, reached with added mass near the CG</dd></div>
+              <div><dt>Weight</dt><dd>1.854 lb assembled, 3 lb limit</dd></div>
               <div><dt>Ground clearance</dt><dd>7 mm minimum target, within manufacturing accuracy</dd></div>
               <div><dt>Shell</dt><dd>0.05 in aluminum sheet, bolted angle brackets</dd></div>
             </dl>
@@ -123,6 +123,42 @@
             </ul>
           </div>
         </div>
+
+          <section class="phase phase--wide phase--first-build">
+            <div class="phase-copy">
+              <h3 class="phase-title">First Build: A Working Robot</h3>
+              <p>
+                Our first robot is built and driving. The shell is 0.05 in aluminum sheet cut into flat panels (a floor plate, two tapered side walls, a sloped front wedge, and a top panel) and joined with angle brackets and fasteners. Layout and bend lines were marked on the sheet by hand before cutting, and the floor plate has cutouts at the rear for the two drive wheels.
+              </p>
+              <p>
+                The drivetrain sits on that floor plate. Each motor is held down by a bent aluminum strap bolted through the plate, with hook-and-loop padding between the strap and the motor, and a ball joint at the front center carries the nose. The wiring ends in crimped spade terminals, and the top panel lifts open to reach the battery and electronics, which keeps the robot easy to service.
+              </p>
+              <p>
+                The full assembly weighs 1.854 lb on the scale, just under 2 lb and well below the 3 lb limit, which leaves over a pound of headroom for mass near the center of gravity.
+              </p>
+              <p>
+                Next up is handling, grip, and motor alignment. Aligning the two motors so the wheels run parallel is what the robot needs to drive straight and predictably, and more grip and better handling will help it hold its line and turn precisely.
+              </p>
+            </div>
+            <div class="phase-media phase-media--strip">
+              <figure class="collage-item collage-item--video" style="--ar: 720 / 1280" data-video="assets/video/beetlebot-first-drive.mp4">
+                <img src="assets/images/beetlebot-first-drive-poster.jpg" alt="Video still of the first Beetlebot build driving across a floor; click to play the video" width="540" height="960" loading="lazy">
+                <figcaption>First drive test of the working Beetlebot (video, no audio)</figcaption>
+              </figure>
+              <figure class="collage-item" style="--ar: 1125 / 1500">
+                <img src="assets/images/beetlebot-first-build-parts.jpg" alt="Flat-cut aluminum panels laid out around the floor plate, which has the motors, wheels, and ball joint mounted" width="1125" height="1500" loading="lazy">
+                <figcaption>Cut aluminum panels laid out around the floor plate with the motors, wheels, and ball joint mounted</figcaption>
+              </figure>
+              <figure class="collage-item" style="--ar: 1125 / 1500">
+                <img src="assets/images/beetlebot-first-build-assembled.jpg" alt="Assembled shell seen from above with the top panel open, showing the angle brackets, motor straps, wheels, and ball joint" width="1125" height="1500" loading="lazy">
+                <figcaption>Assembled shell with the top panel open: angle brackets, motor straps, rear wheels, and front ball joint</figcaption>
+              </figure>
+              <figure class="collage-item" style="--ar: 1125 / 1500">
+                <img src="assets/images/beetlebot-first-build-weight.jpg" alt="The full robot assembly on a scale reading 1.854 lb" width="1125" height="1500" loading="lazy">
+                <figcaption>Full assembly on the scale: 1.854 lb</figcaption>
+              </figure>
+            </div>
+          </section>
 
           <section class="phase phase--text">
             <div class="phase-copy">
@@ -232,10 +268,11 @@
   <button class="lightbox-close" id="lightboxClose" aria-label="Close image">&times;</button>
   <button class="lightbox-nav lightbox-nav--prev" id="lightboxPrev" aria-label="Previous image">&#10094;</button>
   <img src="" alt="" id="lightboxImg">
+  <video id="lightboxVideo" controls playsinline muted preload="none" hidden></video>
   <button class="lightbox-nav lightbox-nav--next" id="lightboxNext" aria-label="Next image">&#10095;</button>
   <p class="lightbox-caption" id="lightboxCaption"></p>
 </div>
 
-<script src="js/main.js?v=50"></script>
+<script src="js/main.js?v=51"></script>
 </body>
 </html>

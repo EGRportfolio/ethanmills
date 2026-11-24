@@ -257,6 +257,7 @@
   /* ---------- Lightbox (story-media figures) ---------- */
   var lightbox = document.getElementById('lightbox');
   var lightboxImg = document.getElementById('lightboxImg');
+  var lightboxVideo = document.getElementById('lightboxVideo');
   var lightboxCaption = document.getElementById('lightboxCaption');
   var lightboxClose = document.getElementById('lightboxClose');
   var lightboxPrev = document.getElementById('lightboxPrev');
@@ -265,6 +266,15 @@
   var lightboxFigures = Array.prototype.slice.call(document.querySelectorAll('.collage-item'));
   var lightboxIndex = -1;
 
+  function stopVideo() {
+    if (!lightboxVideo) return;
+    lightboxVideo.pause();
+    lightboxVideo.removeAttribute('src');
+    lightboxVideo.removeAttribute('poster');
+    lightboxVideo.load();
+    lightboxVideo.hidden = true;
+  }
+
   function showAt(index) {
     if (!lightboxFigures.length) return;
     lightboxIndex = (index + lightboxFigures.length) % lightboxFigures.length;
@@ -272,8 +282,22 @@
     var img = fig.querySelector('img');
     var caption = fig.querySelector('figcaption');
     if (!img) return;
-    lightboxImg.src = img.src;
-    lightboxImg.alt = img.alt || '';
+    var videoSrc = fig.getAttribute('data-video');
+    if (videoSrc && lightboxVideo) {
+      /* Video figure: same viewer, a player instead of the photo. */
+      lightboxImg.hidden = true;
+      lightboxVideo.hidden = false;
+      lightboxVideo.poster = img.src;
+      lightboxVideo.setAttribute('aria-label', img.alt || '');
+      lightboxVideo.src = videoSrc;
+      var playing = lightboxVideo.play();
+      if (playing && playing.catch) playing.catch(function () {});
+    } else {
+      stopVideo();
+      lightboxImg.hidden = false;
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt || '';
+    }
     lightboxCaption.textContent = caption ? caption.textContent : '';
   }
   function openLightbox(index) {
@@ -293,6 +317,8 @@
     lightbox.classList.remove('is-open');
     lightbox.setAttribute('aria-hidden', 'true');
     lightboxImg.src = '';
+    stopVideo();
+    lightboxImg.hidden = false;
     document.body.style.overflow = '';
     if (lastFocused) lastFocused.focus();
   }
@@ -300,7 +326,7 @@
   lightboxFigures.forEach(function (fig, i) {
     fig.setAttribute('tabindex', '0');
     fig.setAttribute('role', 'button');
-    fig.setAttribute('aria-label', 'View larger image');
+    fig.setAttribute('aria-label', fig.hasAttribute('data-video') ? 'Play video larger' : 'View larger image');
 
     function trigger() { openLightbox(i); }
     fig.addEventListener('click', trigger);
